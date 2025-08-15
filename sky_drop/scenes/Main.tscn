@@ -1,0 +1,114 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/GameManager.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/Player.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/HUD.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/ParallaxBackground.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/HazardSpawner.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/Ground.gd" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/Plane.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/Cloud.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/PowerUp.tscn" id="9"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(32, 48)
+
+[sub_resource type="RectangleShape2D" id="2"]
+size = Vector2(800, 20)
+
+[sub_resource type="GradientTexture2D" id="3"]
+width = 640
+height = 360
+
+[node name="Main" type="Node2D"]
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("1")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("4")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(1, 0.5)
+motion_mirroring = Vector2(0, 720)
+
+[node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+texture = SubResource("3")
+centered = false
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(320, 50)
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+modulate = Color(1, 0, 0, 1)
+
+[node name="ParachuteSprite" type="Sprite2D" parent="Player"]
+visible = false
+position = Vector2(0, -30)
+modulate = Color(1, 1, 0, 1)
+
+[node name="Area2D" type="Area2D" parent="Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
+shape = SubResource("1")
+
+[node name="Ground" type="Area2D" parent="."]
+position = Vector2(320, 350)
+script = ExtResource("6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("2")
+
+[node name="GroundSprite" type="ColorRect" parent="Ground"]
+offset_left = -400.0
+offset_top = -10.0
+offset_right = 400.0
+offset_bottom = 10.0
+color = Color(0.4, 0.2, 0, 1)
+
+[node name="HazardSpawner" type="Node2D" parent="."]
+script = ExtResource("5")
+plane_scene = ExtResource("7")
+cloud_scene = ExtResource("8")
+powerup_scene = ExtResource("9")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("3")
+
+[node name="TimeLabel" type="Label" parent="HUD"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 200.0
+offset_bottom = 36.0
+text = "Time: 00:00.00"
+
+[node name="LivesLabel" type="Label" parent="HUD"]
+offset_left = 10.0
+offset_top = 40.0
+offset_right = 200.0
+offset_bottom = 66.0
+text = "Lives: 3"
+
+[node name="ParachuteLabel" type="Label" parent="HUD"]
+offset_left = 10.0
+offset_top = 70.0
+offset_right = 200.0
+offset_bottom = 96.0
+text = "Parachute: READY"
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+offset_left = 440.0
+offset_top = 10.0
+offset_right = 630.0
+offset_bottom = 36.0
+text = "Score: 0"
+
+[connection signal="hit_hazard" from="Player" to="HUD" method="_on_player_hit_hazard"]
+[connection signal="lives_changed" from="Player" to="HUD" method="_on_lives_changed"]
+[connection signal="parachute_toggled" from="Player" to="HUD" method="_on_parachute_toggled"]
+[connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]
+[connection signal="player_landed" from="Ground" to="GameManager" method="_on_ground_player_landed"]

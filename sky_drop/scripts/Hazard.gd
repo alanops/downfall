@@ -1,0 +1,51 @@
+extends Area2D
+
+enum HazardType { PLANE, CLOUD }
+
+@export var hazard_type: HazardType = HazardType.PLANE
+@export var move_speed: float = 150.0
+@export var move_direction: int = 1  # 1 for right, -1 for left
+
+var screen_width = 640
+
+func _ready():
+	add_to_group("hazards")
+	
+	# Set collision properties based on hazard type
+	if hazard_type == HazardType.CLOUD:
+		# Clouds slow down but don't damage
+		set_collision_layer_value(3, true)
+		modulate.a = 0.7  # Make clouds semi-transparent
+	else:
+		# Planes damage the player
+		set_collision_layer_value(2, true)
+
+func _physics_process(delta):
+	# Move horizontally
+	position.x += move_speed * move_direction * delta
+	
+	# Wrap around screen or destroy if off-screen
+	if hazard_type == HazardType.PLANE:
+		if position.x > screen_width + 100:
+			if move_direction > 0:
+				queue_free()
+			else:
+				position.x = screen_width + 100
+		elif position.x < -100:
+			if move_direction < 0:
+				queue_free()
+			else:
+				position.x = -100
+	else:
+		# Clouds wrap around
+		if position.x > screen_width + 200:
+			position.x = -200
+		elif position.x < -200:
+			position.x = screen_width + 200
+
+func _on_body_entered(body):
+	if body.has_method("take_damage") and hazard_type == HazardType.PLANE:
+		body.take_damage()
+	elif body.is_in_group("player") and hazard_type == HazardType.CLOUD:
+		# Apply cloud effect (handled in player)
+		pass
