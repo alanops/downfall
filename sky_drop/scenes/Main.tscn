@@ -9,16 +9,13 @@
 [ext_resource type="PackedScene" path="res://scenes/Plane.tscn" id="7"]
 [ext_resource type="PackedScene" path="res://scenes/Cloud.tscn" id="8"]
 [ext_resource type="PackedScene" path="res://scenes/PowerUp.tscn" id="9"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Cloudsheet_Test.webp" id="10"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
 
 [sub_resource type="RectangleShape2D" id="2"]
 size = Vector2(360, 20)
-
-[sub_resource type="GradientTexture2D" id="3"]
-width = 360
-height = 2560
 
 [node name="Main" type="Node2D"]
 
@@ -33,7 +30,7 @@ motion_scale = Vector2(1, 0.5)
 motion_mirroring = Vector2(0, 2560)
 
 [node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-texture = SubResource("3")
+texture = ExtResource("10")
 centered = false
 
 [node name="Player" type="CharacterBody2D" parent="."]
