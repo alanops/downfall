@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://exdvrk6d1y50"]
+[gd_scene load_steps=17 format=3 uid="uid://exdvrk6d1y50"]
 
 [ext_resource type="Script" uid="uid://b13ff0h1qb1co" path="res://scripts/GameManager.gd" id="1"]
 [ext_resource type="Script" uid="uid://d0erlf4kief8k" path="res://scripts/Player.gd" id="2"]
@@ -6,12 +6,14 @@
 [ext_resource type="Script" uid="uid://buwke6bs0gf2l" path="res://scripts/ParallaxBackground.gd" id="4"]
 [ext_resource type="Script" uid="uid://bpb7vgnc2f8ge" path="res://scripts/HazardSpawner.gd" id="5"]
 [ext_resource type="Script" uid="uid://dvqorkkkaucvy" path="res://scripts/Ground.gd" id="6"]
-[ext_resource type="PackedScene" path="res://scenes/Plane.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://gnu5m3sym8rh" path="res://scenes/Plane.tscn" id="7"]
 [ext_resource type="PackedScene" uid="uid://unp18d8kk0t6" path="res://scenes/Cloud.tscn" id="8"]
-[ext_resource type="PackedScene" path="res://scenes/PowerUp.tscn" id="9"]
+[ext_resource type="PackedScene" uid="uid://4jq773kqbu7w" path="res://scenes/PowerUp.tscn" id="9"]
 [ext_resource type="Texture2D" uid="uid://7dr0deucyi20" path="res://assets/sprites/background_sky_gradient.webp" id="10"]
 [ext_resource type="Texture2D" uid="uid://bhulmjophjdep" path="res://assets/sprites/clouds_sparse_middle_layer.webp" id="11"]
 [ext_resource type="Texture2D" uid="uid://baspitedaws4r" path="res://assets/sprites/clouds_dramatic_foreground.webp" id="12"]
+[ext_resource type="Texture2D" uid="uid://cr7yhlnhxgnqr" path="res://assets/sprites/skydiver.webp" id="13"]
+[ext_resource type="Texture2D" uid="uid://bw6xiklmyhnpr" path="res://assets/sprites/parachute.webp" id="14"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
@@ -25,11 +27,11 @@ size = Vector2(360, 20)
 script = ExtResource("1")
 
 [node name="SolidBlueBackground" type="ColorRect" parent="."]
+z_index = -100
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.29, 0.56, 0.89, 1)
-z_index = -100
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 script = ExtResource("4")
@@ -60,7 +62,6 @@ centered = false
 
 [node name="GameCamera" type="Camera2D" parent="."]
 position = Vector2(180, 50)
-enabled = true
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(180, 50)
@@ -69,12 +70,8 @@ script = ExtResource("2")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("1")
 
-[node name="PlayerBody" type="ColorRect" parent="Player"]
-offset_left = -16.0
-offset_top = -24.0
-offset_right = 16.0
-offset_bottom = 24.0
-color = Color(1, 0.2, 0.2, 1)
+[node name="PlayerSprite" type="Sprite2D" parent="Player"]
+texture = ExtResource("13")
 
 [node name="PlayerLabel" type="Label" parent="Player"]
 offset_left = -20.0
@@ -84,13 +81,11 @@ offset_bottom = 50.0
 text = "PLAYER"
 horizontal_alignment = 1
 
-[node name="ParachuteSprite" type="ColorRect" parent="Player"]
+[node name="ParachuteSprite" type="Sprite2D" parent="Player"]
 visible = false
-offset_left = -30.0
-offset_top = -50.0
-offset_right = 30.0
-offset_bottom = -30.0
-color = Color(1, 1, 0, 1)
+z_index = -1
+position = Vector2(0, -40)
+texture = ExtResource("14")
 
 [node name="ParachuteLabel" type="Label" parent="Player"]
 visible = false
