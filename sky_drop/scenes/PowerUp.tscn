@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://4jq773kqbu7w"]
 
-[ext_resource type="Script" path="res://scripts/PowerUp.gd" id="1"]
+[ext_resource type="Script" uid="uid://d1xqw3416dxsn" path="res://scripts/PowerUp.gd" id="1"]
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 16.0
