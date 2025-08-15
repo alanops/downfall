@@ -10,7 +10,8 @@ extends Node2D
 
 var spawn_timer: float = 0.0
 var next_spawn_time: float = 2.0
-var screen_height = 360
+var screen_width = 360
+var screen_height = 640
 var spawn_margin = 50
 
 func _ready():
@@ -32,7 +33,7 @@ func spawn_hazard():
 	if randf() < powerup_chance and powerup_scene:
 		var powerup = powerup_scene.instantiate()
 		add_child(powerup)
-		powerup.position = Vector2(640 + 50, spawn_y)
+		powerup.position = Vector2(screen_width + 50, spawn_y)
 		return
 	
 	# Randomly choose between plane and cloud
@@ -51,7 +52,7 @@ func spawn_hazard():
 		hazard.position = Vector2(-50, spawn_y)
 		hazard.move_direction = 1
 	else:
-		hazard.position = Vector2(690, spawn_y)
+		hazard.position = Vector2(screen_width + 50, spawn_y)
 		hazard.move_direction = -1
 	
 	# Vary the speed

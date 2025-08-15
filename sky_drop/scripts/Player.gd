@@ -48,7 +48,7 @@ func toggle_parachute():
 	parachute_deployed = !parachute_deployed
 	emit_signal("parachute_toggled", parachute_deployed)
 	
-	# Visual feedback would go here
+	# Visual feedback
 	if has_node("ParachuteSprite"):
 		$ParachuteSprite.visible = parachute_deployed
 

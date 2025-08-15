@@ -6,7 +6,7 @@ enum HazardType { PLANE, CLOUD }
 @export var move_speed: float = 150.0
 @export var move_direction: int = 1  # 1 for right, -1 for left
 
-var screen_width = 640
+var screen_width = 360
 
 func _ready():
 	add_to_group("hazards")
