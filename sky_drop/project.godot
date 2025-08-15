@@ -67,4 +67,5 @@ gut/enabled=true
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="mobile"
+renderer/rendering_method="forward_plus"
+environment/defaults/default_clear_color=Color(0.216, 0.498, 0.910, 1)
