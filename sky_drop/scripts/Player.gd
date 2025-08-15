@@ -50,6 +50,12 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
+	# Update camera to follow player vertically only
+	var camera = get_node("../GameCamera")
+	if camera:
+		camera.position.x = 180  # Keep camera centered horizontally
+		camera.position.y = global_position.y  # Follow player vertically
+	
 	# Check if we landed (on ground)
 	if is_on_floor():
 		finish_game()

@@ -51,12 +51,13 @@ motion_mirroring = Vector2(0, 1024)
 texture = ExtResource("12")
 centered = false
 
+[node name="GameCamera" type="Camera2D" parent="."]
+position = Vector2(180, 50)
+enabled = true
+
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(180, 50)
 script = ExtResource("2")
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("1")
