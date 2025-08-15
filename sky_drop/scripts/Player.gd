@@ -121,8 +121,9 @@ func toggle_parachute():
 	# Reset wind time when deploying parachute
 	if parachute_deployed:
 		wind_time = 0.0
-		# Add initial deployment physics impulse
+		# Add initial deployment physics impulse with upward jerk
 		velocity.y *= 0.6  # Sudden slowdown when parachute opens
+		velocity.y -= 150  # Upward jerk effect
 		velocity.x *= 0.8  # Slight horizontal slowdown
 	
 	# Visual feedback with smooth transitions
