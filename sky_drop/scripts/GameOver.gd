@@ -2,6 +2,13 @@ extends Control
 
 func _ready():
 	$VBoxContainer/RetryButton.grab_focus()
+	
+	# Load and display the game results
+	display_results()
+
+func _input(event):
+	if Input.is_action_just_pressed("reset_game"):
+		_on_retry_button_pressed()
 
 func set_score_info(score, time, lives):
 	$VBoxContainer/ScoreLabel.text = "Score: " + str(score)
@@ -18,3 +25,8 @@ func _on_retry_button_pressed():
 
 func _on_menu_button_pressed():
 	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+
+func display_results():
+	print("GameOver: Displaying results - Score: ", GameData.final_score, " Time: ", GameData.final_time)
+	$VBoxContainer/ScoreLabel.text = "Score: " + str(GameData.final_score)
+	$VBoxContainer/TimeLabel.text = "Time: " + format_time(GameData.final_time)

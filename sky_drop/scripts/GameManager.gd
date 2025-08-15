@@ -24,8 +24,16 @@ func _process(delta):
 	if not game_over and game_started:
 		time_elapsed += delta
 		emit_signal("time_updated", time_elapsed)
+	
+	# Check for reset key
+	if Input.is_action_just_pressed("reset_game"):
+		reset_game()
 
 func end_game(lives_remaining):
+	if game_over:
+		return  # Already ended
+		
+	print("GameManager: Ending game with time: ", time_elapsed, " lives: ", lives_remaining)
 	game_over = true
 	set_process(false)
 	
@@ -36,9 +44,24 @@ func end_game(lives_remaining):
 	
 	emit_signal("score_updated", score)
 	emit_signal("game_finished", time_elapsed, lives_remaining)
+	
+	# Store results in global data
+	GameData.set_game_results(score, time_elapsed, lives_remaining)
+	
+	# Show game over screen after a short delay
+	await get_tree().create_timer(2.0).timeout
+	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
 
 func format_time(seconds):
 	var minutes = int(seconds) / 60
 	var secs = int(seconds) % 60
 	var millisecs = int((seconds - int(seconds)) * 100)
 	return "%02d:%02d.%02d" % [minutes, secs, millisecs]
+
+func reset_game():
+	get_tree().reload_current_scene()
+
+func _on_ground_player_landed():
+	var player = get_node_or_null("../Player")
+	if player:
+		end_game(player.lives)
