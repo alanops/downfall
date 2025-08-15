@@ -4,6 +4,13 @@ extends Area2D
 @export var bob_amplitude: float = 10.0
 @export var bob_frequency: float = 2.0
 
+enum PowerUpType {
+	PARACHUTE,
+	SPEED_BOOST
+}
+
+@export var powerup_type: PowerUpType = PowerUpType.PARACHUTE
+
 var time: float = 0.0
 var initial_x: float
 
@@ -26,5 +33,9 @@ func _physics_process(delta):
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
-		body.add_parachute()
+		match powerup_type:
+			PowerUpType.PARACHUTE:
+				body.add_parachute()
+			PowerUpType.SPEED_BOOST:
+				body.add_speed_boost()
 		queue_free()

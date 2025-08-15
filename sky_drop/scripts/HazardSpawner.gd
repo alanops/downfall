@@ -4,9 +4,9 @@ extends Node2D
 @export var cloud_scene: PackedScene
 @export var powerup_scene: PackedScene
 
-@export var spawn_interval_min: float = 1.2
-@export var spawn_interval_max: float = 3.5
-@export var powerup_chance: float = 0.15
+@export var spawn_interval_min: float = 0.8
+@export var spawn_interval_max: float = 2.5
+@export var powerup_chance: float = 0.20
 
 var spawn_timer: float = 0.0
 var next_spawn_time: float = 2.0
@@ -55,14 +55,23 @@ func spawn_hazard():
 	if randf() < current_powerup_chance and powerup_scene:
 		var powerup = powerup_scene.instantiate()
 		add_child(powerup)
-		powerup.position = Vector2(screen_width + 50, spawn_y)
+		
+		# Randomly choose power-up type (60% parachute, 40% speed boost)
+		if randf() < 0.6:
+			powerup.powerup_type = powerup.PowerUpType.PARACHUTE
+			powerup.get_node("Sprite").color = Color.GREEN
+		else:
+			powerup.powerup_type = powerup.PowerUpType.SPEED_BOOST
+			powerup.get_node("Sprite").color = Color.ORANGE
+		
+		powerup.position = Vector2(randf_range(50, screen_width - 50), spawn_y)
 		print("Spawned power-up at Y: ", spawn_y, " Player at Y: ", player_y)
 		return
 	
-	# Randomly choose between plane and cloud (50/50 split)
+	# Higher chance for planes (70% plane, 30% cloud)
 	var hazard
 	var hazard_type = "unknown"
-	if randf() < 0.5 and plane_scene:  # 50% chance for plane
+	if randf() < 0.7 and plane_scene:  # 70% chance for plane
 		hazard = plane_scene.instantiate()
 		hazard_type = "plane"
 	elif cloud_scene:

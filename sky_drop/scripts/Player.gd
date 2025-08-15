@@ -7,11 +7,14 @@ const AIR_RESISTANCE = 50.0
 const GRAVITY_NORMAL = 400.0
 const GRAVITY_PARACHUTE = 100.0
 const GRAVITY_FAST_DIVE = 800.0
+const GRAVITY_SPEED_BOOST = 1200.0
 const MAX_FALL_SPEED = 600.0
 const MAX_FALL_SPEED_PARACHUTE = 150.0
 const MAX_FALL_SPEED_FAST_DIVE = 1000.0
+const MAX_FALL_SPEED_SPEED_BOOST = 1400.0
 const PARACHUTE_DRAG = 0.95
 const WIND_STRENGTH = 30.0
+const SPEED_BOOST_DURATION = 5.0
 
 var parachute_deployed = false
 var lives = 3
@@ -22,6 +25,8 @@ var wind_time = 0.0
 var deployment_transition_time = 0.0
 var is_transitioning = false
 var is_fast_diving = false
+var speed_boost_time = 0.0
+var has_speed_boost = false
 
 signal lives_changed(new_lives)
 signal parachute_toggled(deployed)
@@ -49,6 +54,12 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("reset_game"):
 		get_tree().reload_current_scene()
 	
+	# Update speed boost timer
+	if has_speed_boost:
+		speed_boost_time -= delta
+		if speed_boost_time <= 0:
+			has_speed_boost = false
+	
 	# Apply gravity based on current state
 	var gravity = GRAVITY_NORMAL
 	var max_fall = MAX_FALL_SPEED
@@ -56,6 +67,9 @@ func _physics_process(delta):
 	if parachute_deployed:
 		gravity = GRAVITY_PARACHUTE
 		max_fall = MAX_FALL_SPEED_PARACHUTE
+	elif has_speed_boost:
+		gravity = GRAVITY_SPEED_BOOST
+		max_fall = MAX_FALL_SPEED_SPEED_BOOST
 	elif is_fast_diving:
 		gravity = GRAVITY_FAST_DIVE
 		max_fall = MAX_FALL_SPEED_FAST_DIVE
@@ -93,6 +107,10 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
+	# Clamp player position to screen boundaries
+	var screen_width = 360  # From project.godot viewport_width
+	global_position.x = clamp(global_position.x, 20, screen_width - 20)
+	
 	# Update camera to follow player vertically only
 	var camera = get_node("../GameCamera")
 	if camera:
@@ -101,7 +119,11 @@ func _physics_process(delta):
 	
 	# Check if we landed (on ground)
 	if is_on_floor():
-		finish_game()
+		if parachute_deployed:
+			finish_game()
+		else:
+			# Hard landing without parachute - take damage
+			take_damage()
 
 func toggle_parachute():
 	if not parachute_deployed and parachutes_available <= 0:
@@ -183,6 +205,10 @@ func take_damage():
 
 func add_parachute():
 	parachutes_available += 1
+
+func add_speed_boost():
+	has_speed_boost = true
+	speed_boost_time = SPEED_BOOST_DURATION
 
 func _on_area_2d_area_entered(area):
 	if area.is_in_group("hazards"):
