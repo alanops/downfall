@@ -51,6 +51,8 @@ func toggle_parachute():
 	# Visual feedback
 	if has_node("ParachuteSprite"):
 		$ParachuteSprite.visible = parachute_deployed
+	if has_node("ParachuteLabel"):
+		$ParachuteLabel.visible = parachute_deployed
 
 func take_damage():
 	lives -= 1

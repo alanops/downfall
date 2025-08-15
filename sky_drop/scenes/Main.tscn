@@ -50,6 +50,14 @@ offset_right = 16.0
 offset_bottom = 24.0
 color = Color(1, 0.2, 0.2, 1)
 
+[node name="PlayerLabel" type="Label" parent="Player"]
+offset_left = -20.0
+offset_top = 30.0
+offset_right = 20.0
+offset_bottom = 50.0
+text = "PLAYER"
+horizontal_alignment = 1
+
 [node name="ParachuteSprite" type="ColorRect" parent="Player"]
 visible = false
 offset_left = -30.0
@@ -57,6 +65,15 @@ offset_top = -50.0
 offset_right = 30.0
 offset_bottom = -30.0
 color = Color(1, 1, 0, 1)
+
+[node name="ParachuteLabel" type="Label" parent="Player"]
+visible = false
+offset_left = -30.0
+offset_top = -70.0
+offset_right = 30.0
+offset_bottom = -50.0
+text = "PARACHUTE"
+horizontal_alignment = 1
 
 [node name="Area2D" type="Area2D" parent="Player"]
 
@@ -76,6 +93,14 @@ offset_top = -10.0
 offset_right = 180.0
 offset_bottom = 10.0
 color = Color(0.4, 0.2, 0, 1)
+
+[node name="GroundLabel" type="Label" parent="Ground"]
+offset_left = -50.0
+offset_top = -40.0
+offset_right = 50.0
+offset_bottom = -20.0
+text = "GOAL"
+horizontal_alignment = 1
 
 [node name="HazardSpawner" type="Node2D" parent="."]
 script = ExtResource("5")

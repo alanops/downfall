@@ -19,4 +19,12 @@ offset_right = 40.0
 offset_bottom = 20.0
 color = Color(1, 1, 1, 0.7)
 
+[node name="CloudLabel" type="Label" parent="."]
+offset_left = -20.0
+offset_top = 25.0
+offset_right = 20.0
+offset_bottom = 45.0
+text = "CLOUD"
+horizontal_alignment = 1
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
