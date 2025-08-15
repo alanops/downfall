@@ -27,38 +27,41 @@ size = Vector2(360, 20)
 script = ExtResource("1")
 
 [node name="SolidBlueBackground" type="ColorRect" parent="."]
-z_index = -100
+z_index = -1000
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.29, 0.56, 0.89, 1)
+color = Color(0.216, 0.498, 0.910, 1)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 script = ExtResource("4")
 
 [node name="BackgroundLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+z_index = -50
 motion_scale = Vector2(1, 0.2)
 motion_mirroring = Vector2(0, 1024)
 
 [node name="BlueBackground" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
+position = Vector2(180, 320)
 texture = ExtResource("10")
-centered = false
 
 [node name="FarCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+z_index = -40
 motion_scale = Vector2(1, 0.4)
 motion_mirroring = Vector2(0, 1024)
 
 [node name="FarClouds" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
+position = Vector2(180, 320)
 texture = ExtResource("11")
-centered = false
 
 [node name="NearCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+z_index = -30
 motion_scale = Vector2(1, 0.6)
 motion_mirroring = Vector2(0, 1024)
 
 [node name="NearClouds" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(180, 320)
 texture = ExtResource("12")
-centered = false
 
 [node name="GameCamera" type="Camera2D" parent="."]
 position = Vector2(180, 50)
