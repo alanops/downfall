@@ -45,6 +45,9 @@ func end_game(lives_remaining):
 	emit_signal("score_updated", score)
 	emit_signal("game_finished", time_elapsed, lives_remaining)
 	
+	# Store results in global data
+	GameData.set_game_results(score, time_elapsed, lives_remaining)
+	
 	# Show game over screen after a short delay
 	await get_tree().create_timer(2.0).timeout
 	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")

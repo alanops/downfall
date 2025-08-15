@@ -11,6 +11,12 @@ var screen_width = 360
 func _ready():
 	add_to_group("hazards")
 	
+	# Debug output
+	if hazard_type == HazardType.CLOUD:
+		print("Cloud created at position: ", position)
+	else:
+		print("Plane created at position: ", position)
+	
 	# Set collision properties based on hazard type
 	if hazard_type == HazardType.CLOUD:
 		# Clouds slow down but don't damage

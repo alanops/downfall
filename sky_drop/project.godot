@@ -43,6 +43,10 @@ reset_game={
 ]
 }
 
+[autoload]
+
+GameData="*res://scripts/GameData.gd"
+
 [physics]
 
 2d/default_gravity=400.0
