@@ -9,9 +9,9 @@
 [ext_resource type="PackedScene" path="res://scenes/Plane.tscn" id="7"]
 [ext_resource type="PackedScene" path="res://scenes/Cloud.tscn" id="8"]
 [ext_resource type="PackedScene" path="res://scenes/PowerUp.tscn" id="9"]
-[ext_resource type="Texture2D" path="res://assets/sprites/Cloudsheet_BG.webp" id="10"]
-[ext_resource type="Texture2D" path="res://assets/sprites/Cloudsheet_2.webp" id="11"]
-[ext_resource type="Texture2D" path="res://assets/sprites/Cloudsheet_3.webp" id="12"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background_sky_gradient.webp" id="10"]
+[ext_resource type="Texture2D" path="res://assets/sprites/clouds_sparse_middle_layer.webp" id="11"]
+[ext_resource type="Texture2D" path="res://assets/sprites/clouds_dramatic_foreground.webp" id="12"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
