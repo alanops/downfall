@@ -1,10 +1,10 @@
 extends CharacterBody2D
 
 const SPEED = 200.0
-const GRAVITY_NORMAL = 400.0
-const GRAVITY_PARACHUTE = 100.0
-const MAX_FALL_SPEED = 600.0
-const MAX_FALL_SPEED_PARACHUTE = 150.0
+const GRAVITY_NORMAL = 300.0
+const GRAVITY_PARACHUTE = 80.0
+const MAX_FALL_SPEED = 400.0  # ~120 mph in game units
+const MAX_FALL_SPEED_PARACHUTE = 100.0  # ~30 mph with parachute
 
 var parachute_deployed = false
 var lives = 3

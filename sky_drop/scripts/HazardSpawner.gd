@@ -13,7 +13,7 @@ var next_spawn_time: float = 2.0
 var screen_width = 360
 var screen_height = 640
 var spawn_margin = 50
-var spawn_height_range = 3800  # Spawn hazards throughout the fall
+var spawn_height_range = 19500  # Spawn hazards throughout the fall
 
 func _ready():
 	randomize()
@@ -43,12 +43,12 @@ func spawn_hazard():
 	var spawn_y = randf_range(player_y + 100, player_y + 800)
 	
 	# Don't spawn beyond the ground
-	if spawn_y > 3900:
+	if spawn_y > 19500:
 		return
 	
 	# Progressive difficulty - more power-ups in later sections
 	var current_powerup_chance = powerup_chance
-	if player_y > 2000:  # After halfway point
+	if player_y > 10000:  # After halfway point
 		current_powerup_chance += 0.05  # 20% chance instead of 15%
 	
 	# Chance to spawn power-up instead

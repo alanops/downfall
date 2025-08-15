@@ -1,0 +1,177 @@
+name: Publish to itch.io
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'sky_drop/**'
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'Release channel (e.g., windows, linux, html5)'
+        required: true
+        default: 'html5'
+        type: choice
+        options:
+          - html5
+          - windows
+          - linux
+          - mac
+
+env:
+  GODOT_VERSION: 4.4.1
+  EXPORT_NAME: sky-drop
+  PROJECT_PATH: sky_drop
+  ITCH_USER: ${{ secrets.ITCH_USER }}
+  ITCH_GAME: ${{ secrets.ITCH_GAME }}
+
+jobs:
+  export-and-publish:
+    name: Export and Publish to itch.io
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        lfs: true
+
+    - name: Setup Godot
+      uses: chickensoft-games/setup-godot@v2
+      with:
+        version: ${{ env.GODOT_VERSION }}
+        include-templates: true
+
+    - name: Setup export templates
+      run: |
+        mkdir -p ~/.local/share/godot/export_templates
+        cd ~/.local/share/godot/export_templates
+        wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+        unzip -q Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+        mv templates ${GODOT_VERSION}.stable
+
+    - name: Create export presets
+      run: |
+        cat > ${{ env.PROJECT_PATH }}/export_presets.cfg << 'EOF'
+        [preset.0]
+        name="HTML5"
+        platform="Web"
+        runnable=true
+        custom_features=""
+        export_filter="all_resources"
+        include_filter=""
+        exclude_filter=""
+        export_path="build/html5/index.html"
+        
+        [preset.0.options]
+        vram_texture_compression/for_desktop=true
+        vram_texture_compression/for_mobile=false
+        html/export_icon=true
+        html/custom_html_shell=""
+        html/head_include=""
+        html/canvas_resize_policy=2
+        html/experimental_virtual_keyboard=false
+        
+        [preset.1]
+        name="Windows Desktop"
+        platform="Windows Desktop"
+        runnable=true
+        custom_features=""
+        export_filter="all_resources"
+        include_filter=""
+        exclude_filter=""
+        export_path="build/windows/sky_drop.exe"
+        
+        [preset.1.options]
+        binary_format/architecture="x86_64"
+        codesign/enable=false
+        console_wrapper/icon=""
+        icon=""
+        
+        [preset.2]
+        name="Linux"
+        platform="Linux"
+        runnable=true
+        custom_features=""
+        export_filter="all_resources"
+        include_filter=""
+        exclude_filter=""
+        export_path="build/linux/sky_drop.x86_64"
+        
+        [preset.2.options]
+        binary_format/architecture="x86_64"
+        
+        [preset.3]
+        name="macOS"
+        platform="macOS"
+        runnable=true
+        custom_features=""
+        export_filter="all_resources"
+        include_filter=""
+        exclude_filter=""
+        export_path="build/mac/sky_drop.app"
+        
+        [preset.3.options]
+        codesign/enable=false
+        notarization/enable=false
+        application/icon=""
+        application/bundle_identifier="com.example.skydrop"
+        EOF
+
+    - name: Build HTML5 Export
+      if: github.event.inputs.channel == 'html5' || github.event_name == 'push'
+      run: |
+        cd ${{ env.PROJECT_PATH }}
+        mkdir -p build/html5
+        godot --headless --export-release "HTML5" build/html5/index.html
+
+    - name: Build Windows Export
+      if: github.event.inputs.channel == 'windows'
+      run: |
+        cd ${{ env.PROJECT_PATH }}
+        mkdir -p build/windows
+        godot --headless --export-release "Windows Desktop" build/windows/sky_drop.exe
+
+    - name: Build Linux Export
+      if: github.event.inputs.channel == 'linux'
+      run: |
+        cd ${{ env.PROJECT_PATH }}
+        mkdir -p build/linux
+        godot --headless --export-release "Linux" build/linux/sky_drop.x86_64
+        chmod +x build/linux/sky_drop.x86_64
+
+    - name: Build macOS Export
+      if: github.event.inputs.channel == 'mac'
+      run: |
+        cd ${{ env.PROJECT_PATH }}
+        mkdir -p build/mac
+        godot --headless --export-release "macOS" build/mac/sky_drop.app
+
+    - name: Download Butler
+      run: |
+        curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+        unzip butler.zip
+        chmod +x butler
+        ./butler -V
+
+    - name: Upload to itch.io
+      env:
+        BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+      run: |
+        # Determine which channel to upload
+        if [ "${{ github.event_name }}" == "push" ]; then
+          CHANNEL="html5"
+          BUILD_PATH="${{ env.PROJECT_PATH }}/build/html5"
+        else
+          CHANNEL="${{ github.event.inputs.channel }}"
+          BUILD_PATH="${{ env.PROJECT_PATH }}/build/${{ github.event.inputs.channel }}"
+        fi
+        
+        # Upload to itch.io
+        ./butler push "$BUILD_PATH" "${ITCH_USER}/${ITCH_GAME}:${CHANNEL}" --userversion-file=${{ env.PROJECT_PATH }}/VERSION || echo "1.0.0"
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: sky-drop-${{ github.event.inputs.channel || 'html5' }}
+        path: ${{ env.PROJECT_PATH }}/build/

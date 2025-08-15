@@ -18,7 +18,7 @@ size = Vector2(360, 20)
 
 [sub_resource type="GradientTexture2D" id="3"]
 width = 360
-height = 2560
+height = 1280
 
 [node name="Main" type="Node2D"]
 
@@ -30,7 +30,7 @@ script = ExtResource("4")
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(1, 0.5)
-motion_mirroring = Vector2(0, 2560)
+motion_mirroring = Vector2(0, 1280)
 
 [node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 texture = SubResource("3")
@@ -84,7 +84,7 @@ horizontal_alignment = 1
 shape = SubResource("1")
 
 [node name="GroundDetector" type="Area2D" parent="."]
-position = Vector2(180, 4000)
+position = Vector2(180, 20000)
 script = ExtResource("6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroundDetector"]
@@ -99,7 +99,7 @@ text = "GOAL"
 horizontal_alignment = 1
 
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(180, 4000)
+position = Vector2(180, 20000)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("2")
