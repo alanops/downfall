@@ -3,6 +3,10 @@ extends Control
 func _ready():
 	$VBoxContainer/RetryButton.grab_focus()
 
+func _input(event):
+	if Input.is_action_just_pressed("reset_game"):
+		_on_retry_button_pressed()
+
 func set_score_info(score, time, lives):
 	$VBoxContainer/ScoreLabel.text = "Score: " + str(score)
 	$VBoxContainer/TimeLabel.text = "Time: " + format_time(time)

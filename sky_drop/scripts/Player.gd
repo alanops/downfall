@@ -10,6 +10,7 @@ var parachute_deployed = false
 var lives = 3
 var parachutes_available = 1
 var can_deploy_parachute = true
+var game_finished = false
 
 signal lives_changed(new_lives)
 signal parachute_toggled(deployed)
@@ -19,9 +20,17 @@ func _ready():
 	add_to_group("player")
 
 func _physics_process(delta):
+	# Don't process movement if game is finished
+	if game_finished:
+		return
+		
 	# Handle parachute toggle
 	if Input.is_action_just_pressed("parachute") and can_deploy_parachute:
 		toggle_parachute()
+	
+	# Handle reset (alternative location in case GameManager doesn't catch it)
+	if Input.is_action_just_pressed("reset_game"):
+		get_tree().reload_current_scene()
 	
 	# Apply gravity
 	var gravity = GRAVITY_PARACHUTE if parachute_deployed else GRAVITY_NORMAL
@@ -40,6 +49,10 @@ func _physics_process(delta):
 	velocity.x = direction * SPEED
 	
 	move_and_slide()
+	
+	# Check if we landed (on ground)
+	if is_on_floor():
+		finish_game()
 
 func toggle_parachute():
 	if not parachute_deployed and parachutes_available <= 0:
@@ -72,3 +85,13 @@ func _on_area_2d_area_entered(area):
 	elif area.is_in_group("powerups"):
 		add_parachute()
 		area.queue_free()
+
+func finish_game():
+	if not game_finished:
+		game_finished = true
+		print("Player finished the game!")
+		
+		# Get game manager and end the game
+		var game_manager = get_node_or_null("../GameManager")
+		if game_manager:
+			game_manager.end_game(lives)

@@ -4,8 +4,8 @@ extends Node2D
 @export var cloud_scene: PackedScene
 @export var powerup_scene: PackedScene
 
-@export var spawn_interval_min: float = 1.0
-@export var spawn_interval_max: float = 3.0
+@export var spawn_interval_min: float = 1.5
+@export var spawn_interval_max: float = 4.0
 @export var powerup_chance: float = 0.1
 
 var spawn_timer: float = 0.0
@@ -13,6 +13,7 @@ var next_spawn_time: float = 2.0
 var screen_width = 360
 var screen_height = 640
 var spawn_margin = 50
+var spawn_height_range = 1800  # Spawn hazards throughout the fall
 
 func _ready():
 	randomize()
@@ -27,7 +28,7 @@ func _process(delta):
 		next_spawn_time = randf_range(spawn_interval_min, spawn_interval_max)
 
 func spawn_hazard():
-	var spawn_y = randf_range(spawn_margin, screen_height - spawn_margin)
+	var spawn_y = randf_range(spawn_margin, spawn_height_range)
 	
 	# Chance to spawn power-up instead
 	if randf() < powerup_chance and powerup_scene:

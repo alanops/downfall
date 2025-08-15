@@ -18,7 +18,7 @@ size = Vector2(360, 20)
 
 [sub_resource type="GradientTexture2D" id="3"]
 width = 360
-height = 640
+height = 1280
 
 [node name="Main" type="Node2D"]
 
@@ -30,7 +30,7 @@ script = ExtResource("4")
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(1, 0.5)
-motion_mirroring = Vector2(0, 720)
+motion_mirroring = Vector2(0, 1280)
 
 [node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 texture = SubResource("3")
@@ -39,6 +39,9 @@ centered = false
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(180, 50)
 script = ExtResource("2")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("1")
@@ -80,9 +83,15 @@ horizontal_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
 shape = SubResource("1")
 
-[node name="Ground" type="Area2D" parent="."]
-position = Vector2(180, 620)
+[node name="GroundDetector" type="Area2D" parent="."]
+position = Vector2(180, 2000)
 script = ExtResource("6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundDetector"]
+shape = SubResource("2")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(180, 2000)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("2")
@@ -94,7 +103,7 @@ offset_right = 180.0
 offset_bottom = 10.0
 color = Color(0.4, 0.2, 0, 1)
 
-[node name="GroundLabel" type="Label" parent="Ground"]
+[node name="GroundLabel" type="Label" parent="GroundDetector"]
 offset_left = -50.0
 offset_top = -40.0
 offset_right = 50.0
@@ -139,8 +148,17 @@ offset_right = 350.0
 offset_bottom = 36.0
 text = "Score: 0"
 
+[node name="ControlsLabel" type="Label" parent="HUD"]
+offset_left = 10.0
+offset_top = 560.0
+offset_right = 350.0
+offset_bottom = 630.0
+text = "Controls: Arrow/WASD = Move, Space = Parachute, R = Reset"
+autowrap_mode = 2
+
 [connection signal="hit_hazard" from="Player" to="HUD" method="_on_player_hit_hazard"]
 [connection signal="lives_changed" from="Player" to="HUD" method="_on_lives_changed"]
 [connection signal="parachute_toggled" from="Player" to="HUD" method="_on_parachute_toggled"]
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]
-[connection signal="player_landed" from="Ground" to="GameManager" method="_on_ground_player_landed"]
+[connection signal="body_entered" from="GroundDetector" to="GroundDetector" method="_on_body_entered"]
+[connection signal="player_landed" from="GroundDetector" to="GameManager" method="_on_ground_player_landed"]
