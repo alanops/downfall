@@ -100,7 +100,7 @@ horizontal_alignment = 1
 shape = SubResource("1")
 
 [node name="GroundDetector" type="Area2D" parent="."]
-position = Vector2(180, 4000)
+position = Vector2(180, 27000)
 script = ExtResource("6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroundDetector"]
@@ -115,7 +115,7 @@ text = "GOAL"
 horizontal_alignment = 1
 
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(180, 4000)
+position = Vector2(180, 27000)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("2")

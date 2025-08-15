@@ -13,7 +13,7 @@ var next_spawn_time: float = 2.0
 var screen_width = 360
 var screen_height = 640
 var spawn_margin = 50
-var spawn_height_range = 3800  # Spawn hazards throughout the fall
+var spawn_height_range = 26800  # Spawn hazards throughout the extended 45-second fall
 
 func _ready():
 	randomize()
