@@ -1,18 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://ve4ugqud88fv"]
+[gd_scene load_steps=4 format=3 uid="uid://ve4ugqud88fv"]
 
 [ext_resource type="Script" uid="uid://bisfrstn8ngrr" path="res://scripts/GameOver.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cx80jaknyioqs" path="res://assets/sprites/play_button.webp" id="2"]
+[ext_resource type="Texture2D" uid="uid://duopplu6luejr" path="res://assets/sprites/menu_button.webp" id="3"]
 
 [node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1")
 
 [node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.1, 0.1, 0.1, 0.8)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -41,13 +49,15 @@ horizontal_alignment = 1
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="RetryButton" type="Button" parent="VBoxContainer"]
+[node name="RetryButton" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
-text = "Play Again"
+texture_normal = ExtResource("2")
+stretch_mode = 5
 
-[node name="MenuButton" type="Button" parent="VBoxContainer"]
+[node name="MenuButton" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
-text = "Main Menu"
+texture_normal = ExtResource("3")
+stretch_mode = 5
 
 [connection signal="pressed" from="VBoxContainer/RetryButton" to="." method="_on_retry_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuButton" to="." method="_on_menu_button_pressed"]
