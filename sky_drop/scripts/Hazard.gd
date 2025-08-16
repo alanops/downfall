@@ -13,14 +13,19 @@ func _ready():
 	if hazard_type == HazardType.PLANE:
 		add_to_group("hazards")
 		set_collision_layer_value(2, true)
-		print("Plane created at position: ", position)
+		print("Plane created at position: ", position, " moving ", "right" if move_direction > 0 else "left")
 		
 		# Randomly select between plane sprites
 		var sprite = $Sprite2D
-		if sprite and randf() < 0.5:
-			var plane2_texture = load("res://assets/sprites/plane_2.webp")
-			if plane2_texture:
-				sprite.texture = plane2_texture
+		if sprite:
+			if randf() < 0.5:
+				var plane2_texture = load("res://assets/sprites/plane_2.webp")
+				if plane2_texture:
+					sprite.texture = plane2_texture
+			
+			# Flip sprite based on movement direction
+			# If moving left (-1), flip horizontally
+			sprite.flip_h = move_direction < 0
 	else:
 		# Clouds go in their own group (slow player but don't damage)
 		add_to_group("clouds")

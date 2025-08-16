@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://gnu5m3sym8rh"]
 
 [ext_resource type="Script" uid="uid://ce1sty7u7r26r" path="res://scripts/Hazard.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/plane_1.webp" id="2"]
+[ext_resource type="Texture2D" uid="uid://chqhrykbwih13" path="res://assets/sprites/plane_1.webp" id="2"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(64, 32)
