@@ -28,12 +28,79 @@ var is_fast_diving = false
 var speed_boost_time = 0.0
 var has_speed_boost = false
 
+# Dev console variables
+var godmode_enabled = false
+var speed_multiplier = 1.0
+var gravity_multiplier = 1.0
+var wind_override = Vector2.ZERO
+var has_wind_override = false
+
+# Touch controls
+var touch_start_pos = Vector2.ZERO
+var is_touching = false
+var swipe_threshold = 50.0
+var tap_threshold = 0.3
+var touch_start_time = 0.0
+
 signal lives_changed(new_lives)
 signal parachute_toggled(deployed)
 signal hit_hazard()
 
 func _ready():
 	add_to_group("player")
+	# Ensure we start with 3 lives and emit signal for UI update
+	lives = 3
+	emit_signal("lives_changed", lives)
+
+func _input(event):
+	# Handle touch/swipe controls
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			# Touch started
+			touch_start_pos = event.position
+			is_touching = true
+			touch_start_time = Time.get_time_dict_from_system()["second"] + Time.get_time_dict_from_system()["minute"] * 60
+		else:
+			# Touch ended
+			if is_touching:
+				var touch_end_pos = event.position
+				var swipe_vector = touch_end_pos - touch_start_pos
+				var touch_duration = (Time.get_time_dict_from_system()["second"] + Time.get_time_dict_from_system()["minute"] * 60) - touch_start_time
+				
+				# Check for tap (short touch with minimal movement)
+				if touch_duration < tap_threshold and swipe_vector.length() < swipe_threshold:
+					# Tap = deploy parachute
+					if can_deploy_parachute:
+						toggle_parachute()
+				else:
+					# Process swipe gestures
+					if abs(swipe_vector.x) > swipe_threshold:
+						# Horizontal swipe - movement
+						if swipe_vector.x > 0:
+							# Swipe right
+							velocity.x += 100
+						else:
+							# Swipe left  
+							velocity.x -= 100
+					
+					if abs(swipe_vector.y) > swipe_threshold:
+						# Vertical swipe - dive control
+						if swipe_vector.y > 0:
+							# Swipe down - fast dive
+							is_fast_diving = true
+						else:
+							# Swipe up - normal dive
+							is_fast_diving = false
+			
+			is_touching = false
+	
+	elif event is InputEventScreenDrag and is_touching:
+		# Continuous touch movement for steering
+		var drag_vector = event.position - touch_start_pos
+		if abs(drag_vector.x) > 20:  # Dead zone
+			# Tilt-style steering while touching
+			var tilt_strength = clamp(drag_vector.x / 200.0, -1.0, 1.0)
+			velocity.x += tilt_strength * ACCELERATION * get_physics_process_delta_time()
 
 func _physics_process(delta):
 	# Don't process movement if game is finished
@@ -74,7 +141,7 @@ func _physics_process(delta):
 		gravity = GRAVITY_FAST_DIVE
 		max_fall = MAX_FALL_SPEED_FAST_DIVE
 	
-	velocity.y += gravity * delta
+	velocity.y += gravity * gravity_multiplier * delta
 	velocity.y = min(velocity.y, max_fall)
 	
 	# Handle horizontal movement with smooth acceleration
@@ -86,8 +153,8 @@ func _physics_process(delta):
 	
 	# Apply acceleration or friction based on input
 	if direction != 0:
-		velocity.x += direction * ACCELERATION * delta
-		velocity.x = clamp(velocity.x, -SPEED, SPEED)
+		velocity.x += direction * ACCELERATION * speed_multiplier * delta
+		velocity.x = clamp(velocity.x, -SPEED * speed_multiplier, SPEED * speed_multiplier)
 	else:
 		# Apply friction when no input
 		var friction_force = FRICTION if is_on_floor() else AIR_RESISTANCE
@@ -98,9 +165,13 @@ func _physics_process(delta):
 	
 	# Add wind effect when parachute is deployed
 	if parachute_deployed:
-		wind_time += delta
-		var wind_force = sin(wind_time * 2.0) * WIND_STRENGTH
-		velocity.x += wind_force * delta
+		if has_wind_override:
+			velocity.x += wind_override.x * delta
+			velocity.y += wind_override.y * delta
+		else:
+			wind_time += delta
+			var wind_force = sin(wind_time * 2.0) * WIND_STRENGTH
+			velocity.x += wind_force * delta
 		
 		# Apply parachute drag to horizontal movement
 		velocity.x *= PARACHUTE_DRAG
@@ -211,7 +282,7 @@ func add_speed_boost():
 	speed_boost_time = SPEED_BOOST_DURATION
 
 func _on_area_2d_area_entered(area):
-	if area.is_in_group("hazards"):
+	if area.is_in_group("hazards") and not godmode_enabled:
 		take_damage()
 	elif area.is_in_group("powerups"):
 		add_parachute()
@@ -226,3 +297,27 @@ func finish_game():
 		var game_manager = get_node_or_null("../GameManager")
 		if game_manager:
 			game_manager.end_game(lives)
+
+# Dev Console Methods
+func set_godmode(enabled: bool):
+	godmode_enabled = enabled
+
+func set_speed_multiplier(multiplier: float):
+	speed_multiplier = multiplier
+
+func set_gravity_multiplier(multiplier: float):
+	gravity_multiplier = multiplier
+
+func set_wind_override(wind_force: Vector2):
+	wind_override = wind_force
+	has_wind_override = true
+
+func clear_wind_override():
+	has_wind_override = false
+	wind_override = Vector2.ZERO
+
+func update_parachute_visibility():
+	if has_node("ParachuteSprite"):
+		$ParachuteSprite.visible = parachute_deployed
+	if has_node("ParachuteLabel"):
+		$ParachuteLabel.visible = parachute_deployed

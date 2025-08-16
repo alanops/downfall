@@ -1,0 +1,161 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxf8gv3q2h1nl"]
+
+[ext_resource type="Script" path="res://scripts/DevConsole.gd" id="1"]
+
+[node name="DevConsole" type="CanvasLayer"]
+process_mode = 2
+script = ExtResource("1")
+
+[node name="ConsolePanel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -200.0
+color = Color(0, 0, 0, 0.8)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConsolePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="TitleLabel" type="Label" parent="ConsolePanel/VBoxContainer"]
+layout_mode = 2
+text = "Developer Console - ESC to close, Shift+Enter for Sound Menu"
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ConsolePanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OutputText" type="RichTextLabel" parent="ConsolePanel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "Dev Console Ready\n"
+scroll_following = true
+
+[node name="InputContainer" type="HBoxContainer" parent="ConsolePanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="PromptLabel" type="Label" parent="ConsolePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+text = "> "
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+
+[node name="CommandInput" type="LineEdit" parent="ConsolePanel/VBoxContainer/InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter command (type 'help' for commands)"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="SoundMenu" type="Panel" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+color = Color(0.2, 0.2, 0.2, 0.9)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SoundMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="TitleLabel" type="Label" parent="SoundMenu/VBoxContainer"]
+layout_mode = 2
+text = "Sound & Music Controls"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="SoundMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="MasterVolumeContainer" type="VBoxContainer" parent="SoundMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="MasterLabel" type="Label" parent="SoundMenu/VBoxContainer/MasterVolumeContainer"]
+layout_mode = 2
+text = "Master Volume"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="MasterSlider" type="HSlider" parent="SoundMenu/VBoxContainer/MasterVolumeContainer"]
+layout_mode = 2
+min_value = 0.0
+max_value = 1.0
+step = 0.01
+value = 0.8
+
+[node name="MusicVolumeContainer" type="VBoxContainer" parent="SoundMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="SoundMenu/VBoxContainer/MusicVolumeContainer"]
+layout_mode = 2
+text = "Music Volume"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="MusicSlider" type="HSlider" parent="SoundMenu/VBoxContainer/MusicVolumeContainer"]
+layout_mode = 2
+min_value = 0.0
+max_value = 1.0
+step = 0.01
+value = 0.6
+
+[node name="SFXVolumeContainer" type="VBoxContainer" parent="SoundMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="SFXLabel" type="Label" parent="SoundMenu/VBoxContainer/SFXVolumeContainer"]
+layout_mode = 2
+text = "Sound Effects Volume"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="SFXSlider" type="HSlider" parent="SoundMenu/VBoxContainer/SFXVolumeContainer"]
+layout_mode = 2
+min_value = 0.0
+max_value = 1.0
+step = 0.01
+value = 0.8
+
+[node name="HSeparator2" type="HSeparator" parent="SoundMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="TestButtonsContainer" type="HBoxContainer" parent="SoundMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="TestMusicButton" type="Button" parent="SoundMenu/VBoxContainer/TestButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Test Music"
+
+[node name="TestSFXButton" type="Button" parent="SoundMenu/VBoxContainer/TestButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Test SFX"
+
+[node name="InfoLabel" type="Label" parent="SoundMenu/VBoxContainer"]
+layout_mode = 2
+text = "Use console commands 'music' and 'soundtest' for more options"
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+autowrap_mode = 2

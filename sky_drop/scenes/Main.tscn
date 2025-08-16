@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://exdvrk6d1y50"]
+[gd_scene load_steps=18 format=3 uid="uid://exdvrk6d1y50"]
 
 [ext_resource type="Script" uid="uid://b13ff0h1qb1co" path="res://scripts/GameManager.gd" id="1"]
 [ext_resource type="Script" uid="uid://d0erlf4kief8k" path="res://scripts/Player.gd" id="2"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://baspitedaws4r" path="res://assets/sprites/clouds_dramatic_foreground.webp" id="12"]
 [ext_resource type="Texture2D" uid="uid://cr7yhlnhxgnqr" path="res://assets/sprites/skydiver.webp" id="13"]
 [ext_resource type="Texture2D" uid="uid://bw6xiklmyhnpr" path="res://assets/sprites/parachute.webp" id="14"]
+[ext_resource type="PackedScene" uid="uid://bxf8gv3q2h1nl" path="res://scenes/DevConsole.tscn" id="15"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
@@ -45,6 +46,14 @@ motion_mirroring = Vector2(0, 1024)
 position = Vector2(180, 320)
 texture = ExtResource("10")
 
+[node name="BlueBackground2" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
+position = Vector2(180, -700)
+texture = ExtResource("10")
+
+[node name="BlueBackground3" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
+position = Vector2(180, -200)
+texture = ExtResource("10")
+
 [node name="FarCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 z_index = -40
 motion_scale = Vector2(1, 0.4)
@@ -52,6 +61,10 @@ motion_mirroring = Vector2(0, 1024)
 
 [node name="FarClouds" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
 position = Vector2(180, 320)
+texture = ExtResource("11")
+
+[node name="FarClouds2" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
+position = Vector2(180, -200)
 texture = ExtResource("11")
 
 [node name="NearCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
@@ -63,11 +76,15 @@ motion_mirroring = Vector2(0, 1024)
 position = Vector2(180, 320)
 texture = ExtResource("12")
 
+[node name="NearClouds2" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(180, -200)
+texture = ExtResource("12")
+
 [node name="GameCamera" type="Camera2D" parent="."]
-position = Vector2(180, 50)
+position = Vector2(180, -200)
 
 [node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(180, 50)
+position = Vector2(180, -200)
 script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
@@ -174,8 +191,10 @@ offset_left = 10.0
 offset_top = 560.0
 offset_right = 350.0
 offset_bottom = 630.0
-text = "Controls: Arrow/WASD = Move, Space = Parachute, R = Reset"
+text = "Controls: Arrow/WASD = Move, Space = Parachute, R = Reset, ` = Dev Console"
 autowrap_mode = 2
+
+[node name="DevConsole" parent="." instance=ExtResource("15")]
 
 [connection signal="hit_hazard" from="Player" to="HUD" method="_on_player_hit_hazard"]
 [connection signal="lives_changed" from="Player" to="HUD" method="_on_lives_changed"]
