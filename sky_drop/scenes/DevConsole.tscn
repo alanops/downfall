@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://kk6jqi1eo3s0"]
 
-[ext_resource type="Script" uid="uid://boxi56c0qo6of" path="res://scripts/DevConsole.gd" id="1"]
+[ext_resource type="Script" uid="uid://bu4sfc54l6frk" path="res://scripts/DevConsole.gd" id="1"]
 
 [node name="DevConsole" type="CanvasLayer"]
 process_mode = 2
