@@ -24,7 +24,7 @@ func _ready():
 					sprite.texture = plane2_texture
 			
 			# Flip sprite based on movement direction
-			# If moving left (-1), flip horizontally
+			# Sprites face right by default, so flip when moving left
 			sprite.flip_h = move_direction < 0
 	else:
 		# Clouds go in their own group (slow player but don't damage)
