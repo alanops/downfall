@@ -15,21 +15,17 @@ func _ready():
 		set_collision_layer_value(2, true)
 		print("Plane created at position: ", position, " moving ", "right" if move_direction > 0 else "left")
 		
-		# Load appropriate sprite based on movement direction
+		# Load appropriate sprite based on movement direction using preloaded resources
 		var sprite = $Sprite2D
 		var file_label = $FileLabel
 		if sprite:
 			var sprite_name = ""
 			if move_direction < 0:  # Moving left
-				var left_texture = load("res://assets/sprites/plane_1_left.webp")
-				if left_texture:
-					sprite.texture = left_texture
-					sprite_name = "plane_1_left"
+				sprite.texture = preload("res://assets/sprites/plane_1_left.webp")
+				sprite_name = "plane_1_left"
 			else:  # Moving right
-				var right_texture = load("res://assets/sprites/plane_1_right.webp")
-				if right_texture:
-					sprite.texture = right_texture
-					sprite_name = "plane_1_right"
+				sprite.texture = preload("res://assets/sprites/plane_1_right.webp")
+				sprite_name = "plane_1_right"
 			
 			# No flipping needed - using direction-specific sprites
 			sprite.flip_h = false

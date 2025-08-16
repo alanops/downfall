@@ -230,7 +230,7 @@ Script.svg::CompressedTexture2D/CompressedTexture2D::4817060143842260657::175529
 yellow.png::CompressedTexture2D/CompressedTexture2D::1043265824178416429::1755291962::1755291962::1::::<><><>0<>0<>1f29ae3064a14df675b46036c620de5d<>res://.godot/imported/yellow.png-b3cf3d463958a169d909273d3d742052.ctex::
 ::res://assets/::1755253826
 ::res://assets/sounds/::1755253826
-::res://assets/sprites/::1755374298
+::res://assets/sprites/::1755377229
 background_sky_gradient.webp::CompressedTexture2D/CompressedTexture2D::2253313128065470639::1755280849::1755284680::1::::<><><>0<>0<>69ffb0f999c614c0bd46bf3d3250b75f<>res://.godot/imported/background_sky_gradient.webp-806ae6d86a1795e15bad6863a58e5073.ctex::
 clouds_dramatic_foreground.webp::CompressedTexture2D/CompressedTexture2D::2424505528768976323::1755280831::1755284680::1::::<><><>0<>0<>059818c1de84ecd6230d29f7b7d67d54<>res://.godot/imported/clouds_dramatic_foreground.webp-69b9b74ca52768de0a1d2b5f7b134929.ctex::
 clouds_mixed_original.webp::CompressedTexture2D/CompressedTexture2D::4174468245446743437::1755279708::1755284680::1::::<><><>0<>0<>0c12aba37f9e78325fc99411af5b0058<>res://.godot/imported/clouds_mixed_original.webp-c37a14a2901afb6c4cc3515053f79529.ctex::
@@ -239,6 +239,8 @@ logo_sprite.png::CompressedTexture2D::1093115600768841885::1755370517::175537051
 menu_button.webp::CompressedTexture2D/CompressedTexture2D::8592878364273786883::1755370517::1755291962::1::::<><><>0<>0<>1c64e1433fe8ec026d8ea791f6e34000<>res://.godot/imported/menu_button.webp-971c6d806c8b54c04a8bd8e565244b9a.ctex::
 parachute.webp::CompressedTexture2D/CompressedTexture2D::3995982274094472251::1755370517::1755291962::1::::<><><>0<>0<>c2014bcfeed6e8dc1f113dc2e199b408<>res://.godot/imported/parachute.webp-1c0c3ad9c8ed8dacdff56166dd472430.ctex::
 plane_1.webp::CompressedTexture2D::5297649970446739564::1755372461::1755372500::1::::<><><>0<>0<>982d03f27284c3fff6205c601e06a50f<>res://.godot/imported/plane_1.webp-616f1fdf9b948eae4453472ecf6e65ee.ctex::
+plane_1_left.webp::CompressedTexture2D::338165680244232124::1755377227::1755377466::1::::<><><>0<>0<>f8c639737232912cd451df2952261142<>res://.godot/imported/plane_1_left.webp-dbe91bd24c84240ceb78e77649eddfba.ctex::
+plane_1_right.webp::CompressedTexture2D::4722190864405603143::1755377430::1755377466::1::::<><><>0<>0<>61bb377c9ca4554c0e972c3425f2b676<>res://.godot/imported/plane_1_right.webp-9705d8a47a78d5b27d374fb97e26aa02.ctex::
 play_button.webp::CompressedTexture2D/CompressedTexture2D::6456843249980333130::1755370517::1755291962::1::::<><><>0<>0<>1fc1d328ef7018c0b8f743507e65e0fd<>res://.godot/imported/play_button.webp-f998a46ef96398d966682ed805d5c652.ctex::
 skydiver_left.webp::CompressedTexture2D::4555436142090509082::1755370517::1755370517::1::::<><><>0<>0<>0b63a1e7e816a595112a22d4609389a3<>res://.godot/imported/skydiver_left.webp-2f2c95424116a44d8c5edd726b2e8eb8.ctex::
 skydiver_right.webp::CompressedTexture2D::156725662049849069::1755370517::1755370517::1::::<><><>0<>0<>71e69bb13998739e8a29d26a01682629<>res://.godot/imported/skydiver_right.webp-0cae4543ff60389bf2861ac93998cd04.ctex::
@@ -246,21 +248,21 @@ spashscreen.webp::CompressedTexture2D::6369626806615235495::1755370517::17553705
 ui_button_play.webp::CompressedTexture2D/CompressedTexture2D::2656550968730634414::1755281135::1755284680::1::::<><><>0<>0<>e067cc2ac6fce4ca35fb6ededaef63ef<>res://.godot/imported/ui_button_play.webp-d7bf23faabcf3eef243f149a941eab20.ctex::
 ui_menu_button.webp::CompressedTexture2D::8836605010712248060::1755370517::1755370517::1::::<><><>0<>0<>d0c46164adf8b30cf904fabe4db8c48f<>res://.godot/imported/ui_menu_button.webp-891253b75b869342aab13faa4c6534fa.ctex::
 ::res://export_templates/::1755294217
-::res://scenes/::1755375456
-Cloud.tscn::PackedScene::1431572708514571993::1755374852::0::1::::<><><>0<>0<><>::uid://ce1sty7u7r26r::::res://scripts/Hazard.gd
+::res://scenes/::1755377044
+Cloud.tscn::PackedScene::1431572708514571993::1755377040::0::1::::<><><>0<>0<><>::uid://ce1sty7u7r26r::::res://scripts/Hazard.gd
 Coin.tscn::PackedScene::3947072236232291273::1755332230::0::1::::<><><>0<>0<><>::uid://cnx2w3m1k4r80::::res://scripts/Coin.gd
 ControllerSettings.tscn::PackedScene::-1::1755369915::0::1::::<><><>0<>0<><>::
-DevConsole.tscn::PackedScene::724431366761113309::1755374854::0::1::::<><><>0<>0<><>::uid://boxi56c0qo6of::::res://scripts/DevConsole.gd
-GameOver.tscn::PackedScene::1484020076854268923::1755374855::0::1::::<><><>0<>0<><>::uid://bisfrstn8ngrr::::res://scripts/GameOver.gd<>uid://cx80jaknyioqs::::res://assets/sprites/play_button.webp<>uid://duopplu6luejr::::res://assets/sprites/menu_button.webp<>uid://bd34ahkynfr8q::::res://assets/sprites/ui_button_play.webp<>uid://dx5rugch0c4w3::::res://assets/sprites/ui_menu_button.webp
+DevConsole.tscn::PackedScene::724431366761113309::1755377043::0::1::::<><><>0<>0<><>::uid://boxi56c0qo6of::::res://scripts/DevConsole.gd
+GameOver.tscn::PackedScene::1484020076854268923::1755377044::0::1::::<><><>0<>0<><>::uid://bisfrstn8ngrr::::res://scripts/GameOver.gd<>uid://cx80jaknyioqs::::res://assets/sprites/play_button.webp<>uid://duopplu6luejr::::res://assets/sprites/menu_button.webp<>uid://bd34ahkynfr8q::::res://assets/sprites/ui_button_play.webp<>uid://dx5rugch0c4w3::::res://assets/sprites/ui_menu_button.webp
 logo_animation.webp::CompressedTexture2D::4058273418571156126::1755370517::1755370517::0::::<><><>0<>0<>70d92c585cb50fe4fde921558e025884<>::
 Main.tscn::PackedScene/PackedScene::328456625304361045::1755370517::0::1::::<><><>0<>0<><>::uid://b13ff0h1qb1co::::res://scripts/GameManager.gd<>uid://d0erlf4kief8k::::res://scripts/Player.gd<>uid://8vmi5231rqw0::::res://scripts/HUD.gd<>uid://buwke6bs0gf2l::::res://scripts/ParallaxBackground.gd<>uid://bpb7vgnc2f8ge::::res://scripts/HazardSpawner.gd<>uid://dvqorkkkaucvy::::res://scripts/Ground.gd<>uid://gnu5m3sym8rh::::res://scenes/Plane.tscn<>uid://unp18d8kk0t6::::res://scenes/Cloud.tscn<>uid://4jq773kqbu7w::::res://scenes/PowerUp.tscn<>uid://7dr0deucyi20::::res://assets/sprites/background_sky_gradient.webp<>uid://bhulmjophjdep::::res://assets/sprites/clouds_sparse_middle_layer.webp<>uid://baspitedaws4r::::res://assets/sprites/clouds_dramatic_foreground.webp<>uid://cr7yhlnhxgnqr::::res://assets/sprites/skydiver.webp<>uid://bw6xiklmyhnpr::::res://assets/sprites/parachute.webp
 MainMenu.tscn::PackedScene::8917409384764792306::1755370517::0::1::::<><><>0<>0<><>::uid://bc50mveda1pm5::::res://scripts/MainMenu.gd<>uid://cx80jaknyioqs::::res://assets/sprites/play_button.webp<>uid://7dr0deucyi20::::res://assets/sprites/background_sky_gradient.webp<>uid://b0qe48yi0u046::::res://assets/sprites/clouds_mixed_original.webp<>uid://duopplu6luejr::::res://assets/sprites/menu_button.webp
 ParticleCloud.tscn::PackedScene::209951115446489963::1755352319::0::1::::<><><>0<>0<><>::uid://bm7n3k8x2r4s::::res://scripts/ParticleCloud.gd
-Plane.tscn::PackedScene::449238560688593005::1755375456::0::1::::<><><>0<>0<><>::uid://ce1sty7u7r26r::::res://scripts/Hazard.gd<>uid://chqhrykbwih13::::res://assets/sprites/plane_1.webp
-PowerUp.tscn::PackedScene::2055086207056224622::1755374853::0::1::::<><><>0<>0<><>::uid://d1xqw3416dxsn::::res://scripts/PowerUp.gd
-::res://screenshots/::1755375415
+Plane.tscn::PackedScene::449238560688593005::1755377039::0::1::::<><><>0<>0<><>::uid://ce1sty7u7r26r::::res://scripts/Hazard.gd<>uid://chqhrykbwih13::::res://assets/sprites/plane_1.webp
+PowerUp.tscn::PackedScene::2055086207056224622::1755377041::0::1::::<><><>0<>0<><>::uid://d1xqw3416dxsn::::res://scripts/PowerUp.gd
+::res://screenshots/::1755375530
 Screenshot 2025-08-16 211457.png::CompressedTexture2D::7957729794747763812::1755375415::1755375530::1::::<><><>0<>0<>8f9aa517505c487615bc5f8ee36202fd<>res://.godot/imported/Screenshot 2025-08-16 211457.png-f694b6404b7ab5f8efdd98fbd6697dc9.ctex::
-::res://scripts/::1755375487
+::res://scripts/::1755377245
 Coin.gd::GDScript::5009787918446052915::1755370825::0::1::::<>Area2D<><>0<>0<><>::
 ControllerManager.gd::GDScript::269037675743790484::1755370517::0::1::::<>Node<><>0<>0<><>::
 ControllerSettings.gd::GDScript::139762166717660414::1755370517::0::1::::<>Control<><>0<>0<><>::
@@ -269,7 +271,7 @@ GameData.gd::GDScript/GDScript::4902378800936853439::1755277581::0::1::::<>Node<
 GameManager.gd::GDScript::4269447034429129922::1755335090::0::1::::<>Node<><>0<>0<><>::
 GameOver.gd::GDScript::2985425151237516227::1755370517::0::1::::<>Control<><>0<>0<><>::
 Ground.gd::GDScript/GDScript::8667138749074742346::1755277581::0::1::::<>Area2D<><>0<>0<><>::
-Hazard.gd::GDScript::5108398710444191651::1755375487::0::1::::<>Area2D<><>0<>0<><>::
+Hazard.gd::GDScript::5108398710444191651::1755377245::0::1::::<>Area2D<><>0<>0<><>::
 HazardSpawner.gd::GDScript::3443298496807921324::1755375136::0::1::::<>Node2D<><>0<>0<><>::
 HUD.gd::GDScript::2360328281872608301::1755370517::0::1::::<>CanvasLayer<><>0<>0<><>::
 MainMenu.gd::GDScript::2590270167243896098::1755370517::0::1::::<>Control<><>0<>0<><>::
