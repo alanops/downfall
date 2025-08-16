@@ -24,10 +24,9 @@ func _ready():
 					sprite.texture = plane2_texture
 			
 			# Flip sprite based on movement direction  
-			# Sprites face left by default, no flipping needed
+			# Sprites face correctly by default, no flipping needed
 			sprite.flip_h = false
 			
-			print("Plane _ready: move_direction = ", move_direction, ", flip_h = ", sprite.flip_h)
 	else:
 		# Clouds go in their own group (slow player but don't damage)
 		add_to_group("clouds")
@@ -36,16 +35,6 @@ func _ready():
 		print("Cloud created at position: ", position)
 
 func _physics_process(delta):
-	# Update debug labels
-	if hazard_type == HazardType.PLANE:
-		var dir_label = $DirectionLabel
-		var flip_label = $FlipLabel
-		var sprite = $Sprite2D
-		if dir_label:
-			dir_label.text = "RIGHT" if move_direction > 0 else "LEFT"
-		if flip_label and sprite:
-			flip_label.text = "FLIP" if sprite.flip_h else "NORMAL"
-	
 	# Move horizontally
 	position.x += move_speed * move_direction * delta
 	
