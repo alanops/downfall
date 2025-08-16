@@ -18,6 +18,10 @@ Sky Drop is a vertical scrolling arcade game built in Godot 4.4.1 where players 
 - **Arrow Keys / WASD**: Move left and right
 - **Space**: Deploy/retract parachute
 - **R**: Reset game at any time
+- **Down/S**: Fast dive mode (increased fall speed)
+- **Up/W**: Normal speed when diving
+- **`` ` `` (backtick) / F1**: Toggle developer console
+- **Touch Controls**: Tap, swipe, and drag gestures for mobile support
 
 ## Technical Architecture
 
@@ -33,44 +37,56 @@ Main.tscn (Root Scene)
 ├── Player (CharacterBody2D with physics)
 ├── HazardSpawner (Dynamic obstacle generation)
 ├── GroundDetector (Win condition trigger)
-└── Ground (Landing collision)
+├── Ground (Landing collision)
+├── HUD (UI display and status indicators)
+└── DevConsole (Developer testing and debugging tools)
 ```
 
 ### Physics System
 - **Normal Fall Speed**: 600 px/s (~120 mph)
+- **Fast Dive Speed**: 1000 px/s (~200 mph)
 - **Parachute Fall Speed**: 150 px/s (~30 mph)
+- **Speed Boost Mode**: 1400 px/s (~280 mph, temporary)
 - **Gravity Normal**: 400 px/s²
+- **Gravity Fast Dive**: 800 px/s²
 - **Gravity Parachute**: 100 px/s²
 - **Total Distance**: 27,000 pixels (45-second freefall)
+- **Wind Effects**: Simulated atmospheric conditions when parachute deployed
+- **Parachute Jerk**: 150 unit upward impulse on deployment
 
 ### File Organization
 
 #### Scripts (`/scripts/`)
 - `GameManager.gd` - Core game loop, score tracking, scene transitions
-- `Player.gd` - Player physics, input handling, camera control
-- `HazardSpawner.gd` - Dynamic obstacle spawning system
+- `Player.gd` - Player physics, input handling, camera control, touch controls
+- `HazardSpawner.gd` - Dynamic obstacle spawning system with multiple spawn types
 - `ParallaxBackground.gd` - Background scrolling management
 - `GameData.gd` - Singleton for persistent data between scenes
-- `HUD.gd` - UI updates and display management
+- `HUD.gd` - UI updates and display management with null-safe references
 - `Ground.gd` - Landing detection and game completion
 - `MainMenu.gd` - Menu navigation and game start
 - `GameOver.gd` - End game display and restart options
+- `DevConsole.gd` - Developer console with commands and sound menu
+- `PowerUp.gd` - Power-up system with multiple types (parachute, speed boost)
 
 #### Sprites (`/assets/sprites/`)
 - `background_sky_gradient.webp` - Base blue gradient layer
 - `clouds_sparse_middle_layer.webp` - Middle parallax cloud layer
 - `clouds_dramatic_foreground.webp` - Foreground parallax clouds  
 - `clouds_mixed_original.webp` - Menu background clouds
-- `ui_button_play.webp` - Custom purple play button
+- `skydiver.webp` - Player character sprite
+- `parachute.webp` - Parachute deployment sprite
+- `play_button.webp` - Main menu play button
+- `menu_button.webp` - General menu button style
 
 #### Scenes (`/scenes/`)
-- `Main.tscn` - Primary gameplay scene
-- `MainMenu.tscn` - Start screen with custom UI
+- `Main.tscn` - Primary gameplay scene with integrated dev console
+- `MainMenu.tscn` - Start screen with custom UI and sprite buttons
 - `GameOver.tscn` - End screen with score display
-- `Player.tscn` - Player character prefab
+- `DevConsole.tscn` - Developer console with sound menu interface
 - `Plane.tscn` - Hazard obstacle prefab
 - `Cloud.tscn` - Slow-down hazard prefab
-- `PowerUp.tscn` - Collectible item prefab
+- `PowerUp.tscn` - Collectible item prefab with multiple types
 
 ## Visual Design
 
@@ -98,15 +114,76 @@ The game uses a sophisticated 3-layer parallax system for depth perception:
 ## Game Balance
 
 ### Hazard Spawning
-- **Spawn Interval**: 1.2 - 3.5 seconds between obstacles
-- **Spawn Range**: Throughout entire 26,800 pixel fall distance
-- **Power-up Chance**: 15% chance for beneficial items
+- **Spawn Interval**: 0.3 - 1.2 seconds between obstacles (increased frequency)
+- **Multiple Spawns**: 1-3 obstacles per spawn event for higher density
+- **Spawn Range**: Throughout entire 27,000 pixel fall distance
+- **Plane Frequency**: 70% chance for plane hazards
+- **Power-up Types**: Parachute refills and speed boost power-ups
 - **Player-Relative**: Hazards spawn 100-800 pixels ahead of player
+- **Higher Starting Position**: Player starts at y=-200 for better visibility
 
 ### Difficulty Progression
 - **Early Game**: Fewer obstacles, more time to react
 - **Mid Game**: Increased density, strategic parachute timing crucial
 - **End Game**: Higher obstacle frequency, precise control required
+
+### Safety Mechanics
+- **Parachute Landing**: Must deploy parachute to land safely
+- **Screen Boundaries**: Player cannot move off-screen edges
+- **Godmode Support**: Invincibility mode available via dev console
+
+## Developer Tools
+
+### Developer Console
+The integrated dev console provides comprehensive testing and debugging capabilities:
+
+#### Activation
+- **Primary Key**: `` ` `` (backtick) - Opens/closes console
+- **Alternative**: `F1` key for systems where backtick doesn't work
+- **Sound Menu**: `Shift+Enter` when console is open
+
+#### Core Commands
+```bash
+# Game State Management
+godmode                    # Toggle invincibility
+lives <number>            # Set player lives (e.g., lives 5)
+score <number>            # Set current score
+time <seconds>            # Set game time
+reset                     # Reset game to start
+
+# Player Control
+teleport <x> <y>          # Move player to coordinates
+speed <multiplier>        # Adjust movement speed (e.g., speed 2.0)
+gravity <multiplier>      # Adjust gravity strength (e.g., gravity 0.5)
+parachute <true/false>    # Force parachute state
+
+# Environment Control
+wind <x> <y>             # Set custom wind forces
+wind clear               # Remove wind override
+
+# Object Spawning
+spawn plane              # Spawn plane hazard
+spawn cloud              # Spawn cloud
+spawn powerup            # Spawn power-up
+
+# Debug Information
+fps                      # Show performance statistics
+help                     # Display all available commands
+clear                    # Clear console output
+```
+
+#### Sound Menu
+Integrated volume controls for audio system preparation:
+- **Master Volume**: Overall game volume control
+- **Music Volume**: Background music level
+- **SFX Volume**: Sound effects level
+- **Test Buttons**: Audio system testing capabilities
+
+#### Console Features
+- **Game Pause**: Automatically pauses game when console is open
+- **Command History**: Navigate previous commands with arrow keys
+- **Real-time Updates**: Changes apply immediately to running game
+- **Null-safe**: Error handling prevents crashes from missing nodes
 
 ## Development Workflow
 
@@ -185,27 +262,32 @@ Steps:
 - Prevention: Bounds checking and validation
 
 ### Debug Information
-- Enable Godot debug prints for spawn system
-- Monitor player position and camera coordinates  
-- Verify hazard spawning within valid ranges
-- Check collision detection accuracy
+- **Developer Console**: Use `fps` command for real-time performance data
+- **Debug Prints**: Enable Godot debug prints for spawn system
+- **Position Monitoring**: Use `teleport` command to test specific coordinates  
+- **Spawn Testing**: Use `spawn` commands to verify obstacle generation
+- **Physics Testing**: Use `speed` and `gravity` commands for parameter tuning
+- **Console Logging**: All debug output visible in dev console
 
 ## Future Enhancements
 
 ### Potential Features
-- **Sound System**: Chiptune Mission Impossible soundtrack
-- **Multiple Characters**: Different skydiver types
+- **Audio System**: Background music and sound effects (framework ready)
+- **Multiple Characters**: Different skydiver types with unique abilities
 - **Weather Effects**: Dynamic wind and weather conditions
-- **Leaderboards**: Online score comparison
-- **Mobile Controls**: Touch-based input system
-- **Power-up Variety**: More collectible types and effects
+- **Leaderboards**: Online score comparison system
+- **Enhanced Mobile**: Additional touch gesture support
+- **Power-up Expansion**: More collectible types and visual effects
+- **Visual Polish**: Particle systems and shader effects
 
 ### Technical Improvements  
-- **Shader Effects**: Enhanced visual quality
-- **Particle Systems**: Cloud and wind effects
-- **Audio Integration**: Background music and sound effects
+- **Audio Implementation**: Use existing volume control framework
+- **Shader Effects**: Enhanced visual quality and atmospheric effects
+- **Particle Systems**: Cloud, wind, and collision effects
 - **Save System**: Progress and high score persistence
-- **Analytics**: Player behavior tracking
+- **Analytics**: Player behavior tracking and telemetry
+- **Performance Optimization**: Further mobile device optimization
+- **Testing Automation**: Expanded unit testing with GUT framework
 
 ## Credits
 
