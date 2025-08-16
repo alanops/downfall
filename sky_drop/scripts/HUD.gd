@@ -96,7 +96,7 @@ func update_control_prompts():
 	if not controls_label:
 		return
 	
-	if ControllerManager.controller_connected:
+	if ControllerManager.is_controller_connected:
 		# Show controller-specific prompts
 		var move_button = ControllerManager.get_button_prompt("move_left")
 		var parachute_button = ControllerManager.get_button_prompt("parachute")

@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://ve4ugqud88fv"]
+[gd_scene load_steps=6 format=3 uid="uid://ve4ugqud88fv"]
 
 [ext_resource type="Script" uid="uid://bisfrstn8ngrr" path="res://scripts/GameOver.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cx80jaknyioqs" path="res://assets/sprites/play_button.webp" id="2"]
 [ext_resource type="Texture2D" uid="uid://duopplu6luejr" path="res://assets/sprites/menu_button.webp" id="3"]
+[ext_resource type="Texture2D" uid="uid://bd34ahkynfr8q" path="res://assets/sprites/ui_button_play.webp" id="3_gijjb"]
+[ext_resource type="Texture2D" uid="uid://dx5rugch0c4w3" path="res://assets/sprites/ui_menu_button.webp" id="5_88ekj"]
 
 [node name="GameOver" type="Control"]
 layout_mode = 3
@@ -52,11 +54,13 @@ layout_mode = 2
 [node name="RetryButton" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
 texture_normal = ExtResource("2")
+texture_pressed = ExtResource("3_gijjb")
 stretch_mode = 5
 
 [node name="MenuButton" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
 texture_normal = ExtResource("3")
+texture_pressed = ExtResource("5_88ekj")
 stretch_mode = 5
 
 [node name="CreditsContainer" type="VBoxContainer" parent="."]
@@ -72,24 +76,24 @@ offset_bottom = 30.0
 
 [node name="CreditsTitle" type="Label" parent="CreditsContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
 theme_override_colors/font_color = Color(1, 1, 1, 0.8)
+theme_override_font_sizes/font_size = 14
 text = "Created by"
 horizontal_alignment = 1
 
 [node name="MiloCredit" type="RichTextLabel" parent="CreditsContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-bbcode_enabled = true
 theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
 text = "[center][url=https://milocurran.github.io/]Milo Curran[/url][/center]"
 fit_content = true
 
 [node name="AlanCredit" type="RichTextLabel" parent="CreditsContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-bbcode_enabled = true
 theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
 text = "[center][url=https://promptcade.com/alanson]Alan Son[/url][/center]"
 fit_content = true
 

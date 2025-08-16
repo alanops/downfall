@@ -148,7 +148,7 @@ func _physics_process(delta):
 		is_fast_diving = false
 	
 	# Add analog stick dive control
-	if ControllerManager.controller_connected:
+	if ControllerManager.is_controller_connected:
 		var stick_y = ControllerManager.get_left_stick_vector().y
 		if stick_y > 0.5:  # Stick pushed down
 			is_fast_diving = true
@@ -223,7 +223,7 @@ func _physics_process(delta):
 		direction = 1
 	
 	# Add analog stick support with deadzone
-	if ControllerManager.controller_connected:
+	if ControllerManager.is_controller_connected:
 		var stick_input = ControllerManager.get_left_stick_vector().x
 		if abs(stick_input) > 0:
 			direction = stick_input  # Use analog value for smoother control
@@ -301,7 +301,7 @@ func toggle_parachute():
 		if particle_manager:
 			particle_manager.trigger_parachute_effect(global_position)
 		# Controller vibration for parachute deployment
-		if ControllerManager.controller_connected:
+		if ControllerManager.is_controller_connected:
 			ControllerManager.vibrate(0.2, 0.3, 0.5)  # Medium vibration
 	
 	# Visual feedback with smooth transitions
@@ -361,7 +361,7 @@ func take_damage():
 		particle_manager.trigger_impact_effect(global_position)
 	
 	# Controller vibration feedback
-	if ControllerManager.controller_connected:
+	if ControllerManager.is_controller_connected:
 		ControllerManager.vibrate(0.3, 0.8, 0.8)  # Strong vibration for damage
 	
 	if lives <= 0:

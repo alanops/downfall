@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://exdvrk6d1y50"]
+[gd_scene load_steps=20 format=3 uid="uid://exdvrk6d1y50"]
 
 [ext_resource type="Script" uid="uid://b13ff0h1qb1co" path="res://scripts/GameManager.gd" id="1"]
 [ext_resource type="Script" uid="uid://d0erlf4kief8k" path="res://scripts/Player.gd" id="2"]
@@ -7,16 +7,16 @@
 [ext_resource type="Script" uid="uid://bpb7vgnc2f8ge" path="res://scripts/HazardSpawner.gd" id="5"]
 [ext_resource type="Script" uid="uid://dvqorkkkaucvy" path="res://scripts/Ground.gd" id="6"]
 [ext_resource type="PackedScene" uid="uid://gnu5m3sym8rh" path="res://scenes/Plane.tscn" id="7"]
+[ext_resource type="Texture2D" uid="uid://ch6iptdw3u3f" path="res://assets/sprites/skydiver_right.webp" id="7_ft6cd"]
 [ext_resource type="PackedScene" uid="uid://unp18d8kk0t6" path="res://scenes/Cloud.tscn" id="8"]
 [ext_resource type="PackedScene" uid="uid://4jq773kqbu7w" path="res://scenes/PowerUp.tscn" id="9"]
 [ext_resource type="Texture2D" uid="uid://7dr0deucyi20" path="res://assets/sprites/background_sky_gradient.webp" id="10"]
 [ext_resource type="Texture2D" uid="uid://bhulmjophjdep" path="res://assets/sprites/clouds_sparse_middle_layer.webp" id="11"]
 [ext_resource type="Texture2D" uid="uid://baspitedaws4r" path="res://assets/sprites/clouds_dramatic_foreground.webp" id="12"]
-[ext_resource type="Texture2D" uid="uid://cr7yhlnhxgnqr" path="res://assets/sprites/skydiver.webp" id="13"]
 [ext_resource type="Texture2D" uid="uid://bw6xiklmyhnpr" path="res://assets/sprites/parachute.webp" id="14"]
-[ext_resource type="PackedScene" uid="uid://bxf8gv3q2h1nl" path="res://scenes/DevConsole.tscn" id="15"]
-[ext_resource type="Script" uid="uid://cjkw7x4m2p9s1" path="res://scripts/ScreenShake.gd" id="16"]
-[ext_resource type="Script" uid="uid://dk8w3x7m5n2q1" path="res://scripts/ParticleManager.gd" id="17"]
+[ext_resource type="PackedScene" uid="uid://kk6jqi1eo3s0" path="res://scenes/DevConsole.tscn" id="15"]
+[ext_resource type="Script" uid="uid://bc84astrcs1ti" path="res://scripts/ScreenShake.gd" id="16"]
+[ext_resource type="Script" uid="uid://c7046kot33dqq" path="res://scripts/ParticleManager.gd" id="17"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
@@ -34,7 +34,7 @@ z_index = -1000
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.216, 0.498, 0.910, 1)
+color = Color(0.216, 0.498, 0.91, 1)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 script = ExtResource("4")
@@ -93,7 +93,7 @@ script = ExtResource("2")
 shape = SubResource("1")
 
 [node name="PlayerSprite" type="Sprite2D" parent="Player"]
-texture = ExtResource("13")
+texture = ExtResource("7_ft6cd")
 
 [node name="PlayerLabel" type="Label" parent="Player"]
 offset_left = -20.0
@@ -231,8 +231,8 @@ script = ExtResource("17")
 [connection signal="hit_hazard" from="Player" to="HUD" method="_on_player_hit_hazard"]
 [connection signal="lives_changed" from="Player" to="HUD" method="_on_lives_changed"]
 [connection signal="parachute_toggled" from="Player" to="HUD" method="_on_parachute_toggled"]
-[connection signal="pressed" from="HUD/DevConsoleTestButton" to="DevConsole" method="toggle_console"]
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Player/Area2D" to="Player" method="_on_area_2d_area_exited"]
 [connection signal="body_entered" from="GroundDetector" to="GroundDetector" method="_on_body_entered"]
 [connection signal="player_landed" from="GroundDetector" to="GameManager" method="_on_ground_player_landed"]
+[connection signal="pressed" from="HUD/DevConsoleTestButton" to="DevConsole" method="toggle_console"]
