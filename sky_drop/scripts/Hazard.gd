@@ -26,6 +26,14 @@ func _ready():
 			# Flip sprite based on movement direction
 			# Sprites face left by default, so flip when moving right
 			sprite.flip_h = move_direction > 0
+			
+			# Debug labels
+			var dir_label = $DirectionLabel
+			var flip_label = $FlipLabel
+			if dir_label:
+				dir_label.text = "RIGHT" if move_direction > 0 else "LEFT"
+			if flip_label:
+				flip_label.text = "FLIP" if sprite.flip_h else "NORMAL"
 	else:
 		# Clouds go in their own group (slow player but don't damage)
 		add_to_group("clouds")
