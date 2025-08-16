@@ -1,7 +1,7 @@
 extends Node
 
 # Controller detection and management
-var is_is_controller_connected = false
+var is_controller_connected = false
 var controller_device_id = -1
 var controller_name = ""
 var deadzone = 0.2
