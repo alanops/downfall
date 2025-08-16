@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://ve4ugqud88fv"]
+[gd_scene load_steps=6 format=3 uid="uid://ve4ugqud88fv"]
 
 [ext_resource type="Script" uid="uid://bisfrstn8ngrr" path="res://scripts/GameOver.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cx80jaknyioqs" path="res://assets/sprites/play_button.webp" id="2"]
 [ext_resource type="Texture2D" uid="uid://duopplu6luejr" path="res://assets/sprites/menu_button.webp" id="3"]
+[ext_resource type="Texture2D" uid="uid://bd34ahkynfr8q" path="res://assets/sprites/ui_button_play.webp" id="3_gijjb"]
+[ext_resource type="Texture2D" uid="uid://dx5rugch0c4w3" path="res://assets/sprites/ui_menu_button.webp" id="5_88ekj"]
 
 [node name="GameOver" type="Control"]
 layout_mode = 3
@@ -52,11 +54,13 @@ layout_mode = 2
 [node name="RetryButton" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
 texture_normal = ExtResource("2")
+texture_pressed = ExtResource("3_gijjb")
 stretch_mode = 5
 
 [node name="MenuButton" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
 texture_normal = ExtResource("3")
+texture_pressed = ExtResource("5_88ekj")
 stretch_mode = 5
 
 [connection signal="pressed" from="VBoxContainer/RetryButton" to="." method="_on_retry_button_pressed"]

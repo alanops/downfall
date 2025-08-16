@@ -2,16 +2,12 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cr7yhlnhxgnqr"
-path="res://.godot/imported/skydiver.webp-27db8adad49a59f8240d280deaf463bc.ctex"
-metadata={
-"vram_texture": false
-}
+uid="uid://bx24f1315xbu1"
+valid=false
 
 [deps]
 
-source_file="res://assets/sprites/skydiver.webp"
-dest_files=["res://.godot/imported/skydiver.webp-27db8adad49a59f8240d280deaf463bc.ctex"]
+source_file="res://scenes/logo_animation.webp"
 
 [params]
 

@@ -27,13 +27,13 @@ window/size/window_width_override=720
 window/size/window_height_override=1280
 window/stretch/mode="viewport"
 
-[input_devices]
-
-pointing/emulate_touch_from_mouse=true
-
 [dotnet]
 
 project/assembly_name="Sky Drop"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 
 [input]
 
@@ -78,6 +78,10 @@ toggle_dev_console={
 ]
 }
 
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
 [physics]
 
 2d/default_gravity=400.0
@@ -89,5 +93,4 @@ gut/enabled=true
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="forward_plus"
-environment/defaults/default_clear_color=Color(0.216, 0.498, 0.910, 1)
+environment/defaults/default_clear_color=Color(0.216, 0.498, 0.91, 1)

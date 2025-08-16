@@ -1,6 +1,8 @@
+res://scenes/MainMenu.tscn
+res://scripts/MainMenu.gd
 res://scenes/Cloud.tscn
 res://scenes/GameOver.tscn
 res://scenes/Main.tscn
-res://scenes/MainMenu.tscn
 res://scenes/Plane.tscn
 res://scenes/PowerUp.tscn
+res://scripts/GameOver.gd

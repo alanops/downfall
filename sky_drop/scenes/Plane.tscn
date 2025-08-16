@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://gnu5m3sym8rh"]
+[gd_scene load_steps=4 format=3 uid="uid://gnu5m3sym8rh"]
 
 [ext_resource type="Script" uid="uid://ce1sty7u7r26r" path="res://scripts/Hazard.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cpmdgmmomvits" path="res://assets/sprites/plane_2.webp" id="2_7u8ti"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(48, 24)
@@ -12,6 +13,7 @@ script = ExtResource("1")
 shape = SubResource("1")
 
 [node name="PlaneBody" type="ColorRect" parent="."]
+visible = false
 offset_left = -24.0
 offset_top = -12.0
 offset_right = 24.0
@@ -25,5 +27,10 @@ offset_right = 20.0
 offset_bottom = 35.0
 text = "PLANE"
 horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.42109e-14, 0)
+scale = Vector2(0.958333, 0.944444)
+texture = ExtResource("2_7u8ti")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
