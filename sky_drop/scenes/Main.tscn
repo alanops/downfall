@@ -181,6 +181,14 @@ offset_right = 200.0
 offset_bottom = 96.0
 text = "Parachute: READY"
 
+[node name="AltitudeLabel" type="Label" parent="HUD"]
+offset_left = 10.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 18
+text = "ALT: 13,500 ft"
+
 [node name="ScoreLabel" type="Label" parent="HUD"]
 offset_left = 170.0
 offset_top = 10.0

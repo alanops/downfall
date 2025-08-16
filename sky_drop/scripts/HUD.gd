@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var parachute_label = $ParachuteLabel
 @onready var score_label = $ScoreLabel
 @onready var combo_label = $ComboLabel
+@onready var altitude_label = $AltitudeLabel
 
 var game_manager
 
@@ -14,6 +15,11 @@ func _ready():
 		game_manager.connect("time_updated", _on_time_updated)
 		game_manager.connect("score_updated", _on_score_updated)
 		game_manager.connect("combo_updated", _on_combo_updated)
+	
+	# Connect to player for altitude updates
+	var player = get_node("/root/Main/Player")
+	if player:
+		player.connect("altitude_changed", _on_altitude_changed)
 
 func _on_time_updated(time):
 	if time_label:
@@ -40,6 +46,29 @@ func _on_combo_updated(combo_count: int, multiplier: int):
 			combo_label.visible = true
 		else:
 			combo_label.visible = false
+
+func _on_altitude_changed(altitude_feet: int):
+	if altitude_label:
+		# Format altitude with nice styling like real altimeters
+		var altitude_text = format_altitude(altitude_feet)
+		altitude_label.text = altitude_text
+		
+		# Color coding based on altitude
+		if altitude_feet <= 2500:  # Below recommended minimum deployment altitude
+			altitude_label.modulate = Color.RED
+		elif altitude_feet <= 5000:  # Caution zone
+			altitude_label.modulate = Color.YELLOW
+		else:  # Safe zone
+			altitude_label.modulate = Color.WHITE
+
+func format_altitude(feet: int) -> String:
+	# Format like real skydiving altimeters
+	if feet >= 10000:
+		return "ALT: %d,000 ft" % [feet / 1000]
+	elif feet >= 1000:
+		return "ALT: %d,%03d ft" % [feet / 1000, feet % 1000]
+	else:
+		return "ALT: %d ft" % feet
 
 func show_game_over(final_time, lives_remaining):
 	var game_over_text = "GAME OVER\n"
