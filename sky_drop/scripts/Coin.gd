@@ -69,19 +69,19 @@ func create_floating_animation():
 	animation.length = 1.0
 	animation.loop_mode = Animation.LOOP_LINEAR
 	
-	# Add rotation track
-	var rotation_track = animation.add_track(Animation.TYPE_ROTATION_3D)
-	animation.track_set_path(rotation_track, NodePath("Visual"))
+	# Add rotation track (using VALUE track for 2D rotation)
+	var rotation_track = animation.add_track(Animation.TYPE_VALUE)
+	animation.track_set_path(rotation_track, NodePath("Visual:rotation"))
 	animation.track_insert_key(rotation_track, 0.0, 0.0)
 	animation.track_insert_key(rotation_track, 0.5, PI)
 	animation.track_insert_key(rotation_track, 1.0, 2 * PI)
 	
-	# Add bobbing track
-	var position_track = animation.add_track(Animation.TYPE_POSITION_3D)
-	animation.track_set_path(position_track, NodePath("Visual"))
-	animation.track_insert_key(position_track, 0.0, Vector3(0, -bob_amplitude, 0))
-	animation.track_insert_key(position_track, 0.5, Vector3(0, bob_amplitude, 0))
-	animation.track_insert_key(position_track, 1.0, Vector3(0, -bob_amplitude, 0))
+	# Add bobbing track (using VALUE track for 2D position)
+	var position_track = animation.add_track(Animation.TYPE_VALUE)
+	animation.track_set_path(position_track, NodePath("Visual:position"))
+	animation.track_insert_key(position_track, 0.0, Vector2(0, -bob_amplitude))
+	animation.track_insert_key(position_track, 0.5, Vector2(0, bob_amplitude))
+	animation.track_insert_key(position_track, 1.0, Vector2(0, -bob_amplitude))
 	
 	var animation_library = AnimationLibrary.new()
 	animation_library.add_animation("float", animation)
