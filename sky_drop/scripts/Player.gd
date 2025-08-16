@@ -28,6 +28,18 @@ var is_fast_diving = false
 var speed_boost_time = 0.0
 var has_speed_boost = false
 
+# New power-up variables
+var shield_time = 0.0
+var has_shield = false
+var magnet_time = 0.0
+var has_magnet = false
+var ghost_time = 0.0
+var has_ghost = false
+var magnet_range = 100.0
+const SHIELD_DURATION = 8.0
+const MAGNET_DURATION = 10.0
+const GHOST_DURATION = 5.0
+
 # Dev console variables
 var godmode_enabled = false
 var speed_multiplier = 1.0
@@ -46,8 +58,14 @@ signal lives_changed(new_lives)
 signal parachute_toggled(deployed)
 signal hit_hazard()
 
+var screen_shake: Node
+var particle_manager: Node2D
+
 func _ready():
 	add_to_group("player")
+	# Get reference to screen shake and particle manager
+	screen_shake = get_node_or_null("../ScreenShake")
+	particle_manager = get_node_or_null("../ParticleManager")
 	# Ensure we start with 3 lives and emit signal for UI update
 	lives = 3
 	emit_signal("lives_changed", lives)
@@ -121,11 +139,35 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("reset_game"):
 		get_tree().reload_current_scene()
 	
-	# Update speed boost timer
+	# Update power-up timers
 	if has_speed_boost:
 		speed_boost_time -= delta
 		if speed_boost_time <= 0:
 			has_speed_boost = false
+	
+	if has_shield:
+		shield_time -= delta
+		if shield_time <= 0:
+			has_shield = false
+			print("Shield deactivated!")
+	
+	if has_magnet:
+		magnet_time -= delta
+		if magnet_time <= 0:
+			has_magnet = false
+			print("Magnet deactivated!")
+		else:
+			# Attract nearby coins
+			attract_coins()
+	
+	if has_ghost:
+		ghost_time -= delta
+		if ghost_time <= 0:
+			has_ghost = false
+			print("Ghost mode deactivated!")
+			modulate.a = 1.0  # Return to normal visibility
+		else:
+			modulate.a = 0.7  # Semi-transparent while in ghost mode
 	
 	# Apply gravity based on current state
 	var gravity = GRAVITY_NORMAL
@@ -218,6 +260,11 @@ func toggle_parachute():
 		velocity.y *= 0.6  # Sudden slowdown when parachute opens
 		velocity.y -= 150  # Upward jerk effect
 		velocity.x *= 0.8  # Slight horizontal slowdown
+		# Screen shake and particles for parachute deployment
+		if screen_shake:
+			screen_shake.shake_parachute()
+		if particle_manager:
+			particle_manager.trigger_parachute_effect(global_position)
 	
 	# Visual feedback with smooth transitions
 	if has_node("ParachuteSprite"):
@@ -269,6 +316,11 @@ func take_damage():
 	lives -= 1
 	emit_signal("lives_changed", lives)
 	emit_signal("hit_hazard")
+	# Screen shake and particles for collision
+	if screen_shake:
+		screen_shake.shake_collision()
+	if particle_manager:
+		particle_manager.trigger_impact_effect(global_position)
 	
 	if lives <= 0:
 		# Game over
@@ -281,12 +333,39 @@ func add_speed_boost():
 	has_speed_boost = true
 	speed_boost_time = SPEED_BOOST_DURATION
 
+func add_shield():
+	has_shield = true
+	shield_time = SHIELD_DURATION
+	print("Shield activated for ", SHIELD_DURATION, " seconds!")
+
+func add_magnet():
+	has_magnet = true
+	magnet_time = MAGNET_DURATION
+	print("Magnet activated for ", MAGNET_DURATION, " seconds!")
+
+func add_ghost_mode():
+	has_ghost = true
+	ghost_time = GHOST_DURATION
+	print("Ghost mode activated for ", GHOST_DURATION, " seconds!")
+
 func _on_area_2d_area_entered(area):
-	if area.is_in_group("hazards") and not godmode_enabled:
+	if area.is_in_group("hazards") and not godmode_enabled and not has_shield and not has_ghost:
 		take_damage()
 	elif area.is_in_group("powerups"):
 		add_parachute()
 		area.queue_free()
+
+func attract_coins():
+	# Find all coins in the scene and attract them if they're within range
+	var coins = get_tree().get_nodes_in_group("coins")
+	for coin in coins:
+		if coin and is_instance_valid(coin):
+			var distance = global_position.distance_to(coin.global_position)
+			if distance <= magnet_range:
+				# Pull coin towards player
+				var direction = (global_position - coin.global_position).normalized()
+				var attraction_force = 200.0 * (1.0 - distance / magnet_range)
+				coin.global_position += direction * attraction_force * get_physics_process_delta_time()
 
 func finish_game():
 	if not game_finished:

@@ -18,12 +18,17 @@ var game_manager
 var player
 
 func _ready():
+	print("DevConsole _ready() called")
 	# Start hidden
 	visible = false
+	is_console_open = false
+	print("DevConsole set to visible: ", visible)
 	
 	# Get references to game objects
-	game_manager = get_node("/root/Main/GameManager")
-	player = get_node("/root/Main/Player")
+	game_manager = get_node_or_null("/root/Main/GameManager")
+	player = get_node_or_null("/root/Main/Player")
+	print("GameManager found: ", game_manager != null)
+	print("Player found: ", player != null)
 	
 	# Connect command input
 	if command_input:
@@ -44,15 +49,24 @@ func _ready():
 	print_to_console("Dev Console initialized. Type 'help' for commands.")
 
 func _input(event):
-	if event.is_action_pressed("toggle_dev_console"):  # ` key or F1
-		print("Dev console toggle detected!")
-		toggle_console()
-	elif event.is_action_pressed("ui_accept") and event.shift_pressed:  # Shift+Enter
-		toggle_sound_menu()
-	
-	# Debug: Print any key press
+	# Handle dev console toggle
 	if event is InputEventKey and event.pressed:
-		print("Key pressed: ", event.keycode, " physical: ", event.physical_keycode)
+		if event.physical_keycode == 96 or event.keycode == KEY_F1:  # Backtick or F1
+			print("Dev console toggle detected!")
+			toggle_console()
+			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_ESCAPE and is_console_open:  # ESC to close console
+			print("ESC pressed - closing console")
+			toggle_console()
+			get_viewport().set_input_as_handled()
+	
+	# Only process other input if console is open
+	if not is_console_open:
+		return
+		
+	if event.is_action_pressed("ui_accept") and event.shift_pressed:  # Shift+Enter
+		toggle_sound_menu()
+		get_viewport().set_input_as_handled()
 	
 	if is_console_open and event is InputEventKey and event.pressed:
 		match event.keycode:
@@ -64,18 +78,21 @@ func _input(event):
 func toggle_console():
 	is_console_open = !is_console_open
 	visible = is_console_open
-	print("Console toggled, visible: ", visible)
+	print("Console toggled, visible: ", visible, " open: ", is_console_open)
 	
 	if is_console_open:
 		if command_input:
 			command_input.grab_focus()
+			command_input.select_all()
 		# Pause the game when console is open
 		get_tree().paused = true
+		print("Game paused, console open")
 	else:
 		# Unpause when console closes
 		get_tree().paused = false
 		if sound_menu:
 			sound_menu.visible = false
+		print("Game unpaused, console closed")
 
 func toggle_sound_menu():
 	if not is_console_open:
@@ -99,6 +116,7 @@ func navigate_history(direction):
 		command_input.caret_column = command_input.text.length()
 
 func _on_command_submitted(command: String):
+	print("Command submitted: ", command)
 	if command.strip_edges().is_empty():
 		return
 	

@@ -15,6 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://cr7yhlnhxgnqr" path="res://assets/sprites/skydiver.webp" id="13"]
 [ext_resource type="Texture2D" uid="uid://bw6xiklmyhnpr" path="res://assets/sprites/parachute.webp" id="14"]
 [ext_resource type="PackedScene" uid="uid://bxf8gv3q2h1nl" path="res://scenes/DevConsole.tscn" id="15"]
+[ext_resource type="Script" uid="uid://cjkw7x4m2p9s1" path="res://scripts/ScreenShake.gd" id="16"]
+[ext_resource type="Script" uid="uid://dk8w3x7m5n2q1" path="res://scripts/ParticleManager.gd" id="17"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
@@ -186,6 +188,15 @@ offset_right = 350.0
 offset_bottom = 36.0
 text = "Score: 0"
 
+[node name="ComboLabel" type="Label" parent="HUD"]
+visible = false
+offset_left = 170.0
+offset_top = 40.0
+offset_right = 350.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+text = "Combo: 0x"
+
 [node name="ControlsLabel" type="Label" parent="HUD"]
 offset_left = 10.0
 offset_top = 560.0
@@ -194,11 +205,25 @@ offset_bottom = 630.0
 text = "Controls: Arrow/WASD = Move, Space = Parachute, R = Reset, ` = Dev Console"
 autowrap_mode = 2
 
+[node name="DevConsoleTestButton" type="Button" parent="HUD"]
+offset_left = 280.0
+offset_top = 540.0
+offset_right = 350.0
+offset_bottom = 560.0
+text = "Console"
+
+[node name="ScreenShake" type="Node" parent="."]
+script = ExtResource("16")
+
+[node name="ParticleManager" type="Node2D" parent="."]
+script = ExtResource("17")
+
 [node name="DevConsole" parent="." instance=ExtResource("15")]
 
 [connection signal="hit_hazard" from="Player" to="HUD" method="_on_player_hit_hazard"]
 [connection signal="lives_changed" from="Player" to="HUD" method="_on_lives_changed"]
 [connection signal="parachute_toggled" from="Player" to="HUD" method="_on_parachute_toggled"]
+[connection signal="pressed" from="HUD/DevConsoleTestButton" to="DevConsole" method="toggle_console"]
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]
 [connection signal="body_entered" from="GroundDetector" to="GroundDetector" method="_on_body_entered"]
 [connection signal="player_landed" from="GroundDetector" to="GameManager" method="_on_ground_player_landed"]
