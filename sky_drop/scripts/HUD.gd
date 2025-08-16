@@ -6,6 +6,7 @@ extends CanvasLayer
 @onready var score_label = $ScoreLabel
 @onready var combo_label = $ComboLabel
 @onready var altitude_label = $AltitudeLabel
+@onready var controls_label = $ControlsLabel
 
 var game_manager
 
@@ -20,6 +21,12 @@ func _ready():
 	var player = get_node("/root/Main/Player")
 	if player:
 		player.connect("altitude_changed", _on_altitude_changed)
+	
+	# Connect to controller manager for dynamic control prompts
+	if ControllerManager:
+		ControllerManager.connect("controller_connected", _on_controller_connected)
+		ControllerManager.connect("controller_disconnected", _on_controller_disconnected)
+		update_control_prompts()
 
 func _on_time_updated(time):
 	if time_label:
@@ -78,3 +85,29 @@ func show_game_over(final_time, lives_remaining):
 	
 	# You would show this in a proper game over screen
 	print(game_over_text)
+
+func _on_controller_connected(device_id: int, controller_name: String):
+	update_control_prompts()
+
+func _on_controller_disconnected(device_id: int):
+	update_control_prompts()
+
+func update_control_prompts():
+	if not controls_label:
+		return
+	
+	if ControllerManager.controller_connected:
+		# Show controller-specific prompts
+		var move_button = ControllerManager.get_button_prompt("move_left")
+		var parachute_button = ControllerManager.get_button_prompt("parachute")
+		var reset_button = ControllerManager.get_button_prompt("reset_game")
+		var dive_button = ControllerManager.get_button_prompt("dive_fast")
+		
+		controls_label.text = "🎮 L-Stick = Move, %s = Parachute, %s = Reset, %s = Console" % [
+			parachute_button,
+			reset_button,
+			ControllerManager.get_button_prompt("toggle_dev_console")
+		]
+	else:
+		# Show keyboard controls
+		controls_label.text = "Controls: Arrow/WASD = Move, Space = Parachute, R = Reset, ` = Dev Console"
