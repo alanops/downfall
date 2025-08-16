@@ -109,6 +109,10 @@ func spawn_hazard():
 		hazard.move_direction = -1
 		print("Spawning plane from RIGHT edge, moving LEFT (direction = -1)")
 	
+	# Update sprite based on direction (only for planes)
+	if hazard_type == "plane" and hazard.has_method("update_sprite_direction"):
+		hazard.update_sprite_direction()
+	
 	# Vary the speed based on hazard type
 	if hazard_type == "cloud":
 		hazard.move_speed = randf_range(50, 150)  # Clouds move slower
