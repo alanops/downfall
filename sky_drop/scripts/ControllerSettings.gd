@@ -28,7 +28,7 @@ func _ready():
 func _on_vibration_toggled(enabled: bool):
 	ControllerManager.vibration_enabled = enabled
 	vibration_strength_slider.editable = enabled
-	test_vibration_button.disabled = not enabled or not ControllerManager.controller_connected
+	test_vibration_button.disabled = not enabled or not ControllerManager.is_controller_connected
 
 func _on_vibration_strength_changed(value: float):
 	ControllerManager.vibration_strength = value
@@ -37,14 +37,14 @@ func _on_deadzone_changed(value: float):
 	ControllerManager.deadzone = value
 
 func _on_test_vibration_pressed():
-	if ControllerManager.controller_connected:
+	if ControllerManager.is_controller_connected:
 		ControllerManager.vibrate(0.5, 0.5, 0.7)
 
 func _on_controller_status_changed(_device_id):
 	update_controller_status()
 
 func update_controller_status():
-	if ControllerManager.controller_connected:
+	if ControllerManager.is_controller_connected:
 		controller_status_label.text = "🎮 " + ControllerManager.controller_name + " connected"
 		controller_status_label.modulate = Color.GREEN
 		test_vibration_button.disabled = not ControllerManager.vibration_enabled

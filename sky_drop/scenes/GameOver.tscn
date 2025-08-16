@@ -76,24 +76,24 @@ offset_bottom = 30.0
 
 [node name="CreditsTitle" type="Label" parent="CreditsContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
 theme_override_colors/font_color = Color(1, 1, 1, 0.8)
+theme_override_font_sizes/font_size = 14
 text = "Created by"
 horizontal_alignment = 1
 
 [node name="MiloCredit" type="RichTextLabel" parent="CreditsContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-bbcode_enabled = true
 theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
 text = "[center][url=https://milocurran.github.io/]Milo Curran[/url][/center]"
 fit_content = true
 
 [node name="AlanCredit" type="RichTextLabel" parent="CreditsContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-bbcode_enabled = true
 theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
 text = "[center][url=https://promptcade.com/alanson]Alan Son[/url][/center]"
 fit_content = true
 

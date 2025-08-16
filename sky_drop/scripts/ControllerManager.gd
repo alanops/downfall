@@ -1,7 +1,7 @@
 extends Node
 
 # Controller detection and management
-var controller_connected = false
+var is_is_controller_connected = false
 var controller_device_id = -1
 var controller_name = ""
 var deadzone = 0.2
@@ -34,19 +34,19 @@ func check_connected_controllers():
 	var connected_joypads = Input.get_connected_joypads()
 	if connected_joypads.size() > 0:
 		controller_device_id = connected_joypads[0]
-		controller_connected = true
+		is_controller_connected = true
 		controller_name = Input.get_joy_name(controller_device_id)
 		controller_type = detect_controller_type(controller_name)
 		print("Controller detected: ", controller_name, " (", get_controller_type_name(), ")")
 		emit_signal("controller_connected", controller_device_id, controller_name)
 	else:
-		controller_connected = false
+		is_controller_connected = false
 		controller_device_id = -1
 		print("No controller detected")
 
 func _on_joy_connection_changed(device_id: int, connected: bool):
 	if connected:
-		controller_connected = true
+		is_controller_connected = true
 		controller_device_id = device_id
 		controller_name = Input.get_joy_name(device_id)
 		controller_type = detect_controller_type(controller_name)
@@ -57,7 +57,7 @@ func _on_joy_connection_changed(device_id: int, connected: bool):
 		show_controller_notification(true)
 	else:
 		if device_id == controller_device_id:
-			controller_connected = false
+			is_controller_connected = false
 			controller_device_id = -1
 			controller_name = ""
 			controller_type = ControllerType.UNKNOWN
@@ -93,7 +93,7 @@ func get_controller_type_name() -> String:
 			return "Unknown Controller"
 
 func get_button_prompt(action: String) -> String:
-	if not controller_connected:
+	if not is_controller_connected:
 		return ""
 	
 	# Get input events for the action
@@ -206,7 +206,7 @@ func get_axis_name(axis: int, value: float) -> String:
 		_: return "Axis " + str(axis) + direction
 
 func vibrate(duration: float, weak_magnitude: float = 0.5, strong_magnitude: float = 0.5):
-	if not controller_connected or not vibration_enabled:
+	if not is_controller_connected or not vibration_enabled:
 		return
 	
 	# Apply vibration strength setting
@@ -217,7 +217,7 @@ func vibrate(duration: float, weak_magnitude: float = 0.5, strong_magnitude: flo
 	Input.start_joy_vibration(controller_device_id, weak_magnitude, strong_magnitude, duration)
 
 func stop_vibration():
-	if controller_connected:
+	if is_controller_connected:
 		Input.stop_joy_vibration(controller_device_id)
 
 func show_controller_notification(connected: bool):
@@ -246,7 +246,7 @@ func show_controller_notification(connected: bool):
 
 # Analog stick input helpers
 func get_left_stick_vector() -> Vector2:
-	if not controller_connected:
+	if not is_controller_connected:
 		return Vector2.ZERO
 	
 	var x = Input.get_joy_axis(controller_device_id, 0)
@@ -260,7 +260,7 @@ func get_left_stick_vector() -> Vector2:
 	return vec
 
 func get_right_stick_vector() -> Vector2:
-	if not controller_connected:
+	if not is_controller_connected:
 		return Vector2.ZERO
 	
 	var x = Input.get_joy_axis(controller_device_id, 2)
@@ -274,7 +274,7 @@ func get_right_stick_vector() -> Vector2:
 	return vec
 
 func get_trigger_value(left: bool) -> float:
-	if not controller_connected:
+	if not is_controller_connected:
 		return 0.0
 	
 	var axis = 4 if left else 5

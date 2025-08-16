@@ -58,7 +58,7 @@ Sky Drop now includes full game controller support with automatic detection, vib
 ### Singleton Access
 ```gdscript
 # Check if controller is connected
-if ControllerManager.controller_connected:
+if ControllerManager.is_controller_connected:
     print("Controller: ", ControllerManager.controller_name)
 ```
 
