@@ -103,9 +103,11 @@ func spawn_hazard():
 	if randf() < 0.5:
 		hazard.position = Vector2(-50, spawn_y)
 		hazard.move_direction = 1
+		print("Spawning plane from LEFT edge, moving RIGHT (direction = 1)")
 	else:
 		hazard.position = Vector2(screen_width + 50, spawn_y)
 		hazard.move_direction = -1
+		print("Spawning plane from RIGHT edge, moving LEFT (direction = -1)")
 	
 	# Vary the speed based on hazard type
 	if hazard_type == "cloud":
