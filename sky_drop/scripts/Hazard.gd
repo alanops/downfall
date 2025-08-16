@@ -15,16 +15,15 @@ func _ready():
 		set_collision_layer_value(2, true)
 		print("Plane created at position: ", position, " moving ", "right" if move_direction > 0 else "left")
 		
-		# Randomly select between plane sprites
+		# Set sprite filename label
 		var sprite = $Sprite2D
-		if sprite:
-			if randf() < 0.5:
-				var plane2_texture = load("res://assets/sprites/plane_2.webp")
-				if plane2_texture:
-					sprite.texture = plane2_texture
+		var file_label = $FileLabel
+		if sprite and file_label:
+			file_label.text = "plane_1"
 			
-			# Flip sprite based on movement direction  
-			# Sprites face correctly by default, no flipping needed
+		# Flip sprite based on movement direction  
+		# Sprites face correctly by default, no flipping needed
+		if sprite:
 			sprite.flip_h = false
 			
 	else:
