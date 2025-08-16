@@ -14,6 +14,13 @@ func _ready():
 		add_to_group("hazards")
 		set_collision_layer_value(2, true)
 		print("Plane created at position: ", position)
+		
+		# Randomly select between plane sprites
+		var sprite = $Sprite2D
+		if sprite and randf() < 0.5:
+			var plane2_texture = load("res://assets/sprites/plane_2.webp")
+			if plane2_texture:
+				sprite.texture = plane2_texture
 	else:
 		# Clouds go in their own group (slow player but don't damage)
 		add_to_group("clouds")
