@@ -15,16 +15,28 @@ func _ready():
 		set_collision_layer_value(2, true)
 		print("Plane created at position: ", position, " moving ", "right" if move_direction > 0 else "left")
 		
-		# Set sprite filename label
+		# Load appropriate sprite based on movement direction
 		var sprite = $Sprite2D
 		var file_label = $FileLabel
-		if sprite and file_label:
-			file_label.text = "plane_1"
-			
-		# Flip sprite based on movement direction  
-		# Planes moving left are correct, planes moving right need flipping
 		if sprite:
-			sprite.flip_h = move_direction > 0
+			var sprite_name = ""
+			if move_direction < 0:  # Moving left
+				var left_texture = load("res://assets/sprites/plane_1_left.webp")
+				if left_texture:
+					sprite.texture = left_texture
+					sprite_name = "plane_1_left"
+			else:  # Moving right
+				var right_texture = load("res://assets/sprites/plane_1_right.webp")
+				if right_texture:
+					sprite.texture = right_texture
+					sprite_name = "plane_1_right"
+			
+			# No flipping needed - using direction-specific sprites
+			sprite.flip_h = false
+			
+			# Update label
+			if file_label:
+				file_label.text = sprite_name
 			
 	else:
 		# Clouds go in their own group (slow player but don't damage)
