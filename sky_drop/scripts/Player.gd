@@ -254,8 +254,8 @@ func _physics_process(delta):
 		if parachute_deployed:
 			finish_game()
 		else:
-			# Hard landing without parachute - take damage
-			take_damage()
+			# Hard landing without parachute - instant death with 0 score
+			instant_death()
 
 func toggle_parachute():
 	if not parachute_deployed and parachutes_available <= 0:
@@ -418,6 +418,22 @@ func update_altitude():
 	if new_altitude != current_altitude_feet:
 		current_altitude_feet = new_altitude
 		emit_signal("altitude_changed", current_altitude_feet)
+
+func instant_death():
+	if not game_finished:
+		game_finished = true
+		print("Player died from hard landing!")
+		
+		# Screen shake and particles for hard landing
+		if screen_shake:
+			screen_shake.shake_collision()
+		if particle_manager:
+			particle_manager.trigger_impact_effect(global_position)
+		
+		# Get game manager and end the game with 0 score
+		var game_manager = get_node_or_null("../GameManager")
+		if game_manager:
+			game_manager.end_game_death()
 
 func finish_game():
 	if not game_finished:

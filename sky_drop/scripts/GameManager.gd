@@ -70,6 +70,27 @@ func end_game(lives_remaining):
 	await get_tree().create_timer(2.0).timeout
 	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
 
+func end_game_death():
+	if game_over:
+		return  # Already ended
+		
+	print("GameManager: Player died - game over with 0 score")
+	game_over = true
+	set_process(false)
+	
+	# Death means 0 final score
+	score = 0
+	
+	emit_signal("score_updated", score)
+	emit_signal("game_finished", time_elapsed, 0)
+	
+	# Store results in global data
+	GameData.set_game_results(0, time_elapsed, 0)
+	
+	# Show game over screen after a short delay
+	await get_tree().create_timer(2.0).timeout
+	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+
 func format_time(seconds):
 	var minutes = int(seconds) / 60
 	var secs = int(seconds) % 60
