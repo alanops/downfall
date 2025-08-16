@@ -14,17 +14,21 @@ func _ready():
 		game_manager.connect("score_updated", _on_score_updated)
 
 func _on_time_updated(time):
-	time_label.text = "Time: " + game_manager.format_time(time)
+	if time_label:
+		time_label.text = "Time: " + game_manager.format_time(time)
 
 func _on_lives_changed(lives):
-	lives_label.text = "Lives: " + str(lives)
+	if lives_label:
+		lives_label.text = "Lives: " + str(lives)
 
 func _on_parachute_toggled(deployed):
-	parachute_label.text = "Parachute: " + ("DEPLOYED" if deployed else "READY")
-	parachute_label.modulate = Color.GREEN if deployed else Color.WHITE
+	if parachute_label:
+		parachute_label.text = "Parachute: " + ("DEPLOYED" if deployed else "READY")
+		parachute_label.modulate = Color.GREEN if deployed else Color.WHITE
 
 func _on_score_updated(score):
-	score_label.text = "Score: " + str(score)
+	if score_label:
+		score_label.text = "Score: " + str(score)
 
 func show_game_over(final_time, lives_remaining):
 	var game_over_text = "GAME OVER\n"
