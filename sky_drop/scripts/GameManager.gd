@@ -1,9 +1,12 @@
 extends Node
 
+enum Difficulty { EASY, NORMAL, HARD }
+
 var score = 0
 var time_elapsed = 0.0
 var game_started = false
 var game_over = false
+var current_difficulty = Difficulty.NORMAL
 
 # Coin collection and combo system
 var coins_collected = 0
@@ -22,12 +25,53 @@ func _ready():
 	set_process(false)
 	start_game()
 
+func set_difficulty(difficulty: Difficulty):
+	current_difficulty = difficulty
+	apply_difficulty_settings()
+
+func apply_difficulty_settings():
+	var player = get_node_or_null("/root/Main/Player")
+	var hazard_spawner = get_node_or_null("/root/Main/HazardSpawner")
+	
+	if player:
+		match current_difficulty:
+			Difficulty.EASY:
+				player.lives = 12
+				player.emit_signal("lives_changed", player.lives)
+				if hazard_spawner:
+					hazard_spawner.spawn_interval_min = 0.8
+					hazard_spawner.spawn_interval_max = 1.4
+			Difficulty.NORMAL:
+				player.lives = 3
+				player.emit_signal("lives_changed", player.lives)
+				if hazard_spawner:
+					hazard_spawner.spawn_interval_min = 0.4
+					hazard_spawner.spawn_interval_max = 1.0
+			Difficulty.HARD:
+				player.lives = 1
+				player.emit_signal("lives_changed", player.lives)
+				if hazard_spawner:
+					hazard_spawner.spawn_interval_min = 0.2
+					hazard_spawner.spawn_interval_max = 0.6
+
+func get_difficulty_name() -> String:
+	match current_difficulty:
+		Difficulty.EASY:
+			return "EASY"
+		Difficulty.NORMAL:
+			return "NORMAL"
+		Difficulty.HARD:
+			return "HARD"
+		_:
+			return "NORMAL"
+
 func start_game():
 	game_started = true
 	game_over = false
 	time_elapsed = 0.0
 	score = 0
 	coins_collected = 0
+	apply_difficulty_settings()
 	current_combo = 0
 	combo_timer = 0.0
 	set_process(true)

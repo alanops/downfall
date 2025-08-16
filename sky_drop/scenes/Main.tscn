@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dvqorkkkaucvy" path="res://scripts/Ground.gd" id="6"]
 [ext_resource type="PackedScene" uid="uid://gnu5m3sym8rh" path="res://scenes/Plane.tscn" id="7"]
 [ext_resource type="Texture2D" uid="uid://ch6iptdw3u3f" path="res://assets/sprites/skydiver_right.webp" id="7_ft6cd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/skydiver_left.webp" id="7_left"]
 [ext_resource type="PackedScene" uid="uid://unp18d8kk0t6" path="res://scenes/Cloud.tscn" id="8"]
 [ext_resource type="PackedScene" uid="uid://4jq773kqbu7w" path="res://scenes/PowerUp.tscn" id="9"]
 [ext_resource type="Texture2D" uid="uid://7dr0deucyi20" path="res://assets/sprites/background_sky_gradient.webp" id="10"]
@@ -154,7 +155,7 @@ horizontal_alignment = 1
 shape = SubResource("1")
 
 [node name="GroundDetector" type="Area2D" parent="."]
-position = Vector2(180, 27000)
+position = Vector2(180, 26976)
 script = ExtResource("6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroundDetector"]
@@ -235,12 +236,20 @@ offset_bottom = 66.0
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 text = "Combo: 0x"
 
+[node name="DifficultyLabel" type="Label" parent="HUD"]
+offset_left = 170.0
+offset_top = 70.0
+offset_right = 350.0
+offset_bottom = 96.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Difficulty: NORMAL"
+
 [node name="ControlsLabel" type="Label" parent="HUD"]
 offset_left = 10.0
 offset_top = 560.0
 offset_right = 350.0
 offset_bottom = 630.0
-text = "Controls: Arrow/WASD = Move, Space = Parachute, R = Reset, ` = Dev Console"
+text = "Controls: Arrow/WASD = Move, Space = Parachute, R = Reset, ` = Dev Console, 1/2/3 = Difficulty"
 autowrap_mode = 2
 
 [node name="DevConsoleTestButton" type="Button" parent="HUD"]

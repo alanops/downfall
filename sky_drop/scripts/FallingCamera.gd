@@ -19,8 +19,26 @@ func _process(delta):
 	if not target:
 		return
 	
-	# Always follow player's Y position (falling) with offset
-	var target_y = target.global_position.y - vertical_offset
+	# Check player altitude - gradual easing below 180ft to show ground edge
+	var player_altitude = target.current_altitude_feet if target.has_method("get") and "current_altitude_feet" in target else 0
+	var altitude_threshold = 180.0
+	var easing_range = 50.0  # Start easing 50ft before threshold
+	
+	# Calculate easing factor (1.0 = full follow, 0.0 = no follow)
+	var follow_factor = 1.0
+	if player_altitude < altitude_threshold:
+		if player_altitude < (altitude_threshold - easing_range):
+			follow_factor = 0.0  # Completely stop following
+		else:
+			# Smooth easing from 1.0 to 0.0 over the easing range
+			var ease_progress = (altitude_threshold - player_altitude) / easing_range
+			# Custom ease out function: 1 - (1 - x)^3
+			var ease_value = ease_progress * ease_progress * (3.0 - 2.0 * ease_progress)
+			follow_factor = 1.0 - ease_value
+	
+	# Always calculate target Y position
+	var ideal_target_y = target.global_position.y - vertical_offset
+	var target_y = lerp(global_position.y, ideal_target_y, follow_factor)
 	
 	# For horizontal, only follow if player moves beyond deadzone
 	var target_x = global_position.x  # Start with current camera X
@@ -33,7 +51,6 @@ func _process(delta):
 		elif horizontal_distance < -horizontal_deadzone:
 			target_x = target.global_position.x + horizontal_deadzone
 	
-	target_position = Vector2(target_x, target_y)
-	
-	# Smoothly move camera to target position
-	global_position = global_position.lerp(target_position, follow_speed * delta)
+	# Use direct positioning for Y (no blur), smooth only for X
+	global_position.y = target_y
+	global_position.x = lerp(global_position.x, target_x, follow_speed * delta)

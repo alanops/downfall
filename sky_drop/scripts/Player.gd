@@ -28,6 +28,16 @@ var is_fast_diving = false
 var speed_boost_time = 0.0
 var has_speed_boost = false
 
+# Parachute swaying animation
+var sway_time = 0.0
+var sway_amplitude = 15.0  # How far to sway in degrees
+var sway_frequency = 1.2   # How fast to sway
+
+# Sprite references
+@onready var player_sprite = $PlayerSprite
+var sprite_right = preload("res://assets/sprites/skydiver_right.webp")
+var sprite_left = preload("res://assets/sprites/skydiver_left.webp")
+
 # New power-up variables
 var shield_time = 0.0
 var has_shield = false
@@ -232,6 +242,13 @@ func _physics_process(delta):
 	if direction != 0:
 		velocity.x += direction * ACCELERATION * speed_multiplier * delta
 		velocity.x = clamp(velocity.x, -SPEED * speed_multiplier, SPEED * speed_multiplier)
+		
+		# Update sprite based on movement direction
+		if player_sprite:
+			if direction > 0:
+				player_sprite.texture = sprite_right
+			else:
+				player_sprite.texture = sprite_left
 	else:
 		# Apply friction when no input
 		var friction_force = FRICTION if is_on_floor() else AIR_RESISTANCE
@@ -254,6 +271,15 @@ func _physics_process(delta):
 		velocity.x *= PARACHUTE_DRAG
 	
 	move_and_slide()
+	
+	# Apply parachute swaying animation
+	if parachute_deployed:
+		sway_time += delta
+		var sway_angle = sin(sway_time * sway_frequency) * sway_amplitude
+		rotation_degrees = sway_angle
+	else:
+		# Reset rotation when not using parachute
+		rotation_degrees = 0.0
 	
 	# Clamp player position to screen boundaries
 	var screen_width = 360  # From project.godot viewport_width
@@ -432,7 +458,8 @@ func exit_cloud_effect():
 func update_altitude():
 	# Calculate current altitude based on Y position
 	# Convert game units to feet (linear interpolation)
-	var progress = (global_position.y - STARTING_Y_POSITION) / TOTAL_FALL_DISTANCE
+	# Calculate progress from start to ground (Y position 27000)
+	var progress = (global_position.y - STARTING_Y_POSITION) / (GROUND_Y_POSITION - STARTING_Y_POSITION)
 	progress = clamp(progress, 0.0, 1.0)
 	
 	var new_altitude = int(STARTING_ALTITUDE_FEET * (1.0 - progress))
