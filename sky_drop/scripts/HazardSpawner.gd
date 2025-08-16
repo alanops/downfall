@@ -7,8 +7,8 @@ extends Node2D
 var coin_scene = preload("res://scenes/Coin.tscn")
 var particle_cloud_scene = preload("res://scenes/ParticleCloud.tscn")
 
-@export var spawn_interval_min: float = 0.8
-@export var spawn_interval_max: float = 2.5
+@export var spawn_interval_min: float = 0.4
+@export var spawn_interval_max: float = 1.0
 @export var powerup_chance: float = 0.15
 
 var spawn_timer: float = 0.0
@@ -31,8 +31,8 @@ func _process(delta):
 	
 	if spawn_timer >= next_spawn_time:
 		print("Attempting to spawn hazards...")
-		# Spawn fewer hazards since they're spread across larger area
-		var num_spawns = randi_range(1, 2)  # 1-2 obstacles per spawn
+		# Spawn multiple hazards for good density across the altitude range
+		var num_spawns = randi_range(2, 4)  # 2-4 obstacles per spawn
 		for i in range(num_spawns):
 			spawn_hazard()
 		
@@ -51,17 +51,17 @@ func spawn_hazard():
 		
 	var player_y = player.global_position.y
 	
-	# Convert altitude range to Y positions
-	# 11,000 ft = ~19% of fall = Y position ~5,216
-	# 5,000 ft = ~63% of fall = Y position ~16,960
-	var altitude_11000_y = -200 + (27200 * 0.19)  # ~5,016
-	var altitude_5000_y = -200 + (27200 * 0.63)   # ~16,936
+	# Convert altitude range to Y positions  
+	# 12,000 ft = ~11% of fall = Y position ~2,792
+	# 4,000 ft = ~70% of fall = Y position ~18,840
+	var altitude_12000_y = -200 + (27200 * 0.11)  # ~2,792
+	var altitude_4000_y = -200 + (27200 * 0.70)   # ~18,840
 	
-	# Only spawn in the hazard zone (11,000 ft to 5,000 ft)
-	var spawn_y = randf_range(altitude_11000_y, altitude_5000_y)
+	# Only spawn in the hazard zone (12,000 ft to 4,000 ft)
+	var spawn_y = randf_range(altitude_12000_y, altitude_4000_y)
 	
 	# Don't spawn if player hasn't reached the hazard zone yet
-	if player_y < altitude_11000_y - 1000:  # Give some buffer
+	if player_y < altitude_12000_y - 500:  # Smaller buffer
 		return
 	
 	# Progressive difficulty - more power-ups in later sections
