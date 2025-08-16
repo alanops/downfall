@@ -15,12 +15,23 @@ func update_sprite_direction():
 		if sprite:
 			var sprite_name = ""
 			print("Setting sprite for move_direction: ", move_direction)
+			# Randomly choose between plane_1 and plane_2
+			var plane_variant = 1 if randf() < 0.5 else 2
+			
 			if move_direction < 0:  # Moving left
-				sprite.texture = preload("res://assets/sprites/plane_1_left.webp")
-				sprite_name = "plane_1_left"
+				if plane_variant == 1:
+					sprite.texture = preload("res://assets/sprites/plane_1_left.webp")
+					sprite_name = "plane_1_left"
+				else:
+					sprite.texture = preload("res://assets/sprites/plane_2_left.webp")
+					sprite_name = "plane_2_left"
 			else:  # Moving right
-				sprite.texture = preload("res://assets/sprites/plane_1_right.webp")
-				sprite_name = "plane_1_right"
+				if plane_variant == 1:
+					sprite.texture = preload("res://assets/sprites/plane_1_right.webp")
+					sprite_name = "plane_1_right"
+				else:
+					sprite.texture = preload("res://assets/sprites/plane_2_right.webp")
+					sprite_name = "plane_2_right"
 			
 			# No flipping needed - using direction-specific sprites
 			sprite.flip_h = false
