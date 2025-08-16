@@ -22,7 +22,7 @@ func _ready():
 			file_label.text = "plane_1"
 			
 		# Flip sprite based on movement direction  
-		# Planes moving from right to left need flipping
+		# Planes moving right are correct, planes moving left need flipping
 		if sprite:
 			sprite.flip_h = move_direction < 0
 			
