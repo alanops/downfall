@@ -6,6 +6,7 @@ extends CanvasLayer
 @onready var score_label = $ScoreLabel
 @onready var combo_label = $ComboLabel
 @onready var altitude_label = $AltitudeLabel
+@onready var difficulty_label = $DifficultyLabel
 @onready var controls_label = $ControlsLabel
 
 var game_manager
@@ -16,6 +17,7 @@ func _ready():
 		game_manager.connect("time_updated", _on_time_updated)
 		game_manager.connect("score_updated", _on_score_updated)
 		game_manager.connect("combo_updated", _on_combo_updated)
+		update_difficulty_display()
 	
 	# Connect to player for altitude updates
 	var player = get_node("/root/Main/Player")
@@ -110,4 +112,22 @@ func update_control_prompts():
 		]
 	else:
 		# Show keyboard controls
-		controls_label.text = "Controls: Arrow/WASD = Move, Space = Parachute, R = Reset, ` = Dev Console"
+		controls_label.text = "Controls: Arrow/WASD = Move, Space = Parachute, R = Reset, ` = Dev Console, 1/2/3 = Difficulty"
+
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if game_manager:
+			match event.keycode:
+				KEY_1:
+					game_manager.set_difficulty(game_manager.Difficulty.EASY)
+					update_difficulty_display()
+				KEY_2:
+					game_manager.set_difficulty(game_manager.Difficulty.NORMAL)
+					update_difficulty_display()
+				KEY_3:
+					game_manager.set_difficulty(game_manager.Difficulty.HARD)
+					update_difficulty_display()
+
+func update_difficulty_display():
+	if game_manager and difficulty_label:
+		difficulty_label.text = "Difficulty: " + game_manager.get_difficulty_name()
