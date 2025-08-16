@@ -23,9 +23,9 @@ func _ready():
 				if plane2_texture:
 					sprite.texture = plane2_texture
 			
-			# Flip sprite based on movement direction
-			# Sprites face left by default, so flip when moving right
-			sprite.flip_h = move_direction > 0
+			# Flip sprite based on movement direction  
+			# Sprites face left by default, no flipping needed
+			sprite.flip_h = false
 			
 			print("Plane _ready: move_direction = ", move_direction, ", flip_h = ", sprite.flip_h)
 	else:
