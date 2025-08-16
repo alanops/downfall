@@ -183,6 +183,8 @@ func execute_command(command: String):
 			reset_game()
 		"fps":
 			show_fps_info()
+		"altitude":
+			show_altitude_info()
 		_:
 			print_to_console("Unknown command: " + cmd + ". Type 'help' for available commands.")
 
@@ -214,6 +216,7 @@ Audio:
 
 Debug:
 - fps - Show FPS and performance info
+- altitude - Show current altitude and position info
 - clear - Clear console output
 - help - Show this help message
 
@@ -380,6 +383,23 @@ func show_fps_info():
 	info += "Process ID: " + str(process_id)
 	
 	print_to_console(info)
+
+func show_altitude_info():
+	if player:
+		var current_y = player.global_position.y
+		var progress = (current_y - player.STARTING_Y_POSITION) / player.TOTAL_FALL_DISTANCE
+		var altitude = player.current_altitude_feet
+		
+		var info = "=== ALTITUDE INFO ===\n"
+		info += "Current Y Position: " + str(int(current_y)) + "\n"
+		info += "Fall Progress: " + str(int(progress * 100)) + "%\n"
+		info += "Altitude: " + str(altitude) + " ft\n"
+		info += "Distance Fallen: " + str(int(player.STARTING_ALTITUDE_FEET - altitude)) + " ft\n"
+		info += "Distance to Ground: " + str(altitude) + " ft"
+		
+		print_to_console(info)
+	else:
+		print_to_console("Player not found!")
 
 # Sound Menu Callbacks
 func _on_master_volume_changed(value: float):

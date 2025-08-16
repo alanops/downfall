@@ -44,6 +44,13 @@ const GHOST_DURATION = 5.0
 var in_cloud = false
 var cloud_drag_multiplier = 0.5  # More noticeable slowdown
 
+# Altitude tracking
+const STARTING_ALTITUDE_FEET = 13500  # Realistic skydiving altitude
+const GROUND_Y_POSITION = 27000
+const STARTING_Y_POSITION = -200
+const TOTAL_FALL_DISTANCE = GROUND_Y_POSITION - STARTING_Y_POSITION  # 27200 units
+var current_altitude_feet = STARTING_ALTITUDE_FEET
+
 # Dev console variables
 var godmode_enabled = false
 var speed_multiplier = 1.0
@@ -61,6 +68,7 @@ var touch_start_time = 0.0
 signal lives_changed(new_lives)
 signal parachute_toggled(deployed)
 signal hit_hazard()
+signal altitude_changed(altitude_feet)
 
 var screen_shake: Node
 var particle_manager: Node2D
@@ -193,6 +201,9 @@ func _physics_process(delta):
 	# Apply cloud drag effect
 	if in_cloud and not parachute_deployed:
 		velocity.y *= cloud_drag_multiplier
+	
+	# Update altitude calculation
+	update_altitude()
 	
 	# Handle horizontal movement with smooth acceleration
 	var direction = 0
@@ -394,6 +405,19 @@ func exit_cloud_effect():
 	if not has_ghost:
 		modulate = Color(1.0, 1.0, 1.0, 1.0)
 	print("Exited cloud - normal descent")
+
+func update_altitude():
+	# Calculate current altitude based on Y position
+	# Convert game units to feet (linear interpolation)
+	var progress = (global_position.y - STARTING_Y_POSITION) / TOTAL_FALL_DISTANCE
+	progress = clamp(progress, 0.0, 1.0)
+	
+	var new_altitude = int(STARTING_ALTITUDE_FEET * (1.0 - progress))
+	new_altitude = max(0, new_altitude)  # Don't go below ground level
+	
+	if new_altitude != current_altitude_feet:
+		current_altitude_feet = new_altitude
+		emit_signal("altitude_changed", current_altitude_feet)
 
 func finish_game():
 	if not game_finished:
