@@ -147,6 +147,14 @@ func _physics_process(delta):
 	elif Input.is_action_pressed("dive_normal") or Input.is_action_just_released("dive_fast"):
 		is_fast_diving = false
 	
+	# Add analog stick dive control
+	if ControllerManager.controller_connected:
+		var stick_y = ControllerManager.get_left_stick_vector().y
+		if stick_y > 0.5:  # Stick pushed down
+			is_fast_diving = true
+		elif stick_y < -0.5:  # Stick pushed up
+			is_fast_diving = false
+	
 	# Handle reset
 	if Input.is_action_just_pressed("reset_game"):
 		get_tree().reload_current_scene()
@@ -207,10 +215,18 @@ func _physics_process(delta):
 	
 	# Handle horizontal movement with smooth acceleration
 	var direction = 0
+	
+	# Keyboard/D-pad input
 	if Input.is_action_pressed("move_left"):
 		direction = -1
 	elif Input.is_action_pressed("move_right"):
 		direction = 1
+	
+	# Add analog stick support with deadzone
+	if ControllerManager.controller_connected:
+		var stick_input = ControllerManager.get_left_stick_vector().x
+		if abs(stick_input) > 0:
+			direction = stick_input  # Use analog value for smoother control
 	
 	# Apply acceleration or friction based on input
 	if direction != 0:
@@ -284,6 +300,9 @@ func toggle_parachute():
 			screen_shake.shake_parachute()
 		if particle_manager:
 			particle_manager.trigger_parachute_effect(global_position)
+		# Controller vibration for parachute deployment
+		if ControllerManager.controller_connected:
+			ControllerManager.vibrate(0.2, 0.3, 0.5)  # Medium vibration
 	
 	# Visual feedback with smooth transitions
 	if has_node("ParachuteSprite"):
@@ -340,6 +359,10 @@ func take_damage():
 		screen_shake.shake_collision()
 	if particle_manager:
 		particle_manager.trigger_impact_effect(global_position)
+	
+	# Controller vibration feedback
+	if ControllerManager.controller_connected:
+		ControllerManager.vibrate(0.3, 0.8, 0.8)  # Strong vibration for damage
 	
 	if lives <= 0:
 		# Game over
