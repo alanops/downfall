@@ -9,22 +9,17 @@ enum HazardType { PLANE, CLOUD }
 var screen_width = 360
 
 func _ready():
-	add_to_group("hazards")
-	
-	# Debug output
-	if hazard_type == HazardType.CLOUD:
-		print("Cloud created at position: ", position)
-	else:
+	# Only planes go in hazards group (cause damage)
+	if hazard_type == HazardType.PLANE:
+		add_to_group("hazards")
+		set_collision_layer_value(2, true)
 		print("Plane created at position: ", position)
-	
-	# Set collision properties based on hazard type
-	if hazard_type == HazardType.CLOUD:
-		# Clouds slow down but don't damage
+	else:
+		# Clouds go in their own group (slow player but don't damage)
+		add_to_group("clouds")
 		set_collision_layer_value(3, true)
 		modulate.a = 0.7  # Make clouds semi-transparent
-	else:
-		# Planes damage the player
-		set_collision_layer_value(2, true)
+		print("Cloud created at position: ", position)
 
 func _physics_process(delta):
 	# Move horizontally

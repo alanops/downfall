@@ -5,6 +5,7 @@ extends Node2D
 @export var powerup_scene: PackedScene
 
 var coin_scene = preload("res://scenes/Coin.tscn")
+var particle_cloud_scene = preload("res://scenes/ParticleCloud.tscn")
 
 @export var spawn_interval_min: float = 0.3
 @export var spawn_interval_max: float = 1.2
@@ -83,14 +84,14 @@ func spawn_hazard():
 		print("Spawned power-up at Y: ", spawn_y, " Player at Y: ", player_y)
 		return
 	
-	# Higher chance for planes (70% plane, 30% cloud)
+	# Higher chance for planes (70% plane, 30% particle cloud)
 	var hazard
 	var hazard_type = "unknown"
 	if randf() < 0.7 and plane_scene:  # 70% chance for plane
 		hazard = plane_scene.instantiate()
 		hazard_type = "plane"
-	elif cloud_scene:
-		hazard = cloud_scene.instantiate()
+	elif particle_cloud_scene:
+		hazard = particle_cloud_scene.instantiate()
 		hazard_type = "cloud"
 	else:
 		print("Error: Could not create hazard - missing scene references")
@@ -106,8 +107,11 @@ func spawn_hazard():
 		hazard.position = Vector2(screen_width + 50, spawn_y)
 		hazard.move_direction = -1
 	
-	# Vary the speed
-	hazard.move_speed = randf_range(100, 250)
+	# Vary the speed based on hazard type
+	if hazard_type == "cloud":
+		hazard.move_speed = randf_range(50, 150)  # Clouds move slower
+	else:
+		hazard.move_speed = randf_range(100, 250)  # Planes normal speed
 	
 	print("Spawned ", hazard_type, " at Y: ", spawn_y, " Player at Y: ", player_y)
 	
@@ -150,16 +154,18 @@ func spawn_safe_coins():
 	print("Spawned ", num_coins, " safe coins")
 
 func spawn_cloud():
-	# Function for dev console
-	if not cloud_scene:
+	# Function for dev console - spawn particle cloud
+	if not particle_cloud_scene:
 		return
 		
-	var cloud = cloud_scene.instantiate()
+	var cloud = particle_cloud_scene.instantiate()
 	add_child(cloud)
 	
 	var player = get_node_or_null("../Player")
 	if player:
 		cloud.global_position = Vector2(randf_range(50, screen_width - 50), player.global_position.y + 200)
+		cloud.move_direction = 1 if randf() < 0.5 else -1
+		cloud.move_speed = randf_range(50, 150)
 
 func spawn_powerup():
 	# Function for dev console

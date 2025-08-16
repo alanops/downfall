@@ -225,5 +225,6 @@ script = ExtResource("17")
 [connection signal="parachute_toggled" from="Player" to="HUD" method="_on_parachute_toggled"]
 [connection signal="pressed" from="HUD/DevConsoleTestButton" to="DevConsole" method="toggle_console"]
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Player/Area2D" to="Player" method="_on_area_2d_area_exited"]
 [connection signal="body_entered" from="GroundDetector" to="GroundDetector" method="_on_body_entered"]
 [connection signal="player_landed" from="GroundDetector" to="GameManager" method="_on_ground_player_landed"]

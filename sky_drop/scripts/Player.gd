@@ -40,6 +40,10 @@ const SHIELD_DURATION = 8.0
 const MAGNET_DURATION = 10.0
 const GHOST_DURATION = 5.0
 
+# Cloud effect variables
+var in_cloud = false
+var cloud_drag_multiplier = 0.5  # More noticeable slowdown
+
 # Dev console variables
 var godmode_enabled = false
 var speed_multiplier = 1.0
@@ -185,6 +189,10 @@ func _physics_process(delta):
 	
 	velocity.y += gravity * gravity_multiplier * delta
 	velocity.y = min(velocity.y, max_fall)
+	
+	# Apply cloud drag effect
+	if in_cloud and not parachute_deployed:
+		velocity.y *= cloud_drag_multiplier
 	
 	# Handle horizontal movement with smooth acceleration
 	var direction = 0
@@ -351,9 +359,16 @@ func add_ghost_mode():
 func _on_area_2d_area_entered(area):
 	if area.is_in_group("hazards") and not godmode_enabled and not has_shield and not has_ghost:
 		take_damage()
+	elif area.is_in_group("clouds"):
+		# Clouds slow descent but don't damage
+		enter_cloud_effect()
 	elif area.is_in_group("powerups"):
 		add_parachute()
 		area.queue_free()
+
+func _on_area_2d_area_exited(area):
+	if area.is_in_group("clouds"):
+		exit_cloud_effect()
 
 func attract_coins():
 	# Find all coins in the scene and attract them if they're within range
@@ -366,6 +381,19 @@ func attract_coins():
 				var direction = (global_position - coin.global_position).normalized()
 				var attraction_force = 200.0 * (1.0 - distance / magnet_range)
 				coin.global_position += direction * attraction_force * get_physics_process_delta_time()
+
+func enter_cloud_effect():
+	in_cloud = true
+	# Visual feedback - slight blue tint when in cloud
+	modulate = Color(0.9, 0.95, 1.0, 1.0)
+	print("Entered cloud - descent slowed")
+
+func exit_cloud_effect():
+	in_cloud = false
+	# Return to normal color (unless in ghost mode)
+	if not has_ghost:
+		modulate = Color(1.0, 1.0, 1.0, 1.0)
+	print("Exited cloud - normal descent")
 
 func finish_game():
 	if not game_finished:
