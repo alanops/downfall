@@ -22,9 +22,9 @@ func _ready():
 			file_label.text = "plane_1"
 			
 		# Flip sprite based on movement direction  
-		# Sprites face left by default (propeller on left), so flip when moving right
+		# Sprites face left by default (propeller on left), so flip when moving left
 		if sprite:
-			sprite.flip_h = move_direction > 0
+			sprite.flip_h = move_direction < 0
 			
 	else:
 		# Clouds go in their own group (slow player but don't damage)
