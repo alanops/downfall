@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://kk6jqi1eo3s0" path="res://scenes/DevConsole.tscn" id="15"]
 [ext_resource type="Script" uid="uid://bc84astrcs1ti" path="res://scripts/ScreenShake.gd" id="16"]
 [ext_resource type="Script" uid="uid://c7046kot33dqq" path="res://scripts/ParticleManager.gd" id="17"]
+[ext_resource type="Script" path="res://scripts/FallingCamera.gd" id="18"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
@@ -42,7 +43,7 @@ script = ExtResource("4")
 [node name="BackgroundLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 z_index = -50
 motion_scale = Vector2(1, 0.2)
-motion_mirroring = Vector2(0, 1024)
+motion_mirroring = Vector2(360, 1024)
 
 [node name="BlueBackground" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
 position = Vector2(180, 320)
@@ -56,10 +57,18 @@ texture = ExtResource("10")
 position = Vector2(180, -200)
 texture = ExtResource("10")
 
+[node name="BlueBackgroundLeft" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
+position = Vector2(-180, 320)
+texture = ExtResource("10")
+
+[node name="BlueBackgroundRight" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
+position = Vector2(540, 320)
+texture = ExtResource("10")
+
 [node name="FarCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 z_index = -40
 motion_scale = Vector2(1, 0.4)
-motion_mirroring = Vector2(0, 1024)
+motion_mirroring = Vector2(360, 1024)
 
 [node name="FarClouds" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
 position = Vector2(180, 320)
@@ -69,10 +78,18 @@ texture = ExtResource("11")
 position = Vector2(180, -200)
 texture = ExtResource("11")
 
+[node name="FarCloudsLeft" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
+position = Vector2(-180, 320)
+texture = ExtResource("11")
+
+[node name="FarCloudsRight" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
+position = Vector2(540, 320)
+texture = ExtResource("11")
+
 [node name="NearCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 z_index = -30
 motion_scale = Vector2(1, 0.6)
-motion_mirroring = Vector2(0, 1024)
+motion_mirroring = Vector2(360, 1024)
 
 [node name="NearClouds" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
 position = Vector2(180, 320)
@@ -82,8 +99,21 @@ texture = ExtResource("12")
 position = Vector2(180, -200)
 texture = ExtResource("12")
 
-[node name="GameCamera" type="Camera2D" parent="."]
-position = Vector2(180, -200)
+[node name="NearCloudsLeft" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(-180, 320)
+texture = ExtResource("12")
+
+[node name="NearCloudsRight" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(540, 320)
+texture = ExtResource("12")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(180, -50)
+script = ExtResource("18")
+target = NodePath("../Player")
+vertical_offset = -150.0
+follow_speed = 15.0
+horizontal_deadzone = 80.0
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(180, -200)
