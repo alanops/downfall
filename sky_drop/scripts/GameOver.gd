@@ -1,10 +1,19 @@
 extends Control
 
+@onready var milo_credit = $CreditsContainer/MiloCredit
+@onready var alan_credit = $CreditsContainer/AlanCredit
+
 func _ready():
 	$VBoxContainer/RetryButton.grab_focus()
 	
 	# Load and display the game results
 	display_results()
+	
+	# Connect clickable credits
+	if milo_credit:
+		milo_credit.meta_clicked.connect(_on_credit_link_clicked)
+	if alan_credit:
+		alan_credit.meta_clicked.connect(_on_credit_link_clicked)
 
 func _input(event):
 	if Input.is_action_just_pressed("reset_game"):
@@ -25,6 +34,10 @@ func _on_retry_button_pressed():
 
 func _on_menu_button_pressed():
 	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+
+func _on_credit_link_clicked(meta):
+	# Open the URL in default browser
+	OS.shell_open(str(meta))
 
 func display_results():
 	print("GameOver: Displaying results - Score: ", GameData.final_score, " Time: ", GameData.final_time)
