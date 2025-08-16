@@ -185,6 +185,8 @@ func execute_command(command: String):
 			show_fps_info()
 		"altitude":
 			show_altitude_info()
+		"gif":
+			record_gif()
 		_:
 			print_to_console("Unknown command: " + cmd + ". Type 'help' for available commands.")
 
@@ -217,11 +219,13 @@ Audio:
 Debug:
 - fps - Show FPS and performance info
 - altitude - Show current altitude and position info
+- gif - Start 5-second GIF recording
 - clear - Clear console output
 - help - Show this help message
 
 Controls:
 - ESC - Toggle dev console
+- F12 - Start/stop GIF recording
 - Shift+Enter - Toggle sound menu
 - Up/Down arrows - Navigate command history"""
 	
@@ -438,3 +442,11 @@ func set_sfx_volume(volume_percent: float):
 	var bus_index = AudioServer.get_bus_index("SFX")
 	if bus_index != -1:
 		AudioServer.set_bus_volume_db(bus_index, db)
+
+func record_gif():
+	var gif_recorder = get_node("/root/Main/GifRecorder")
+	if gif_recorder:
+		var result = gif_recorder.trigger_recording()
+		print_to_console(result)
+	else:
+		print_to_console("GIF Recorder not found!")
