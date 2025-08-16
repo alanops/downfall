@@ -115,40 +115,8 @@ func save_gif():
 		print("No frames captured for GIF")
 		return
 	
-	# Create timestamp for filename
-	var time_dict = Time.get_datetime_dict_from_system()
-	var timestamp = "%04d%02d%02d_%02d%02d%02d" % [
-		time_dict.year, time_dict.month, time_dict.day,
-		time_dict.hour, time_dict.minute, time_dict.second
-	]
-	
-	# Create output directory if it doesn't exist
-	var dir = DirAccess.open("user://")
-	if not dir.dir_exists("gifs"):
-		dir.make_dir("gifs")
-	
-	var gif_path = "user://gifs/sky_drop_%s.gif" % timestamp
-	
-	# Since Godot doesn't have built-in GIF encoding, we'll save as a series of PNG files
-	# and provide instructions for creating a GIF
-	var frames_dir = "user://gifs/sky_drop_%s_frames" % timestamp
-	dir.make_dir(frames_dir)
-	
-	# Save individual frames
-	for i in range(gif_frames.size()):
-		var frame_path = "%s/frame_%03d.png" % [frames_dir, i]
-		gif_frames[i].save_png(frame_path)
-	
-	# Create a batch file for ffmpeg conversion
-	create_ffmpeg_script(frames_dir, gif_path, timestamp)
-	
-	print("GIF frames saved to: ", frames_dir)
-	print("Captured ", gif_frames.size(), " frames over ", recording_duration, " seconds")
-	
-	# Show notification to player
-	show_recording_complete_notification(timestamp)
-	
-	emit_signal("recording_finished", gif_path)
+	# Show share dialog
+	show_share_dialog()
 
 func create_ffmpeg_script(frames_dir: String, gif_path: String, timestamp: String):
 	# Create conversion scripts for different platforms
@@ -182,7 +150,71 @@ echo "GIF created: %s"
 		sh_file.store_string(sh_content)
 		sh_file.close()
 
-func show_recording_complete_notification(timestamp: String):
+func show_share_dialog():
+	# Create share dialog
+	var dialog = preload("res://scenes/ShareDialog.tscn").instantiate()
+	dialog.set_gif_frames(gif_frames)
+	dialog.share_requested.connect(_on_share_requested)
+	dialog.save_locally_requested.connect(_on_save_locally_requested)
+	
+	# Add to scene
+	get_tree().current_scene.add_child(dialog)
+	dialog.popup_centered()
+
+func _on_share_requested():
+	# Get GIF sharer
+	var gif_sharer = get_node_or_null("../GifSharer")
+	if gif_sharer:
+		gif_sharer.upload_started.connect(_on_upload_started)
+		gif_sharer.upload_completed.connect(_on_upload_completed)
+		gif_sharer.upload_failed.connect(_on_upload_failed)
+		
+		if not gif_sharer.share_gif(gif_frames):
+			show_error_notification("Failed to start upload")
+	else:
+		show_error_notification("GIF Sharer not found!")
+
+func _on_save_locally_requested():
+	# Original local save functionality
+	save_frames_locally()
+
+func save_frames_locally():
+	# Create timestamp for filename
+	var time_dict = Time.get_datetime_dict_from_system()
+	var timestamp = "%04d%02d%02d_%02d%02d%02d" % [
+		time_dict.year, time_dict.month, time_dict.day,
+		time_dict.hour, time_dict.minute, time_dict.second
+	]
+	
+	# Create output directory if it doesn't exist
+	var dir = DirAccess.open("user://")
+	if not dir.dir_exists("gifs"):
+		dir.make_dir("gifs")
+	
+	var gif_path = "user://gifs/sky_drop_%s.gif" % timestamp
+	
+	# Since Godot doesn't have built-in GIF encoding, we'll save as a series of PNG files
+	# and provide instructions for creating a GIF
+	var frames_dir = "user://gifs/sky_drop_%s_frames" % timestamp
+	dir.make_dir(frames_dir)
+	
+	# Save individual frames
+	for i in range(gif_frames.size()):
+		var frame_path = "%s/frame_%03d.png" % [frames_dir, i]
+		gif_frames[i].save_png(frame_path)
+	
+	# Create a batch file for ffmpeg conversion
+	create_ffmpeg_script(frames_dir, gif_path, timestamp)
+	
+	print("GIF frames saved to: ", frames_dir)
+	print("Captured ", gif_frames.size(), " frames over ", recording_duration, " seconds")
+	
+	# Show notification to player
+	show_local_save_notification(timestamp)
+	
+	emit_signal("recording_finished", gif_path)
+
+func show_local_save_notification(timestamp: String):
 	# Create a temporary notification
 	var notification = Label.new()
 	notification.text = "🎬 Recording saved! Check user://gifs/ folder\nUse create_gif_%s script to convert to GIF" % timestamp
@@ -198,6 +230,80 @@ func show_recording_complete_notification(timestamp: String):
 		hud.add_child(notification)
 		
 		# Remove notification after 5 seconds
+		var tween = create_tween()
+		tween.tween_delay(5.0)
+		tween.tween_callback(notification.queue_free)
+
+func _on_upload_started():
+	show_upload_notification("Uploading GIF to Imgur...", Color.YELLOW)
+
+func _on_upload_completed(share_url: String):
+	show_share_success_notification(share_url)
+
+func _on_upload_failed(error: String):
+	show_error_notification("Upload failed: " + error)
+
+func show_upload_notification(text: String, color: Color):
+	var notification = Label.new()
+	notification.text = "🌐 " + text
+	notification.position = Vector2(10, 160)
+	notification.size = Vector2(350, 40)
+	notification.add_theme_color_override("font_color", color)
+	notification.add_theme_font_size_override("font_size", 16)
+	notification.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	
+	# Add to HUD
+	var hud = get_node_or_null("../HUD")
+	if hud:
+		hud.add_child(notification)
+		notification.name = "UploadNotification"
+
+func show_share_success_notification(url: String):
+	# Remove any existing upload notification
+	var hud = get_node_or_null("../HUD")
+	if hud:
+		var old_notification = hud.get_node_or_null("UploadNotification")
+		if old_notification:
+			old_notification.queue_free()
+	
+	# Create success notification
+	var notification = RichTextLabel.new()
+	notification.bbcode_enabled = true
+	notification.text = "[center][color=lime]✅ GIF Uploaded Successfully![/color][/center]\n[center][url]%s[/url][/center]\n[center][color=gray](Link copied to clipboard)[/color][/center]" % url
+	notification.fit_content = true
+	notification.position = Vector2(30, 200)
+	notification.size = Vector2(300, 100)
+	notification.add_theme_font_size_override("normal_font_size", 14)
+	
+	if hud:
+		hud.add_child(notification)
+		
+		# Auto-remove after 7 seconds
+		var tween = create_tween()
+		tween.tween_delay(7.0)
+		tween.tween_callback(notification.queue_free)
+
+func show_error_notification(error: String):
+	# Remove any existing upload notification
+	var hud = get_node_or_null("../HUD")
+	if hud:
+		var old_notification = hud.get_node_or_null("UploadNotification")
+		if old_notification:
+			old_notification.queue_free()
+	
+	# Create error notification
+	var notification = Label.new()
+	notification.text = "❌ " + error
+	notification.position = Vector2(10, 160)
+	notification.size = Vector2(350, 60)
+	notification.add_theme_color_override("font_color", Color.RED)
+	notification.add_theme_font_size_override("font_size", 14)
+	notification.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	
+	if hud:
+		hud.add_child(notification)
+		
+		# Remove after 5 seconds
 		var tween = create_tween()
 		tween.tween_delay(5.0)
 		tween.tween_callback(notification.queue_free)

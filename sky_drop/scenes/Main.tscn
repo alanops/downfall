@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://cjkw7x4m2p9s1" path="res://scripts/ScreenShake.gd" id="16"]
 [ext_resource type="Script" uid="uid://dk8w3x7m5n2q1" path="res://scripts/ParticleManager.gd" id="17"]
 [ext_resource type="Script" uid="uid://bq7j9k5x3t8w" path="res://scripts/GifRecorder.gd" id="18"]
+[ext_resource type="Script" uid="uid://c2m8x9k3p7q4" path="res://scripts/GifSharer.gd" id="19"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
@@ -229,6 +230,9 @@ script = ExtResource("17")
 
 [node name="GifRecorder" type="Node" parent="."]
 script = ExtResource("18")
+
+[node name="GifSharer" type="Node" parent="."]
+script = ExtResource("19")
 
 [node name="DevConsole" parent="." instance=ExtResource("15")]
 

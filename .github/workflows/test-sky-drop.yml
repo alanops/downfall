@@ -1,0 +1,206 @@
+name: Sky Drop - Automated Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths: 
+      - 'sky_drop/**'
+      - 'tests/**'
+      - '.github/workflows/test-sky-drop.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'sky_drop/**'
+      - 'tests/**'
+  schedule:
+    # Run tests daily at 2 AM UTC to catch any deployment issues
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  test-game:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+        
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: tests/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: tests
+      run: |
+        npm ci
+        npx playwright install --with-deps ${{ matrix.browser }}
+    
+    - name: Wait for game deployment (if recent push)
+      if: github.event_name == 'push'
+      run: |
+        echo "Waiting 2 minutes for potential deployment to complete..."
+        sleep 120
+    
+    - name: Run Playwright tests
+      working-directory: tests
+      run: npx playwright test --project=${{ matrix.browser }} --reporter=html
+      env:
+        PLAYWRIGHT_HTML_REPORT: playwright-report-${{ matrix.browser }}
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report-${{ matrix.browser }}
+        path: tests/playwright-report-${{ matrix.browser }}/
+        retention-days: 30
+    
+    - name: Upload test screenshots
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: screenshots-${{ matrix.browser }}
+        path: tests/test-results/
+        retention-days: 7
+
+  test-mobile:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: tests/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: tests
+      run: |
+        npm ci
+        npx playwright install --with-deps chromium
+    
+    - name: Run mobile tests
+      working-directory: tests
+      run: npx playwright test --project=mobile-chrome --reporter=html
+      env:
+        PLAYWRIGHT_HTML_REPORT: playwright-report-mobile
+    
+    - name: Upload mobile test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report-mobile
+        path: tests/playwright-report-mobile/
+        retention-days: 30
+
+  performance-test:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: tests/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: tests
+      run: |
+        npm ci
+        npx playwright install --with-deps chromium
+    
+    - name: Run performance tests
+      working-directory: tests
+      run: npx playwright test performance.test.js --reporter=html
+      env:
+        PLAYWRIGHT_HTML_REPORT: playwright-report-performance
+    
+    - name: Upload performance results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report-performance
+        path: tests/playwright-report-performance/
+        retention-days: 30
+
+  visual-regression:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: tests/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: tests
+      run: |
+        npm ci
+        npx playwright install --with-deps chromium
+    
+    - name: Run visual regression tests
+      working-directory: tests
+      run: npx playwright test visual-regression.test.js --reporter=html
+      env:
+        PLAYWRIGHT_HTML_REPORT: playwright-report-visual
+    
+    - name: Upload visual test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report-visual
+        path: tests/playwright-report-visual/
+        retention-days: 30
+    
+    - name: Upload visual diff artifacts
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: visual-diffs
+        path: tests/test-results/
+        retention-days: 7
+
+  test-summary:
+    runs-on: ubuntu-latest
+    needs: [test-game, test-mobile, performance-test, visual-regression]
+    if: always()
+    
+    steps:
+    - name: Test Summary
+      run: |
+        echo "## Sky Drop Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "| Test Suite | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Game Tests | ${{ needs.test-game.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Mobile Tests | ${{ needs.test-mobile.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Performance Tests | ${{ needs.performance-test.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Visual Regression | ${{ needs.visual-regression.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🎮 **Game URL**: https://downfallgames.itch.io/downfall" >> $GITHUB_STEP_SUMMARY
+    
+    - name: Notify on failure
+      if: contains(needs.*.result, 'failure')
+      run: |
+        echo "❌ Some tests failed. Check the test reports for details."
+        exit 1
