@@ -61,24 +61,25 @@ func _physics_process(delta):
 	# Move horizontally
 	position.x += move_speed * move_direction * delta
 	
-	# Wrap around screen or destroy if off-screen
+	# For planes: extend the off-screen boundaries so they don't disappear when player wanders off
 	if hazard_type == HazardType.PLANE:
-		if position.x > screen_width + 100:
+		# Much larger boundaries to account for player movement
+		if position.x > screen_width + 800:  # Extended from 100 to 800
 			if move_direction > 0:
 				queue_free()
 			else:
-				position.x = screen_width + 100
-		elif position.x < -100:
+				position.x = screen_width + 800
+		elif position.x < -800:  # Extended from -100 to -800
 			if move_direction < 0:
 				queue_free()
 			else:
-				position.x = -100
+				position.x = -800
 	else:
-		# Clouds wrap around
-		if position.x > screen_width + 200:
-			position.x = -200
-		elif position.x < -200:
-			position.x = screen_width + 200
+		# Clouds wrap around with extended boundaries
+		if position.x > screen_width + 800:  # Extended from 200 to 800
+			position.x = -800
+		elif position.x < -800:  # Extended from -200 to -800
+			position.x = screen_width + 800
 
 func _on_body_entered(body):
 	if body.has_method("take_damage") and hazard_type == HazardType.PLANE:

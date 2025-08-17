@@ -1,15 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://c5n7k8m2x9p4"]
+[gd_scene load_steps=2 format=3 uid="uid://bq833l1svhnh7"]
 
-[ext_resource type="Script" uid="uid://b8x4k9m2p7n3" path="res://scripts/ControllerSettings.gd" id="1"]
+[ext_resource type="Script" uid="uid://b8x4lam2p7n3" path="res://scripts/ControllerSettings.gd" id="1"]
 
 [node name="ControllerSettings" type="Control"]
-anchor_preset = 15
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -21,8 +22,8 @@ offset_bottom = 150.0
 
 [node name="Title" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Controller Settings"
 theme_override_font_sizes/font_size = 24
+text = "Controller Settings"
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
@@ -40,9 +41,9 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="VibrationLabel" type="Label" parent="VBoxContainer/VibrationContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Vibration:"
-custom_minimum_size = Vector2(100, 0)
 
 [node name="VibrationToggle" type="CheckButton" parent="VBoxContainer/VibrationContainer"]
 layout_mode = 2
@@ -52,9 +53,9 @@ button_pressed = true
 layout_mode = 2
 
 [node name="StrengthLabel" type="Label" parent="VBoxContainer/VibrationStrengthContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Strength:"
-custom_minimum_size = Vector2(100, 0)
 
 [node name="StrengthSlider" type="HSlider" parent="VBoxContainer/VibrationStrengthContainer"]
 layout_mode = 2
@@ -67,9 +68,9 @@ value = 0.5
 layout_mode = 2
 
 [node name="DeadzoneLabel" type="Label" parent="VBoxContainer/DeadzoneContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Deadzone:"
-custom_minimum_size = Vector2(100, 0)
 
 [node name="DeadzoneSlider" type="HSlider" parent="VBoxContainer/DeadzoneContainer"]
 layout_mode = 2

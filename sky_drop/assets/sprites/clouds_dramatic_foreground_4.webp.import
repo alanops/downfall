@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4hp8flvu6et6"
-path="res://.godot/imported/clouds_dramatic_foreground.webp-69b9b74ca52768de0a1d2b5f7b134929.ctex"
+uid="uid://0ssxxgtvxm30"
+path="res://.godot/imported/clouds_dramatic_foreground_4.webp-9c9b3abaf19d0246a19d78a3031e7daa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/clouds_dramatic_foreground.webp"
-dest_files=["res://.godot/imported/clouds_dramatic_foreground.webp-69b9b74ca52768de0a1d2b5f7b134929.ctex"]
+source_file="res://assets/sprites/clouds_dramatic_foreground_4.webp"
+dest_files=["res://.godot/imported/clouds_dramatic_foreground_4.webp-9c9b3abaf19d0246a19d78a3031e7daa.ctex"]
 
 [params]
 

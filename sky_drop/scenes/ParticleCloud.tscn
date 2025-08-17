@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8x4m9n1p5q2"]
+[gd_scene load_steps=2 format=3 uid="uid://c8x4nan1p5q2"]
 
-[ext_resource type="Script" uid="uid://bm7n3k8x2r4s" path="res://scripts/ParticleCloud.gd" id="1"]
+[ext_resource type="Script" uid="uid://gm6w6erce35f" path="res://scripts/ParticleCloud.gd" id="1"]
 
 [node name="ParticleCloud" type="Area2D"]
 script = ExtResource("1")
