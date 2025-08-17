@@ -52,8 +52,14 @@ func _process(delta):
 			spawn_hazard()
 		
 		# Also spawn some random coins in safe areas
-		if randf() < 0.3:  # 30% chance per spawn cycle
+		if randf() < 0.6:  # 60% chance per spawn cycle (increased from 30%)
 			spawn_safe_coins()
+		
+		# Continue spawning coins even after hazards stop (until 1500ft)
+		var player = get_node_or_null("../Player")
+		if player and player.global_position.y > (27200 * 0.70 - 200):  # After 4000ft altitude
+			if randf() < 0.8:  # Higher chance in the final stretch
+				spawn_final_coins()
 		
 		spawn_timer = 0.0
 		next_spawn_time = randf_range(spawn_interval_min, spawn_interval_max)
@@ -69,8 +75,10 @@ func spawn_hazard():
 	# Convert altitude range to Y positions  
 	# 12,000 ft = ~11% of fall = Y position ~2,792
 	# 4,000 ft = ~70% of fall = Y position ~18,840
+	# 1,500 ft = ~89% of fall = Y position ~24,008
 	var altitude_12000_y = -200 + (27200 * 0.11)  # ~2,792
 	var altitude_4000_y = -200 + (27200 * 0.70)   # ~18,840
+	var altitude_1500_y = -200 + (27200 * 0.89)   # ~24,008
 	
 	# Don't spawn if player hasn't reached the hazard zone yet
 	if player_y < altitude_12000_y - 500:  # Smaller buffer
@@ -81,7 +89,7 @@ func spawn_hazard():
 	var max_distance_ahead = 1200  # Maximum distance below player
 	var spawn_y = randf_range(player_y + min_distance_ahead, player_y + max_distance_ahead)
 	
-	# Clamp to hazard zone bounds
+	# Clamp to hazard zone bounds (hazards stop at 4000ft)
 	spawn_y = clamp(spawn_y, altitude_12000_y, altitude_4000_y)
 	
 	# Progressive difficulty - more power-ups in later sections
@@ -163,8 +171,8 @@ func spawn_hazard():
 	
 	print("Spawned ", hazard_type, " at Y: ", spawn_y, " Player at Y: ", player_y)
 	
-	# 40% chance to spawn a coin near dangerous hazards (planes only)
-	if hazard_type == "plane" and randf() < 0.4:
+	# 60% chance to spawn a coin near dangerous hazards (planes only) - increased from 40%
+	if hazard_type == "plane" and randf() < 0.6:
 		spawn_coin_near_hazard(hazard.position)
 
 func spawn_coin_near_hazard(hazard_pos: Vector2):
@@ -183,19 +191,19 @@ func spawn_coin_near_hazard(hazard_pos: Vector2):
 	print("Spawned risk/reward coin near hazard")
 
 func spawn_safe_coins():
-	# Spawn 1-3 coins in relatively safe areas
+	# Spawn 2-5 coins in relatively safe areas (increased from 1-3)
 	var player = get_node_or_null("../Player")
 	if not player or not coin_scene:
 		return
 		
-	var num_coins = randi_range(1, 3)
+	var num_coins = randi_range(2, 5)
 	for i in range(num_coins):
 		var coin = coin_scene.instantiate()
 		add_child(coin)
 		
-		# Spawn in safe areas below player - not too close to edges
+		# Spawn in safe areas below player - spread over longer distance
 		var safe_x = randf_range(60, screen_width - 60)
-		var safe_y = randf_range(player.global_position.y + 200, player.global_position.y + 600)
+		var safe_y = randf_range(player.global_position.y + 150, player.global_position.y + 1000)  # Extended range
 		
 		coin.global_position = Vector2(safe_x, safe_y)
 	
@@ -239,3 +247,33 @@ func spawn_powerup():
 	var player = get_node_or_null("../Player")
 	if player:
 		powerup.global_position = Vector2(randf_range(50, screen_width - 50), player.global_position.y + 150)
+
+func spawn_final_coins():
+	# Spawn coins in the final stretch from 4000ft down to 1500ft
+	var player = get_node_or_null("../Player")
+	if not player or not coin_scene:
+		return
+	
+	# Calculate altitude boundaries
+	var altitude_4000_y = -200 + (27200 * 0.70)   # ~18,840
+	var altitude_1500_y = -200 + (27200 * 0.89)   # ~24,008
+	
+	# Don't spawn coins if we're past 1500ft
+	if player.global_position.y > altitude_1500_y:
+		return
+		
+	var num_coins = randi_range(3, 6)  # More coins in final stretch
+	for i in range(num_coins):
+		var coin = coin_scene.instantiate()
+		add_child(coin)
+		
+		# Spawn coins across the full width, in the safe final zone
+		var safe_x = randf_range(40, screen_width - 40)
+		var safe_y = randf_range(player.global_position.y + 100, player.global_position.y + 800)
+		
+		# Clamp to final zone bounds
+		safe_y = clamp(safe_y, altitude_4000_y, altitude_1500_y)
+		
+		coin.global_position = Vector2(safe_x, safe_y)
+	
+	print("Spawned ", num_coins, " final coins in landing approach zone")
