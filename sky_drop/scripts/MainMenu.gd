@@ -20,7 +20,7 @@ func _on_start_button_pressed():
 	# Enable audio for web browsers on first interaction
 	AudioManager.enable_audio()
 	# Play menu click sound (using test sound as menu click)
-	AudioManager.play_sound("test", -10.0, 1.2)  # Slightly higher pitch
+	AudioManager.play_sound("test", -22.0, 1.2)  # Slightly higher pitch
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 func _on_quit_button_pressed():

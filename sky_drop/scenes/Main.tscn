@@ -16,7 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://6asrt8b3qfv0" path="res://assets/sprites/clouds_dramatic_foreground_2.webp" id="13"]
 [ext_resource type="Texture2D" uid="uid://bw6xiklmyhnpr" path="res://assets/sprites/parachute.webp" id="14"]
 [ext_resource type="PackedScene" uid="uid://kk6jqi1eo3s0" path="res://scenes/DevConsole.tscn" id="15"]
-[ext_resource type="Script" uid="uid://cuh8ghiat48ck" path="res://scripts/ScreenShake.gd" id="16"]
+[ext_resource type="Script" uid="uid://bc84astrcs1ti" path="res://scripts/ScreenShake.gd" id="16"]
 [ext_resource type="Script" uid="uid://c7046kot33dqq" path="res://scripts/ParticleManager.gd" id="17"]
 [ext_resource type="Script" uid="uid://d2xd7f5vtinxa" path="res://scripts/FallingCamera.gd" id="18"]
 [ext_resource type="Texture2D" uid="uid://be6fpjmjbmwf7" path="res://assets/sprites/clouds_dramatic_foreground_3.webp" id="19"]

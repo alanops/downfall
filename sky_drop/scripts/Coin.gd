@@ -84,7 +84,7 @@ func collect():
 	tween.tween_callback(queue_free)
 	
 	# Play coin collection sound
-	AudioManager.play_sound("coin_collect", -8.0)  # Slightly quieter
+	AudioManager.play_sound("coin_collect", -10.0)  # Slightly quieter
 
 func create_floating_animation():
 	var animation = Animation.new()
