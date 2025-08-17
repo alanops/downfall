@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Sky Drop"
+config/name="Downfall"
 run/main_scene="res://scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
@@ -29,9 +29,13 @@ window/size/window_width_override=720
 window/size/window_height_override=1280
 window/stretch/mode="viewport"
 
+[audio]
+
+buses/default_bus_layout="res://default_bus_layout.tres"
+
 [dotnet]
 
-project/assembly_name="Sky Drop"
+project/assembly_name="Downfall"
 
 [editor_plugins]
 

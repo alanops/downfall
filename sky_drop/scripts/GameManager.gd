@@ -76,6 +76,9 @@ func start_game():
 	combo_timer = 0.0
 	set_process(true)
 	
+	# Ensure audio is enabled (especially for web)
+	AudioManager.enable_audio()
+	
 	# Start background music
 	AudioManager.play_music("music_1", -15.0)  # Play quietly
 	AudioManager.play_looping_sound("wind_rushing", "wind", -20.0)  # Wind ambience

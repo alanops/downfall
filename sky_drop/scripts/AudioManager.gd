@@ -35,7 +35,14 @@ var master_volume = 1.0
 var music_volume = 1.0
 var sfx_volume = 1.0
 
+# Web audio state
+var audio_enabled = false
+var first_user_interaction = false
+
 func _ready():
+	# Set up audio buses first
+	setup_audio_buses()
+	
 	# Create audio stream players pool for sound effects
 	for i in range(10):  # Pool of 10 players for concurrent sounds
 		var player = AudioStreamPlayer.new()
@@ -48,8 +55,11 @@ func _ready():
 	music_player.bus = MUSIC_BUS
 	add_child(music_player)
 	
-	# Set up audio buses if they don't exist
-	setup_audio_buses()
+	# Enable audio after first user interaction on web
+	if OS.has_feature("web"):
+		get_viewport().gui_input.connect(_on_first_input)
+	else:
+		audio_enabled = true
 
 func setup_audio_buses():
 	# Check if buses exist, create if not
@@ -74,6 +84,9 @@ func setup_audio_buses():
 		AudioServer.set_bus_send(new_idx, MASTER_BUS)
 
 func play_sound(sound_name: String, volume_db: float = 0.0, pitch: float = 1.0):
+	if not audio_enabled:
+		return
+		
 	if not sounds.has(sound_name):
 		print("Sound not found: " + sound_name)
 		return
@@ -121,13 +134,25 @@ func set_sfx_volume(value: float):
 
 # Music playback functions
 func play_music(music_name: String, volume_db: float = -10.0, loop: bool = true):
+	if not audio_enabled:
+		return
+		
 	if not sounds.has(music_name):
 		print("Music not found: " + music_name)
 		return
 		
-	music_player.stream = sounds[music_name]
+	var audio_stream = sounds[music_name]
+	# Create a copy for web compatibility
+	if OS.has_feature("web") and audio_stream is AudioStreamOggVorbis:
+		var stream_copy = audio_stream.duplicate()
+		stream_copy.loop = loop
+		music_player.stream = stream_copy
+	else:
+		music_player.stream = audio_stream
+		if music_player.stream:
+			music_player.stream.loop = loop
+	
 	music_player.volume_db = volume_db
-	music_player.stream.loop = loop
 	music_player.play()
 
 func stop_music():
@@ -146,6 +171,9 @@ func fade_out_music(duration: float = 1.0):
 var looping_sounds = {}
 
 func play_looping_sound(sound_name: String, player_id: String = "default", volume_db: float = -5.0):
+	if not audio_enabled:
+		return
+		
 	if not sounds.has(sound_name):
 		print("Sound not found: " + sound_name)
 		return
@@ -156,9 +184,18 @@ func play_looping_sound(sound_name: String, player_id: String = "default", volum
 	# Find available player
 	for player in sfx_players:
 		if not player.playing:
-			player.stream = sounds[sound_name]
+			var audio_stream = sounds[sound_name]
+			# Create a copy for web compatibility
+			if OS.has_feature("web") and audio_stream is AudioStreamOggVorbis:
+				var stream_copy = audio_stream.duplicate()
+				stream_copy.loop = true
+				player.stream = stream_copy
+			else:
+				player.stream = audio_stream
+				if player.stream:
+					player.stream.loop = true
+			
 			player.volume_db = volume_db
-			player.stream.loop = true
 			player.play()
 			looping_sounds[player_id] = player
 			return
@@ -167,6 +204,23 @@ func stop_looping_sound(player_id: String = "default"):
 	if looping_sounds.has(player_id):
 		var player = looping_sounds[player_id]
 		if player and player.playing:
-			player.stream.loop = false
+			if player.stream:
+				player.stream.loop = false
 			player.stop()
 		looping_sounds.erase(player_id)
+
+# Handle first user interaction for web audio
+func _on_first_input(event):
+	if not first_user_interaction and (event is InputEventMouseButton or event is InputEventKey):
+		if event.pressed:
+			first_user_interaction = true
+			audio_enabled = true
+			print("Audio enabled after user interaction")
+			get_viewport().gui_input.disconnect(_on_first_input)
+
+# Public function to enable audio (call on first button press)
+func enable_audio():
+	if not audio_enabled:
+		audio_enabled = true
+		first_user_interaction = true
+		print("Audio manually enabled")
