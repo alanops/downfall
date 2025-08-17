@@ -1,10 +1,18 @@
 res://scenes/Plane.tscn
+<<<<<<< HEAD
+=======
 res://scripts/AudioManager.gd
+>>>>>>> origin/main
 res://scripts/PowerUp.gd
 res://scenes/Cloud.tscn
 res://scenes/PowerUp.tscn
 res://scenes/DevConsole.tscn
 res://scenes/GameOver.tscn
+<<<<<<< HEAD
+res://scenes/Main.tscn
+res://scenes/MainMenu.tscn
+res://scripts/AudioManager.gd
+=======
 res://scenes/ControllerSettings.tscn
 res://scenes/Coin.tscn
 res://scenes/Main.tscn
@@ -16,3 +24,4 @@ res://scripts/GameManager.gd
 res://scripts/HUD.gd
 res://scripts/Hazard.gd
 res://scripts/ParallaxBackground.gd
+>>>>>>> origin/main

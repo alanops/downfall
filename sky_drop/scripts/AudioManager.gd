@@ -9,13 +9,13 @@ const SFX_BUS = "SFX"
 var sounds = {
 	# Player sounds
 	"test": preload("res://assets/sounds/player/test.ogg"),
-	"parachute_deploy": preload("res://assets/sounds/sfx_2.ogg"),
-	"player_hit": preload("res://assets/sounds/sfx_3.ogg"),
-	"coin_collect": preload("res://assets/sounds/sxf_1.ogg"),
+	"parachute_deploy": preload("res://assets/sounds/parachute_open.wav"),
+	"player_hit": preload("res://assets/sounds/damage.ogg"),
+	"coin_collect": preload("res://assets/sounds/coin_collect.wav"),
 	
 	# Environment sounds
-	"wind_rushing": preload("res://assets/sounds/wind 1.ogg"),
-	"wind_gentle": preload("res://assets/sounds/wind 2.ogg"),
+	"wind_rushing": preload("res://assets/sounds/wind_heavy.ogg"),
+	"wind_gentle": preload("res://assets/sounds/wind_light.ogg"),
 	
 	# UI sounds
 	"game_over": preload("res://assets/sounds/game_over.ogg"),
