@@ -196,6 +196,11 @@ func _on_coin_collected(coin, position):
 	emit_signal("combo_updated", current_combo, combo_multiplier)
 	emit_signal("coin_collected_ui", coin_value, combo_multiplier)
 	
+	# Activate player smoke trail
+	var player = get_node_or_null("../Player")
+	if player and player.has_method("activate_smoke_trail"):
+		player.activate_smoke_trail()
+	
 	print("Coin collected! Value: ", coin_value, " Combo: ", current_combo, "x", combo_multiplier)
 
 func get_combo_multiplier():

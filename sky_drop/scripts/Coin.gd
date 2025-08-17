@@ -35,9 +35,16 @@ func _physics_process(delta):
 	# Float downward slowly
 	global_position.y += floating_speed * delta
 	
-	# Remove if off screen
-	if global_position.y > get_viewport().size.y + 100:
-		queue_free()
+	# Remove if far off screen relative to camera
+	var camera = get_viewport().get_camera_2d()
+	if camera:
+		var camera_y = camera.global_position.y
+		# Remove coins that are far above the camera (player has passed them)
+		if global_position.y < camera_y - 1000:
+			queue_free()
+		# Remove coins that are extremely far below (beyond game bounds)
+		elif global_position.y > camera_y + 2000:
+			queue_free()
 
 func _on_body_entered(body):
 	if collected:

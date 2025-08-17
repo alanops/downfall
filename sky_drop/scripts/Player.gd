@@ -35,8 +35,23 @@ var sway_frequency = 1.2   # How fast to sway
 
 # Sprite references
 @onready var player_sprite = $PlayerSprite
+@onready var smoke_trail = $SmokeTrail
 var sprite_right = preload("res://assets/sprites/skydiver_right.webp")
 var sprite_left = preload("res://assets/sprites/skydiver_left.webp")
+
+# Smoke trail variables
+var smoke_trail_active = false
+var current_color_index = 0
+var trail_colors = [
+	Color(1, 0.8, 0, 0.7),    # Orange/Gold
+	Color(0, 1, 0.5, 0.7),    # Green
+	Color(0.5, 0, 1, 0.7),    # Purple
+	Color(1, 0.2, 0.8, 0.7),  # Pink
+	Color(0, 0.8, 1, 0.7),    # Cyan
+	Color(1, 0.4, 0, 0.7),    # Red-Orange
+	Color(0.8, 1, 0, 0.7),    # Lime
+	Color(1, 1, 0, 0.7)       # Yellow
+]
 
 # New power-up variables
 var shield_time = 0.0
@@ -524,3 +539,33 @@ func update_parachute_visibility():
 		$ParachuteSprite.visible = parachute_deployed
 	if has_node("ParachuteLabel"):
 		$ParachuteLabel.visible = false  # Always hide parachute label
+
+func activate_smoke_trail():
+	# Activate smoke trail and change to next color
+	if smoke_trail:
+		smoke_trail_active = true
+		smoke_trail.emitting = true
+		
+		# Cycle to next color
+		current_color_index = (current_color_index + 1) % trail_colors.size()
+		smoke_trail.color = trail_colors[current_color_index]
+		
+		# Start timer to turn off trail after a few seconds
+		var timer = Timer.new()
+		add_child(timer)
+		timer.wait_time = 3.0
+		timer.one_shot = true
+		timer.timeout.connect(_on_smoke_timer_timeout.bind(timer))
+		timer.start()
+		
+		print("Smoke trail activated with color: ", trail_colors[current_color_index])
+
+func _on_smoke_timer_timeout(timer):
+	deactivate_smoke_trail()
+	timer.queue_free()  # Clean up the timer
+
+func deactivate_smoke_trail():
+	# Turn off smoke trail
+	if smoke_trail:
+		smoke_trail.emitting = false
+		smoke_trail_active = false
