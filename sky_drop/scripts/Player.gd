@@ -52,7 +52,7 @@ const GHOST_DURATION = 5.0
 
 # Cloud effect variables
 var in_cloud = false
-var cloud_drag_multiplier = 0.5  # More noticeable slowdown
+var cloud_drag_multiplier = 0.7  # Gentle slowdown when passing through clouds
 
 # Altitude tracking
 const STARTING_ALTITUDE_FEET = 13500  # Realistic skydiving altitude
