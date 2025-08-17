@@ -1,6 +1,6 @@
-# Sky Drop - Godot Unit Tests
+# Downfall - Godot Unit Tests
 
-This directory contains unit tests for Sky Drop using the GUT (Godot Unit Test) framework.
+This directory contains unit tests for Downfall using the GUT (Godot Unit Test) framework.
 
 ## Setup
 

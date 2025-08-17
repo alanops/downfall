@@ -1,4 +1,4 @@
-# Sky Drop - GUT Test Suite Report
+# Downfall - GUT Test Suite Report
 
 ## Test Setup Complete ✅
 
@@ -136,4 +136,4 @@ godot --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_player.gd -g
 ✅ **Much better testing approach than browser-based tests**
 ✅ **Ready to run when project is opened in Godot editor**
 
-The GUT framework provides proper unit testing for the Sky Drop game, focusing on actual game mechanics rather than browser interactions. Tests are structured, comprehensive, and ready to use.
+The GUT framework provides proper unit testing for the Downfall game, focusing on actual game mechanics rather than browser interactions. Tests are structured, comprehensive, and ready to use.

@@ -1,7 +1,7 @@
-# Sky Drop - Project Summary
+# Downfall - Project Summary
 
 ## 🎮 Game Overview
-Sky Drop is a professional vertical-scrolling skydiving arcade game built in Godot 4.4.1. Players control a skydiver falling from 13,500 feet, strategically deploying a parachute to navigate obstacles and reach the ground safely.
+Downfall is a professional vertical-scrolling skydiving arcade game built in Godot 4.4.1. Players control a skydiver falling from 13,500 feet, strategically deploying a parachute to navigate obstacles and reach the ground safely.
 
 ## ✅ Completed Features
 
@@ -58,6 +58,6 @@ Sky Drop is a professional vertical-scrolling skydiving arcade game built in God
 ## 🎯 Current Status
 **COMPLETED**: Full game implementation deployed and playable
 
-The Sky Drop project represents a complete, professional-quality arcade game with modern development practices, compelling gameplay mechanics, and polished visual presentation.
+The Downfall project represents a complete, professional-quality arcade game with modern development practices, compelling gameplay mechanics, and polished visual presentation.
 
 **Play Now**: https://downfallgames.itch.io/downfall

@@ -1,8 +1,8 @@
-# Sky Drop - Developer Documentation
+# Downfall - Developer Documentation
 
 ## Project Overview
 
-Sky Drop is a vertical scrolling arcade game built in Godot 4.4.1 where players control a skydiver falling from 13,500 feet. The goal is to navigate through hazards while strategically deploying a parachute to control descent speed and reach the ground safely.
+Downfall is a vertical scrolling arcade game built in Godot 4.4.1 where players control a skydiver falling from 13,500 feet. The goal is to navigate through hazards while strategically deploying a parachute to control descent speed and reach the ground safely.
 
 ## Game Mechanics
 
@@ -342,7 +342,7 @@ Steps:
 
 ## Credits
 
-**Game Design & Development**: Sky Drop Team
+**Game Design & Development**: Downfall Team
 **Engine**: Godot 4.4.1
 **Platform**: itch.io
 **Repository**: GitHub

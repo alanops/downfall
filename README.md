@@ -1,4 +1,4 @@
-# Sky Drop 🪂
+# Downfall 🪂
 
 **Professional Vertical-Scrolling Skydiving Arcade Game**  
 Built in Godot 4.4.1 with modern development practices.
@@ -11,7 +11,7 @@ Built in Godot 4.4.1 with modern development practices.
 
 ## 🎮 Game Overview
 
-Sky Drop is a complete, professional-quality arcade game where players control a skydiver falling from 13,500 feet. Navigate through dynamic obstacles, collect coins with combo multipliers, and strategically deploy your parachute to reach the ground safely. Features realistic physics, multiple difficulty modes, and comprehensive audio design.
+Downfall is a complete, professional-quality arcade game where players control a skydiver falling from 13,500 feet. Navigate through dynamic obstacles, collect coins with combo multipliers, and strategically deploy your parachute to reach the ground safely. Features realistic physics, multiple difficulty modes, and comprehensive audio design.
 
 **Key Features:**
 - **Realistic Physics**: 45-second freefall with accurate terminal velocities
@@ -27,7 +27,7 @@ Sky Drop is a complete, professional-quality arcade game where players control a
 ## 🚀 Quick Start
 
 ### Play Online
-**[🎮 Play Sky Drop on itch.io](https://downfallgames.itch.io/downfall)**
+**[🎮 Play Downfall on itch.io](https://downfallgames.itch.io/downfall)**
 
 ### Local Development
 ```bash
@@ -154,7 +154,7 @@ gh pr create --title "Feature description"
 
 ## 🏆 Project Achievements
 
-Sky Drop represents a **complete, professional-quality game project** featuring:
+Downfall represents a **complete, professional-quality game project** featuring:
 
 1. **Production-Ready Code** - Clean architecture, error handling, performance optimization
 2. **Modern Development Practices** - Version control, testing, CI/CD, comprehensive documentation  
@@ -176,5 +176,5 @@ This project is developed for educational and portfolio purposes. All code is av
 
 ---
 
-**[🎮 Play Sky Drop Now](https://downfallgames.itch.io/downfall)**
+**[🎮 Play Downfall Now](https://downfallgames.itch.io/downfall)**
 
