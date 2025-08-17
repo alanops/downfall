@@ -110,7 +110,7 @@ func update_control_prompts():
 		var reset_button = ControllerManager.get_button_prompt("reset_game")
 		var dive_button = ControllerManager.get_button_prompt("dive_fast")
 		
-		controls_label.text = "🎮 L-Stick = Move, %s = Parachute, %s = Reset, %s = Console" % [
+		controls_label.text = "GAMEPAD: L-Stick = Move, %s = Parachute, %s = Reset, %s = Console" % [
 			parachute_button,
 			reset_button,
 			ControllerManager.get_button_prompt("toggle_dev_console")
@@ -140,11 +140,11 @@ func update_difficulty_display():
 func show_tutorial_flash():
 	# Create a tutorial overlay label
 	var tutorial_label = Label.new()
-	tutorial_label.text = "🎯 MISSION: REACH THE LANDING ZONE SAFELY 🎯\n\n🪂 PRESS SPACE TO DEPLOY PARACHUTE 🪂\n\n⬅️ ARROW KEYS / WASD TO MOVE ➡️\n\nAVOID PLANES! COLLECT POWER-UPS!\n\nLAND WITH PARACHUTE TO SURVIVE!"
+	tutorial_label.text = "*** MISSION ***\nREACH LANDING ZONE\nAS FAST AS POSSIBLE!\n\nDIVE FAST TO WIN!\nDEPLOY PARACHUTE LATE!\n\nSPACE = PARACHUTE\nARROW/WASD = MOVE\n\nAVOID PLANES!\nCOLLECT SPEED BOOSTS!"
 	tutorial_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	tutorial_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	tutorial_label.position = Vector2(10, 120)
-	tutorial_label.size = Vector2(340, 280)
+	tutorial_label.position = Vector2(0, 120)
+	tutorial_label.size = Vector2(360, 280)
 	tutorial_label.modulate = Color.YELLOW
 	tutorial_label.add_theme_font_size_override("font_size", 13)
 	tutorial_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -173,7 +173,15 @@ func show_tutorial_flash():
 func show_success_message(final_score: int, final_time: float):
 	# Create success overlay
 	var success_label = Label.new()
-	success_label.text = "🎉 SUCCESSFUL LANDING! 🎉\n\nScore: %d\nTime: %s\n\nRestarting..." % [final_score, format_time(final_time)]
+	var time_message = ""
+	if final_time < 30.0:
+		time_message = "*** LIGHTNING FAST! ***"
+	elif final_time < 45.0:
+		time_message = "*** SPEEDY DESCENT! ***"
+	else:
+		time_message = "*** MISSION COMPLETE! ***"
+	
+	success_label.text = "*** SUCCESSFUL LANDING! ***\n\n%s\n\nTime: %s\nScore: %d\n\nRestarting..." % [time_message, format_time(final_time), final_score]
 	success_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	success_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	success_label.position = Vector2(20, 200)
@@ -204,7 +212,7 @@ func show_success_message(final_score: int, final_time: float):
 func show_failure_message(final_time: float):
 	# Create failure overlay
 	var failure_label = Label.new()
-	failure_label.text = "💥 MISSION FAILED 💥\n\nCrashed without parachute!\nTime: %s\n\nTry again..." % [format_time(final_time)]
+	failure_label.text = "*** MISSION FAILED ***\n\nCrashed without parachute!\nTime: %s\n\nTry again..." % [format_time(final_time)]
 	failure_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	failure_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	failure_label.position = Vector2(20, 200)
@@ -247,7 +255,7 @@ func create_landing_arrow():
 	
 	# Create arrow label with Unicode arrow
 	var arrow_label = Label.new()
-	arrow_label.text = "➤"
+	arrow_label.text = ">"
 	arrow_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	arrow_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	arrow_label.size = Vector2(60, 60)
@@ -294,9 +302,9 @@ func update_landing_arrow():
 		# Update arrow direction using consistent triangle arrows
 		var arrow_label = landing_arrow.get_child(0)
 		if direction > 0:
-			arrow_label.text = "▶"  # Right triangle
+			arrow_label.text = ">"  # Right arrow
 		else:
-			arrow_label.text = "◀"  # Left triangle
+			arrow_label.text = "<"  # Left arrow
 		
 		# Update distance text
 		var distance_label = landing_arrow.get_node("DistanceLabel")
