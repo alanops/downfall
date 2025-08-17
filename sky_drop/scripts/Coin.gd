@@ -53,10 +53,22 @@ func collect():
 	collected = true
 	coin_collected.emit(self, global_position)
 	
-	# Trigger particle effect
+	# Trigger particle effect only if visible on screen
 	var particle_manager = get_node_or_null("/root/Main/ParticleManager")
-	if particle_manager:
-		particle_manager.trigger_coin_effect(global_position)
+	if particle_manager and is_visible_in_tree():
+		# Check if position is within visible screen bounds
+		var viewport = get_viewport()
+		if viewport:
+			var camera = viewport.get_camera_2d()
+			if camera:
+				var screen_pos = camera.get_screen_center_position()
+				var screen_size = viewport.get_visible_rect().size
+				var relative_pos = global_position - screen_pos + screen_size / 2
+				
+				# Only create particles if coin is on screen
+				if relative_pos.x >= -50 and relative_pos.x <= screen_size.x + 50 and \
+				   relative_pos.y >= -50 and relative_pos.y <= screen_size.y + 50:
+					particle_manager.trigger_coin_effect(global_position)
 	
 	# Play collection animation
 	var tween = create_tween()

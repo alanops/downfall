@@ -84,5 +84,12 @@ func _on_body_entered(body):
 	if body.has_method("take_damage") and hazard_type == HazardType.PLANE:
 		body.take_damage()
 	elif body.is_in_group("player") and hazard_type == HazardType.CLOUD:
-		# Apply cloud effect (handled in player)
-		pass
+		# Apply cloud effect
+		if body.has_method("enter_cloud_effect"):
+			body.enter_cloud_effect()
+
+func _on_body_exited(body):
+	if body.is_in_group("player") and hazard_type == HazardType.CLOUD:
+		# Remove cloud effect
+		if body.has_method("exit_cloud_effect"):
+			body.exit_cloud_effect()
