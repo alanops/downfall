@@ -75,6 +75,10 @@ func start_game():
 	current_combo = 0
 	combo_timer = 0.0
 	set_process(true)
+	
+	# Start background music
+	AudioManager.play_music("music_1", -15.0)  # Play quietly
+	AudioManager.play_looping_sound("wind_rushing", "wind", -20.0)  # Wind ambience
 
 func _process(delta):
 	if not game_over and game_started:
@@ -98,6 +102,11 @@ func end_game(lives_remaining):
 	print("GameManager: Ending game with time: ", time_elapsed, " lives: ", lives_remaining)
 	game_over = true
 	set_process(false)
+	
+	# Stop music and wind sounds
+	AudioManager.fade_out_music(0.5)
+	AudioManager.stop_looping_sound("wind")
+	AudioManager.play_sound("game_over", -5.0)
 	
 	# Calculate score based on time and lives
 	var time_bonus = max(0, 10000 - int(time_elapsed * 100))

@@ -329,6 +329,11 @@ func toggle_parachute():
 		# Controller vibration for parachute deployment
 		if ControllerManager.is_controller_connected:
 			ControllerManager.vibrate(0.2, 0.3, 0.5)  # Medium vibration
+		
+		# Play parachute deployment sound and change wind
+		AudioManager.play_sound("parachute_deploy", -5.0)  # Play at -5dB
+		# Switch to gentler wind sound
+		AudioManager.play_looping_sound("wind_gentle", "wind", -25.0)
 	
 	# Visual feedback with smooth transitions
 	if has_node("ParachuteSprite"):
@@ -389,6 +394,9 @@ func take_damage():
 	# Controller vibration feedback
 	if ControllerManager.is_controller_connected:
 		ControllerManager.vibrate(0.3, 0.8, 0.8)  # Strong vibration for damage
+	
+	# Play damage sound
+	AudioManager.play_sound("player_hit", 0.0)  # Normal pitch for damage
 	
 	if lives <= 0:
 		# Game over
