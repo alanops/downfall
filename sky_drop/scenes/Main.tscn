@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://exdvrk6d1y50"]
+[gd_scene load_steps=21 format=3 uid="uid://exdvrk6d1y50"]
 
 [ext_resource type="Script" uid="uid://b13ff0h1qb1co" path="res://scripts/GameManager.gd" id="1"]
 [ext_resource type="Script" uid="uid://d0erlf4kief8k" path="res://scripts/Player.gd" id="2"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://dvqorkkkaucvy" path="res://scripts/Ground.gd" id="6"]
 [ext_resource type="PackedScene" uid="uid://gnu5m3sym8rh" path="res://scenes/Plane.tscn" id="7"]
 [ext_resource type="Texture2D" uid="uid://ch6iptdw3u3f" path="res://assets/sprites/skydiver_right.webp" id="7_ft6cd"]
-[ext_resource type="Texture2D" path="res://assets/sprites/skydiver_left.webp" id="7_left"]
 [ext_resource type="PackedScene" uid="uid://unp18d8kk0t6" path="res://scenes/Cloud.tscn" id="8"]
 [ext_resource type="PackedScene" uid="uid://4jq773kqbu7w" path="res://scenes/PowerUp.tscn" id="9"]
 [ext_resource type="Texture2D" uid="uid://7dr0deucyi20" path="res://assets/sprites/background_sky_gradient.webp" id="10"]
@@ -18,7 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://kk6jqi1eo3s0" path="res://scenes/DevConsole.tscn" id="15"]
 [ext_resource type="Script" uid="uid://bc84astrcs1ti" path="res://scripts/ScreenShake.gd" id="16"]
 [ext_resource type="Script" uid="uid://c7046kot33dqq" path="res://scripts/ParticleManager.gd" id="17"]
-[ext_resource type="Script" path="res://scripts/FallingCamera.gd" id="18"]
+[ext_resource type="Script" uid="uid://bqouleje1fvcf" path="res://scripts/FallingCamera.gd" id="18"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
@@ -112,7 +111,6 @@ texture = ExtResource("12")
 position = Vector2(180, -50)
 script = ExtResource("18")
 target = NodePath("../Player")
-vertical_offset = -150.0
 follow_speed = 15.0
 horizontal_deadzone = 80.0
 
@@ -153,6 +151,9 @@ horizontal_alignment = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
 shape = SubResource("1")
+
+[node name="AudioListener2D" type="AudioListener2D" parent="Player"]
+current = true
 
 [node name="GroundDetector" type="Area2D" parent="."]
 position = Vector2(180, 26976)
