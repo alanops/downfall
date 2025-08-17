@@ -75,6 +75,9 @@ func collect():
 	tween.parallel().tween_property(self, "scale", Vector2(1.5, 1.5), 0.1)
 	tween.parallel().tween_property(self, "modulate:a", 0.0, 0.2)
 	tween.tween_callback(queue_free)
+	
+	# Play coin collection sound
+	AudioManager.play_sound("coin_collect", -8.0)  # Slightly quieter
 
 func create_floating_animation():
 	var animation = Animation.new()
