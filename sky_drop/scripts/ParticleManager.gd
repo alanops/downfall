@@ -86,7 +86,7 @@ func create_parachute_particles(pos: Vector2):
 func create_simple_particle() -> ColorRect:
 	var particle = ColorRect.new()
 	particle.size = Vector2(4, 4)
-	particle.color = Color.YELLOW
+	particle.color = Color.WHITE
 	particle.anchor_left = 0.5
 	particle.anchor_right = 0.5
 	particle.anchor_top = 0.5

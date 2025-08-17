@@ -52,7 +52,7 @@ const GHOST_DURATION = 5.0
 
 # Cloud effect variables
 var in_cloud = false
-var cloud_drag_multiplier = 0.7  # Gentle slowdown when passing through clouds
+var cloud_drag_multiplier = 0.92  # Very gentle slowdown when passing through clouds
 
 # Altitude tracking
 const STARTING_ALTITUDE_FEET = 13500  # Realistic skydiving altitude
@@ -281,9 +281,7 @@ func _physics_process(delta):
 		# Reset rotation when not using parachute
 		rotation_degrees = 0.0
 	
-	# Clamp player position to screen boundaries
-	var screen_width = 360  # From project.godot viewport_width
-	global_position.x = clamp(global_position.x, 20, screen_width - 20)
+	# Remove horizontal movement restrictions - allow unlimited left/right movement
 	
 	# Update camera to follow player vertically only
 	var camera = get_node("../GameCamera")
@@ -352,7 +350,7 @@ func toggle_parachute():
 			tween.tween_property(parachute_sprite, "modulate:a", 0.0, 0.1)
 	
 	if has_node("ParachuteLabel"):
-		$ParachuteLabel.visible = parachute_deployed
+		$ParachuteLabel.visible = false  # Always hide parachute label
 
 func _update_parachute_transition(progress: float):
 	deployment_transition_time = progress
@@ -399,8 +397,8 @@ func take_damage():
 	AudioManager.play_sound("player_hit", 0.0)  # Normal pitch for damage
 	
 	if lives <= 0:
-		# Game over
-		get_tree().call_deferred("change_scene_to_file", "res://scenes/GameOver.tscn")
+		# Game over - restart immediately
+		get_tree().call_deferred("reload_current_scene")
 
 func add_parachute():
 	parachutes_available += 1
@@ -525,4 +523,4 @@ func update_parachute_visibility():
 	if has_node("ParachuteSprite"):
 		$ParachuteSprite.visible = parachute_deployed
 	if has_node("ParachuteLabel"):
-		$ParachuteLabel.visible = parachute_deployed
+		$ParachuteLabel.visible = false  # Always hide parachute label

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://exdvrk6d1y50"]
+[gd_scene load_steps=26 format=3 uid="uid://exdvrk6d1y50"]
 
 [ext_resource type="Script" uid="uid://b13ff0h1qb1co" path="res://scripts/GameManager.gd" id="1"]
 [ext_resource type="Script" uid="uid://d0erlf4kief8k" path="res://scripts/Player.gd" id="2"]
@@ -8,23 +8,27 @@
 [ext_resource type="Script" uid="uid://dvqorkkkaucvy" path="res://scripts/Ground.gd" id="6"]
 [ext_resource type="PackedScene" uid="uid://gnu5m3sym8rh" path="res://scenes/Plane.tscn" id="7"]
 [ext_resource type="Texture2D" uid="uid://ch6iptdw3u3f" path="res://assets/sprites/skydiver_right.webp" id="7_ft6cd"]
-[ext_resource type="Texture2D" path="res://assets/sprites/skydiver_left.webp" id="7_left"]
 [ext_resource type="PackedScene" uid="uid://unp18d8kk0t6" path="res://scenes/Cloud.tscn" id="8"]
 [ext_resource type="PackedScene" uid="uid://4jq773kqbu7w" path="res://scenes/PowerUp.tscn" id="9"]
 [ext_resource type="Texture2D" uid="uid://7dr0deucyi20" path="res://assets/sprites/background_sky_gradient.webp" id="10"]
 [ext_resource type="Texture2D" uid="uid://bhulmjophjdep" path="res://assets/sprites/clouds_sparse_middle_layer.webp" id="11"]
-[ext_resource type="Texture2D" uid="uid://baspitedaws4r" path="res://assets/sprites/clouds_dramatic_foreground.webp" id="12"]
+[ext_resource type="Texture2D" uid="uid://dny4klmpwges2" path="res://assets/sprites/clouds_dramatic_foreground_1.webp" id="12"]
+[ext_resource type="Texture2D" uid="uid://6asrt8b3qfv0" path="res://assets/sprites/clouds_dramatic_foreground_2.webp" id="13"]
 [ext_resource type="Texture2D" uid="uid://bw6xiklmyhnpr" path="res://assets/sprites/parachute.webp" id="14"]
 [ext_resource type="PackedScene" uid="uid://kk6jqi1eo3s0" path="res://scenes/DevConsole.tscn" id="15"]
-[ext_resource type="Script" uid="uid://bc84astrcs1ti" path="res://scripts/ScreenShake.gd" id="16"]
+[ext_resource type="Script" uid="uid://cuh8ghiat48ck" path="res://scripts/ScreenShake.gd" id="16"]
 [ext_resource type="Script" uid="uid://c7046kot33dqq" path="res://scripts/ParticleManager.gd" id="17"]
-[ext_resource type="Script" path="res://scripts/FallingCamera.gd" id="18"]
+[ext_resource type="Script" uid="uid://d2xd7f5vtinxa" path="res://scripts/FallingCamera.gd" id="18"]
+[ext_resource type="Texture2D" uid="uid://be6fpjmjbmwf7" path="res://assets/sprites/clouds_dramatic_foreground_3.webp" id="19"]
+[ext_resource type="Texture2D" uid="uid://0ssxxgtvxm30" path="res://assets/sprites/clouds_dramatic_foreground_4.webp" id="20"]
+[ext_resource type="Texture2D" uid="uid://c4rb30v4scmbh" path="res://assets/sprites/clouds_dramatic_foreground_5.webp" id="21"]
+[ext_resource type="Texture2D" uid="uid://b48xe5ue6hf5n" path="res://assets/sprites/clouds_dramatic_foreground_6.webp" id="22"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 48)
 
 [sub_resource type="RectangleShape2D" id="2"]
-size = Vector2(360, 20)
+size = Vector2(1800, 20)
 
 [node name="Main" type="Node2D"]
 
@@ -62,8 +66,24 @@ texture = ExtResource("10")
 position = Vector2(-180, 320)
 texture = ExtResource("10")
 
+[node name="BlueBackgroundLeft2" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
+position = Vector2(-540, 320)
+texture = ExtResource("10")
+
+[node name="BlueBackgroundLeft3" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
+position = Vector2(-900, 320)
+texture = ExtResource("10")
+
 [node name="BlueBackgroundRight" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
 position = Vector2(540, 320)
+texture = ExtResource("10")
+
+[node name="BlueBackgroundRight2" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
+position = Vector2(900, 320)
+texture = ExtResource("10")
+
+[node name="BlueBackgroundRight3" type="Sprite2D" parent="ParallaxBackground/BackgroundLayer"]
+position = Vector2(1260, 320)
 texture = ExtResource("10")
 
 [node name="FarCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
@@ -83,36 +103,952 @@ texture = ExtResource("11")
 position = Vector2(-180, 320)
 texture = ExtResource("11")
 
+[node name="FarCloudsLeft2" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
+position = Vector2(-540, 320)
+texture = ExtResource("11")
+
+[node name="FarCloudsLeft3" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
+position = Vector2(-900, 320)
+texture = ExtResource("11")
+
 [node name="FarCloudsRight" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
 position = Vector2(540, 320)
 texture = ExtResource("11")
 
+[node name="FarCloudsRight2" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
+position = Vector2(900, 320)
+texture = ExtResource("11")
+
+[node name="FarCloudsRight3" type="Sprite2D" parent="ParallaxBackground/FarCloudsLayer"]
+position = Vector2(1260, 320)
+texture = ExtResource("11")
+
+[node name="MidCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+z_index = -10
+motion_scale = Vector2(1, 0.5)
+motion_mirroring = Vector2(720, 1024)
+
+[node name="MidClouds1" type="Sprite2D" parent="ParallaxBackground/MidCloudsLayer"]
+position = Vector2(120, 200)
+texture = ExtResource("11")
+modulate = Color(0.9, 0.95, 1, 0.8)
+
+[node name="MidClouds2" type="Sprite2D" parent="ParallaxBackground/MidCloudsLayer"]
+position = Vector2(400, 600)
+texture = ExtResource("11")
+modulate = Color(0.9, 0.95, 1, 0.8)
+
+[node name="MidClouds3" type="Sprite2D" parent="ParallaxBackground/MidCloudsLayer"]
+position = Vector2(-120, 400)
+texture = ExtResource("11")
+modulate = Color(0.9, 0.95, 1, 0.8)
+
+[node name="MidClouds4" type="Sprite2D" parent="ParallaxBackground/MidCloudsLayer"]
+position = Vector2(600, 100)
+texture = ExtResource("11")
+modulate = Color(0.9, 0.95, 1, 0.8)
+
+[node name="MidClouds5" type="Sprite2D" parent="ParallaxBackground/MidCloudsLayer"]
+position = Vector2(-400, 800)
+texture = ExtResource("11")
+modulate = Color(0.9, 0.95, 1, 0.8)
+
+[node name="MidClouds6" type="Sprite2D" parent="ParallaxBackground/MidCloudsLayer"]
+position = Vector2(840, 500)
+texture = ExtResource("11")
+modulate = Color(0.9, 0.95, 1, 0.8)
+
+[node name="MidClouds7" type="Sprite2D" parent="ParallaxBackground/MidCloudsLayer"]
+position = Vector2(-680, 300)
+texture = ExtResource("11")
+modulate = Color(0.9, 0.95, 1, 0.8)
+
+[node name="MidClouds8" type="Sprite2D" parent="ParallaxBackground/MidCloudsLayer"]
+position = Vector2(1120, 700)
+texture = ExtResource("11")
+modulate = Color(0.9, 0.95, 1, 0.8)
+
 [node name="NearCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-z_index = -30
+z_index = 10
 motion_scale = Vector2(1, 0.6)
-motion_mirroring = Vector2(360, 1024)
 
-[node name="NearClouds" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
-position = Vector2(180, 320)
+[node name="ForegroundCloudsLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+z_index = 50
+motion_scale = Vector2(1, 0.8)
+
+[node name="FgCloud1" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(90, 500)
+rotation = 0.08
+scale = Vector2(1.5, 1.2)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.3)
+
+[node name="FgCloud2" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(270, 1800)
+rotation = -0.12
+scale = Vector2(1.8, 1.4)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.25)
+flip_h = true
+
+[node name="FgCloud3" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(50, 3200)
+rotation = 0.06
+scale = Vector2(1.6, 1.3)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.35)
+
+[node name="FgCloud4" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(320, 4800)
+rotation = -0.09
+scale = Vector2(1.7, 1.1)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.28)
+flip_h = true
+
+[node name="FgCloud5" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(140, 6500)
+rotation = 0.11
+scale = Vector2(1.9, 1.5)
+texture = ExtResource("21")
+modulate = Color(1, 1, 1, 0.32)
+
+[node name="FgCloud6" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(250, 8200)
+rotation = -0.07
+scale = Vector2(1.4, 1.2)
+texture = ExtResource("22")
+modulate = Color(1, 1, 1, 0.26)
+
+[node name="FgCloud7" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(180, 9800)
+rotation = 0.14
+scale = Vector2(1.6, 1.3)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.29)
+
+[node name="FgCloud8" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(80, 11400)
+rotation = -0.08
+scale = Vector2(1.8, 1.4)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.31)
+flip_h = true
+
+[node name="FgCloud9" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(300, 13000)
+rotation = 0.05
+scale = Vector2(1.7, 1.2)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.27)
+
+[node name="FgCloud10" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(120, 14600)
+rotation = -0.11
+scale = Vector2(1.9, 1.5)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.33)
+flip_h = true
+
+[node name="FgCloud11" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(260, 16200)
+rotation = 0.09
+scale = Vector2(1.5, 1.3)
+texture = ExtResource("21")
+modulate = Color(1, 1, 1, 0.28)
+
+[node name="FgCloud12" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(60, 17800)
+rotation = -0.06
+scale = Vector2(1.7, 1.1)
+texture = ExtResource("22")
+modulate = Color(1, 1, 1, 0.3)
+
+[node name="FgCloud13" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(340, 19400)
+rotation = 0.12
+scale = Vector2(1.6, 1.4)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.26)
+flip_h = true
+
+[node name="FgCloud14" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(150, 21000)
+rotation = -0.04
+scale = Vector2(1.8, 1.2)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.32)
+
+[node name="FgCloud15" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(280, 22600)
+rotation = 0.07
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.29)
+
+[node name="FgCloud16" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(100, 24200)
+rotation = -0.13
+scale = Vector2(1.9, 1.3)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.27)
+flip_h = true
+
+[node name="FgCloudLeft1" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-200, 1200)
+rotation = 0.1
+scale = Vector2(1.6, 1.4)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.28)
+
+[node name="FgCloudLeft2" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-350, 3800)
+rotation = -0.09
+scale = Vector2(1.8, 1.2)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.31)
+flip_h = true
+
+[node name="FgCloudLeft3" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-180, 7200)
+rotation = 0.07
+scale = Vector2(1.7, 1.5)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.29)
+
+[node name="FgCloudLeft4" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-290, 12500)
+rotation = -0.12
+scale = Vector2(1.9, 1.3)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.26)
+
+[node name="FgCloudLeft5" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-150, 18900)
+rotation = 0.08
+scale = Vector2(1.5, 1.4)
+texture = ExtResource("21")
+modulate = Color(1, 1, 1, 0.33)
+flip_h = true
+
+[node name="FgCloudRight1" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(520, 2400)
+rotation = -0.06
+scale = Vector2(1.7, 1.3)
+texture = ExtResource("22")
+modulate = Color(1, 1, 1, 0.3)
+
+[node name="FgCloudRight2" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(680, 5600)
+rotation = 0.11
+scale = Vector2(1.6, 1.2)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.27)
+flip_h = true
+
+[node name="FgCloudRight3" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(450, 9100)
+rotation = -0.08
+scale = Vector2(1.8, 1.4)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.32)
+
+[node name="FgCloudRight4" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(590, 15300)
+rotation = 0.09
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.28)
+
+[node name="FgCloudRight5" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(720, 20700)
+rotation = -0.05
+scale = Vector2(1.9, 1.1)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.3)
+flip_h = true
+
+[node name="FgCloudFarLeft1" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-600, 800)
+rotation = 0.06
+scale = Vector2(1.8, 1.3)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.29)
+
+[node name="FgCloudFarLeft2" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-750, 4200)
+rotation = -0.11
+scale = Vector2(1.6, 1.4)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.27)
+flip_h = true
+
+[node name="FgCloudFarLeft3" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-520, 8600)
+rotation = 0.08
+scale = Vector2(1.9, 1.2)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.31)
+
+[node name="FgCloudFarLeft4" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-680, 14800)
+rotation = -0.07
+scale = Vector2(1.7, 1.5)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.28)
+
+[node name="FgCloudFarLeft5" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-840, 22100)
+rotation = 0.12
+scale = Vector2(1.5, 1.3)
+texture = ExtResource("21")
+modulate = Color(1, 1, 1, 0.32)
+flip_h = true
+
+[node name="FgCloudFarRight1" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(920, 1600)
+rotation = -0.09
+scale = Vector2(1.7, 1.4)
+texture = ExtResource("22")
+modulate = Color(1, 1, 1, 0.3)
+
+[node name="FgCloudFarRight2" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1080, 6000)
+rotation = 0.05
+scale = Vector2(1.8, 1.2)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.26)
+flip_h = true
+
+[node name="FgCloudFarRight3" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(850, 11200)
+rotation = -0.13
+scale = Vector2(1.6, 1.5)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.29)
+
+[node name="FgCloudFarRight4" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1150, 17400)
+rotation = 0.1
+scale = Vector2(1.9, 1.1)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.33)
+
+[node name="FgCloudFarRight5" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(980, 23800)
+rotation = -0.04
+scale = Vector2(1.7, 1.4)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.28)
+flip_h = true
+
+[node name="FgCloudWideLeft1" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1200, 900)
+rotation = 0.07
+scale = Vector2(1.8, 1.3)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.3)
+
+[node name="FgCloudWideLeft2" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1400, 2500)
+rotation = -0.1
+scale = Vector2(1.6, 1.4)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.28)
+flip_h = true
+
+[node name="FgCloudWideLeft3" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1100, 5100)
+rotation = 0.09
+scale = Vector2(1.9, 1.2)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.31)
+
+[node name="FgCloudWideLeft4" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1350, 7700)
+rotation = -0.08
+scale = Vector2(1.7, 1.5)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.29)
+
+[node name="FgCloudWideLeft5" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1250, 10300)
+rotation = 0.11
+scale = Vector2(1.5, 1.3)
+texture = ExtResource("21")
+modulate = Color(1, 1, 1, 0.32)
+flip_h = true
+
+[node name="FgCloudWideLeft6" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1450, 12900)
+rotation = -0.06
+scale = Vector2(1.8, 1.4)
+texture = ExtResource("22")
+modulate = Color(1, 1, 1, 0.27)
+
+[node name="FgCloudWideLeft7" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1150, 15500)
+rotation = 0.12
+scale = Vector2(1.6, 1.2)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.3)
+flip_h = true
+
+[node name="FgCloudWideLeft8" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1300, 18100)
+rotation = -0.09
+scale = Vector2(1.9, 1.3)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.28)
+
+[node name="FgCloudWideLeft9" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1200, 20700)
+rotation = 0.05
+scale = Vector2(1.7, 1.4)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.31)
+
+[node name="FgCloudWideLeft10" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(-1380, 23300)
+rotation = -0.07
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.29)
+flip_h = true
+
+[node name="FgCloudWideRight1" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1400, 1100)
+rotation = 0.08
+scale = Vector2(1.7, 1.3)
+texture = ExtResource("21")
+modulate = Color(1, 1, 1, 0.3)
+
+[node name="FgCloudWideRight2" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1600, 2700)
+rotation = -0.11
+scale = Vector2(1.8, 1.4)
+texture = ExtResource("22")
+modulate = Color(1, 1, 1, 0.28)
+flip_h = true
+
+[node name="FgCloudWideRight3" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1300, 5300)
+rotation = 0.06
+scale = Vector2(1.6, 1.2)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.31)
+
+[node name="FgCloudWideRight4" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1550, 7900)
+rotation = -0.1
+scale = Vector2(1.9, 1.5)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.29)
+
+[node name="FgCloudWideRight5" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1450, 10500)
+rotation = 0.09
+scale = Vector2(1.5, 1.3)
+texture = ExtResource("19")
+modulate = Color(1, 1, 1, 0.32)
+flip_h = true
+
+[node name="FgCloudWideRight6" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1650, 13100)
+rotation = -0.05
+scale = Vector2(1.8, 1.4)
+texture = ExtResource("20")
+modulate = Color(1, 1, 1, 0.27)
+
+[node name="FgCloudWideRight7" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1350, 15700)
+rotation = 0.13
+scale = Vector2(1.6, 1.2)
+texture = ExtResource("21")
+modulate = Color(1, 1, 1, 0.3)
+flip_h = true
+
+[node name="FgCloudWideRight8" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1500, 18300)
+rotation = -0.08
+scale = Vector2(1.7, 1.3)
+texture = ExtResource("22")
+modulate = Color(1, 1, 1, 0.28)
+
+[node name="FgCloudWideRight9" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1400, 20900)
+rotation = 0.07
+scale = Vector2(1.9, 1.4)
+texture = ExtResource("12")
+modulate = Color(1, 1, 1, 0.31)
+
+[node name="FgCloudWideRight10" type="Sprite2D" parent="ParallaxBackground/ForegroundCloudsLayer"]
+position = Vector2(1580, 23500)
+rotation = -0.04
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("13")
+modulate = Color(1, 1, 1, 0.29)
+flip_h = true
+
+[node name="Cloud1" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(80, -200)
+rotation = 0.1
+scale = Vector2(1.2, 1)
 texture = ExtResource("12")
 
-[node name="NearClouds2" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
-position = Vector2(180, -200)
+[node name="Cloud2" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(280, 100)
+rotation = -0.15
+scale = Vector2(0.8, 1.1)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud3" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(50, 800)
+rotation = 0.05
+scale = Vector2(1, 0.9)
+texture = ExtResource("19")
+
+[node name="Cloud4" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(320, 1500)
+rotation = -0.08
+scale = Vector2(1.3, 1.2)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud5" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(150, 2200)
+rotation = 0.12
+scale = Vector2(0.9, 1)
+texture = ExtResource("21")
+
+[node name="Cloud6" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(90, 2900)
+rotation = -0.06
+scale = Vector2(1.1, 0.8)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud7" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(250, 3600)
+rotation = 0.08
+scale = Vector2(1.4, 1.1)
 texture = ExtResource("12")
 
-[node name="NearCloudsLeft" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
-position = Vector2(-180, 320)
+[node name="Cloud8" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(60, 4300)
+rotation = -0.12
+scale = Vector2(0.7, 1)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud9" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(300, 5000)
+rotation = 0.04
+scale = Vector2(1.1, 0.8)
+texture = ExtResource("19")
+
+[node name="Cloud10" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(120, 5700)
+rotation = -0.09
+scale = Vector2(1.2, 1.3)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud11" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(280, 6400)
+rotation = 0.11
+scale = Vector2(0.8, 0.9)
+texture = ExtResource("21")
+
+[node name="Cloud12" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(40, 7100)
+rotation = -0.07
+scale = Vector2(1.3, 1.1)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud13" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(200, 7800)
+rotation = 0.13
+scale = Vector2(1, 1.2)
 texture = ExtResource("12")
 
-[node name="NearCloudsRight" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
-position = Vector2(540, 320)
+[node name="Cloud14" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(340, 8500)
+rotation = -0.05
+scale = Vector2(0.9, 0.8)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud15" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(80, 9200)
+rotation = 0.07
+scale = Vector2(1.2, 1)
+texture = ExtResource("19")
+
+[node name="Cloud16" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(260, 9900)
+rotation = -0.1
+scale = Vector2(1.1, 1.4)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud17" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(140, 10600)
+rotation = 0.06
+scale = Vector2(0.8, 1.1)
+texture = ExtResource("21")
+
+[node name="Cloud18" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(310, 11300)
+rotation = -0.08
+scale = Vector2(1.3, 0.9)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud19" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(70, 12000)
+rotation = 0.09
+scale = Vector2(1, 1.1)
 texture = ExtResource("12")
+
+[node name="Cloud20" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(240, 12700)
+rotation = -0.11
+scale = Vector2(0.9, 1.2)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud21" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(160, 13400)
+rotation = 0.04
+scale = Vector2(1.4, 1)
+texture = ExtResource("19")
+
+[node name="Cloud22" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(320, 14100)
+rotation = -0.06
+scale = Vector2(0.7, 0.8)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud23" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(100, 14800)
+rotation = 0.12
+scale = Vector2(1.2, 1.3)
+texture = ExtResource("21")
+
+[node name="Cloud24" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(270, 15500)
+rotation = -0.07
+scale = Vector2(1.1, 0.9)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud25" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(50, 16200)
+rotation = 0.08
+scale = Vector2(0.8, 1)
+texture = ExtResource("12")
+
+[node name="Cloud26" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(290, 16900)
+rotation = -0.09
+scale = Vector2(1.3, 1.1)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud27" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(180, 17600)
+rotation = 0.05
+scale = Vector2(1, 1.2)
+texture = ExtResource("19")
+
+[node name="Cloud28" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(110, 18300)
+rotation = -0.1
+scale = Vector2(0.9, 0.8)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud29" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(330, 19000)
+rotation = 0.11
+scale = Vector2(1.2, 1)
+texture = ExtResource("21")
+
+[node name="Cloud30" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(80, 19700)
+rotation = -0.04
+scale = Vector2(1.1, 1.4)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud31" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(220, 20400)
+rotation = 0.07
+scale = Vector2(0.8, 0.9)
+texture = ExtResource("12")
+
+[node name="Cloud32" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(150, 21100)
+rotation = -0.08
+scale = Vector2(1.3, 1.1)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud33" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(300, 21800)
+rotation = 0.06
+scale = Vector2(1, 1.2)
+texture = ExtResource("19")
+
+[node name="Cloud34" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(60, 22500)
+rotation = -0.12
+scale = Vector2(0.9, 1)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud35" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(250, 23200)
+rotation = 0.09
+scale = Vector2(1.2, 0.8)
+texture = ExtResource("21")
+
+[node name="Cloud36" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(120, 23900)
+rotation = -0.05
+scale = Vector2(1.1, 1.3)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud37" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(200, 500)
+rotation = 0.08
+scale = Vector2(0.9, 1.1)
+texture = ExtResource("20")
+
+[node name="Cloud38" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(320, 1200)
+rotation = -0.11
+scale = Vector2(1.2, 0.9)
+texture = ExtResource("12")
+flip_h = true
+
+[node name="Cloud39" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(40, 1900)
+rotation = 0.06
+scale = Vector2(0.8, 1.2)
+texture = ExtResource("13")
+
+[node name="Cloud40" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(280, 2600)
+rotation = -0.09
+scale = Vector2(1.3, 1)
+texture = ExtResource("19")
+flip_h = true
+
+[node name="Cloud41" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(100, 3300)
+rotation = 0.12
+scale = Vector2(1, 0.8)
+texture = ExtResource("21")
+
+[node name="Cloud42" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(340, 4000)
+rotation = -0.07
+scale = Vector2(0.7, 1.3)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud43" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(60, 4700)
+rotation = 0.1
+scale = Vector2(1.4, 1.1)
+texture = ExtResource("12")
+
+[node name="Cloud44" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(240, 5400)
+rotation = -0.04
+scale = Vector2(0.9, 1)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud45" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(160, 6100)
+rotation = 0.09
+scale = Vector2(1.1, 1.2)
+texture = ExtResource("19")
+
+[node name="Cloud46" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(300, 6800)
+rotation = -0.13
+scale = Vector2(1.2, 0.9)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud47" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(80, 7500)
+rotation = 0.05
+scale = Vector2(0.8, 1.1)
+texture = ExtResource("21")
+
+[node name="Cloud48" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(220, 8200)
+rotation = -0.08
+scale = Vector2(1.3, 1)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud49" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(140, 8900)
+rotation = 0.11
+scale = Vector2(1, 1.3)
+texture = ExtResource("12")
+
+[node name="Cloud50" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(320, 9600)
+rotation = -0.06
+scale = Vector2(0.9, 0.8)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud51" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(50, 10300)
+rotation = 0.07
+scale = Vector2(1.2, 1.1)
+texture = ExtResource("19")
+
+[node name="Cloud52" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(270, 11000)
+rotation = -0.1
+scale = Vector2(1.1, 1)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud53" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(180, 11700)
+rotation = 0.04
+scale = Vector2(0.8, 1.2)
+texture = ExtResource("21")
+
+[node name="Cloud54" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(110, 12400)
+rotation = -0.12
+scale = Vector2(1.3, 0.9)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud55" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(290, 13100)
+rotation = 0.08
+scale = Vector2(1, 1.1)
+texture = ExtResource("12")
+
+[node name="Cloud56" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(40, 13800)
+rotation = -0.05
+scale = Vector2(0.9, 1.3)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud57" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(250, 14500)
+rotation = 0.13
+scale = Vector2(1.4, 1)
+texture = ExtResource("19")
+
+[node name="Cloud58" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(170, 15200)
+rotation = -0.07
+scale = Vector2(0.7, 0.9)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud59" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(330, 15900)
+rotation = 0.09
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("21")
+
+[node name="Cloud60" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(90, 16600)
+rotation = -0.11
+scale = Vector2(1.1, 0.8)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud61" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(210, 17300)
+rotation = 0.06
+scale = Vector2(0.8, 1.1)
+texture = ExtResource("12")
+
+[node name="Cloud62" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(140, 18000)
+rotation = -0.08
+scale = Vector2(1.3, 1)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud63" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(300, 18700)
+rotation = 0.1
+scale = Vector2(1, 1.3)
+texture = ExtResource("19")
+
+[node name="Cloud64" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(60, 19400)
+rotation = -0.04
+scale = Vector2(0.9, 1.1)
+texture = ExtResource("20")
+flip_h = true
+
+[node name="Cloud65" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(280, 20100)
+rotation = 0.12
+scale = Vector2(1.2, 0.9)
+texture = ExtResource("21")
+
+[node name="Cloud66" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(120, 20800)
+rotation = -0.09
+scale = Vector2(1.1, 1.2)
+texture = ExtResource("22")
+flip_h = true
+
+[node name="Cloud67" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(240, 21500)
+rotation = 0.05
+scale = Vector2(0.8, 1)
+texture = ExtResource("12")
+
+[node name="Cloud68" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(180, 22200)
+rotation = -0.13
+scale = Vector2(1.3, 1.1)
+texture = ExtResource("13")
+flip_h = true
+
+[node name="Cloud69" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(320, 22900)
+rotation = 0.07
+scale = Vector2(1, 1.2)
+texture = ExtResource("19")
+
+[node name="Cloud70" type="Sprite2D" parent="ParallaxBackground/NearCloudsLayer"]
+position = Vector2(80, 23600)
+rotation = -0.06
+scale = Vector2(0.9, 0.8)
+texture = ExtResource("20")
+flip_h = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(180, -50)
 script = ExtResource("18")
 target = NodePath("../Player")
-vertical_offset = -150.0
 follow_speed = 15.0
 horizontal_deadzone = 80.0
 
@@ -127,6 +1063,7 @@ shape = SubResource("1")
 texture = ExtResource("7_ft6cd")
 
 [node name="PlayerLabel" type="Label" parent="Player"]
+visible = false
 offset_left = -20.0
 offset_top = 30.0
 offset_right = 20.0
@@ -162,11 +1099,11 @@ script = ExtResource("6")
 shape = SubResource("2")
 
 [node name="GroundLabel" type="Label" parent="GroundDetector"]
-offset_left = -50.0
+offset_left = -200.0
 offset_top = -40.0
-offset_right = 50.0
+offset_right = 200.0
 offset_bottom = -20.0
-text = "GOAL"
+text = "LANDING ZONE"
 horizontal_alignment = 1
 
 [node name="Ground" type="StaticBody2D" parent="."]
@@ -176,9 +1113,9 @@ position = Vector2(180, 27000)
 shape = SubResource("2")
 
 [node name="GroundSprite" type="ColorRect" parent="Ground"]
-offset_left = -180.0
+offset_left = -900.0
 offset_top = -50.0
-offset_right = 180.0
+offset_right = 900.0
 offset_bottom = 1000.0
 color = Color(0.4, 0.2, 0, 1)
 

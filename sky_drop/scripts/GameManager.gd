@@ -7,6 +7,7 @@ var time_elapsed = 0.0
 var game_started = false
 var game_over = false
 var current_difficulty = Difficulty.NORMAL
+var game_success = false  # Track if player successfully landed
 
 # Coin collection and combo system
 var coins_collected = 0
@@ -82,6 +83,10 @@ func start_game():
 	# Start background music
 	AudioManager.play_music("music_1", -15.0)  # Play quietly
 	AudioManager.play_looping_sound("wind_rushing", "wind", -20.0)  # Wind ambience
+	
+	# Show tutorial controls after a brief delay
+	await get_tree().create_timer(1.0).timeout
+	show_tutorial_controls()
 
 func _process(delta):
 	if not game_over and game_started:
@@ -122,9 +127,15 @@ func end_game(lives_remaining):
 	# Store results in global data
 	GameData.set_game_results(score, time_elapsed, lives_remaining)
 	
-	# Show game over screen after a short delay
-	await get_tree().create_timer(2.0).timeout
-	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+	# Mark as successful landing
+	game_success = true
+	
+	# Show success message
+	show_game_result()
+	
+	# Restart after delay
+	await get_tree().create_timer(3.0).timeout
+	get_tree().reload_current_scene()
 
 func end_game_death():
 	if game_over:
@@ -143,9 +154,15 @@ func end_game_death():
 	# Store results in global data
 	GameData.set_game_results(0, time_elapsed, 0)
 	
-	# Show game over screen after a short delay
+	# Mark as failed
+	game_success = false
+	
+	# Show failure message
+	show_game_result()
+	
+	# Restart after brief delay
 	await get_tree().create_timer(2.0).timeout
-	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+	get_tree().reload_current_scene()
 
 func format_time(seconds):
 	var minutes = int(seconds) / 60
@@ -198,3 +215,16 @@ func reset_combo():
 		print("Combo broken! Was at: ", current_combo)
 		current_combo = 0
 		emit_signal("combo_updated", current_combo, get_combo_multiplier())
+
+func show_tutorial_controls():
+	var hud = get_node_or_null("../HUD")
+	if hud:
+		hud.show_tutorial_flash()
+
+func show_game_result():
+	var hud = get_node_or_null("../HUD")
+	if hud:
+		if game_success:
+			hud.show_success_message(score, time_elapsed)
+		else:
+			hud.show_failure_message(time_elapsed)

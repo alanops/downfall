@@ -31,8 +31,23 @@ func _process(delta):
 	
 	if spawn_timer >= next_spawn_time:
 		print("Attempting to spawn hazards...")
-		# Spawn multiple hazards for good density across the altitude range
-		var num_spawns = randi_range(2, 4)  # 2-4 obstacles per spawn
+		
+		# Get difficulty settings from GameManager
+		var game_manager = get_node_or_null("../GameManager")
+		var difficulty = 1  # Default to NORMAL
+		if game_manager:
+			difficulty = game_manager.current_difficulty
+		
+		# Adjust spawn count based on difficulty
+		var num_spawns = 1  # Default
+		match difficulty:
+			0:  # EASY
+				num_spawns = randi_range(1, 2)  # 1-2 obstacles per spawn
+			1:  # NORMAL
+				num_spawns = randi_range(2, 3)  # 2-3 obstacles per spawn
+			2:  # HARD
+				num_spawns = randi_range(3, 5)  # 3-5 obstacles per spawn
+		
 		for i in range(num_spawns):
 			spawn_hazard()
 		
@@ -57,12 +72,17 @@ func spawn_hazard():
 	var altitude_12000_y = -200 + (27200 * 0.11)  # ~2,792
 	var altitude_4000_y = -200 + (27200 * 0.70)   # ~18,840
 	
-	# Only spawn in the hazard zone (12,000 ft to 4,000 ft)
-	var spawn_y = randf_range(altitude_12000_y, altitude_4000_y)
-	
 	# Don't spawn if player hasn't reached the hazard zone yet
 	if player_y < altitude_12000_y - 500:  # Smaller buffer
 		return
+	
+	# Always spawn below player with minimum reaction distance
+	var min_distance_ahead = 500  # Minimum distance below player for reaction time
+	var max_distance_ahead = 1200  # Maximum distance below player
+	var spawn_y = randf_range(player_y + min_distance_ahead, player_y + max_distance_ahead)
+	
+	# Clamp to hazard zone bounds
+	spawn_y = clamp(spawn_y, altitude_12000_y, altitude_4000_y)
 	
 	# Progressive difficulty - more power-ups in later sections
 	var current_powerup_chance = powerup_chance
@@ -91,10 +111,25 @@ func spawn_hazard():
 		print("Spawned power-up at Y: ", spawn_y, " Player at Y: ", player_y)
 		return
 	
-	# Higher chance for planes (70% plane, 30% particle cloud)
+	# Get difficulty settings for plane vs cloud ratio
+	var game_manager = get_node_or_null("../GameManager")
+	var difficulty = 1  # Default to NORMAL
+	if game_manager:
+		difficulty = game_manager.current_difficulty
+	
+	# Adjust plane chance based on difficulty (reduced cloud frequency)
+	var plane_chance = 0.8  # Default - fewer clouds
+	match difficulty:
+		0:  # EASY
+			plane_chance = 0.7  # 70% planes, 30% clouds (easier)
+		1:  # NORMAL
+			plane_chance = 0.8  # 80% planes, 20% clouds
+		2:  # HARD
+			plane_chance = 0.9  # 90% planes, 10% clouds (harder)
+	
 	var hazard
 	var hazard_type = "unknown"
-	if randf() < 0.7 and plane_scene:  # 70% chance for plane
+	if randf() < plane_chance and plane_scene:
 		hazard = plane_scene.instantiate()
 		hazard_type = "plane"
 	elif particle_cloud_scene:
@@ -106,13 +141,13 @@ func spawn_hazard():
 	
 	add_child(hazard)
 	
-	# Randomly spawn from left or right
+	# Randomly spawn from left or right with extended spawn zones
 	if randf() < 0.5:
-		hazard.position = Vector2(-50, spawn_y)
+		hazard.position = Vector2(-200, spawn_y)  # Further left spawn
 		hazard.move_direction = 1
 		print("Spawning plane from LEFT edge, moving RIGHT (direction = 1)")
 	else:
-		hazard.position = Vector2(screen_width + 50, spawn_y)
+		hazard.position = Vector2(screen_width + 200, spawn_y)  # Further right spawn
 		hazard.move_direction = -1
 		print("Spawning plane from RIGHT edge, moving LEFT (direction = -1)")
 	
@@ -158,9 +193,9 @@ func spawn_safe_coins():
 		var coin = coin_scene.instantiate()
 		add_child(coin)
 		
-		# Spawn in safe areas - not too close to edges
+		# Spawn in safe areas below player - not too close to edges
 		var safe_x = randf_range(60, screen_width - 60)
-		var safe_y = randf_range(player.global_position.y + 100, player.global_position.y + 400)
+		var safe_y = randf_range(player.global_position.y + 200, player.global_position.y + 600)
 		
 		coin.global_position = Vector2(safe_x, safe_y)
 	
