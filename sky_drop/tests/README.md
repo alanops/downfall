@@ -39,10 +39,10 @@ godot --headless -s addons/gut/gut_cmdln.gd -gexit -glog=2
 
 ```
 tests/
-├── test_player.gd        # Player movement and physics tests
-├── test_game_manager.gd  # Game state and progression tests  
-├── test_hazard.gd        # Hazard behavior tests
-├── test_powerup.gd       # Powerup functionality tests
+├── test_player.gd        # Player movement, physics, and controller tests
+├── test_game_manager.gd  # Game state, scoring, and difficulty tests  
+├── test_hazard.gd        # Hazard behavior and collision tests
+├── test_powerup.gd       # Five power-up types and functionality tests
 ├── gut_config.gd         # GUT configuration
 └── README.md            # This file
 ```
@@ -91,15 +91,17 @@ func test_something():
 ## Coverage Areas
 
 Current test coverage includes:
-- ✅ Player movement and physics
-- ✅ Game state management
-- ✅ Hazard spawning and behavior
-- ✅ Powerup effects
-- ✅ Score system
-- ✅ Collision detection
+- ✅ Player movement and physics (multi-input support)
+- ✅ Game state management and difficulty modes
+- ✅ Hazard spawning and behavior (planes and clouds)
+- ✅ Five power-up types and effects (Shield, Magnet, Ghost, Speed Boost, Parachute Refill)
+- ✅ Advanced scoring system with combo multipliers
+- ✅ Collision detection and lives management
+- ✅ Audio system integration (AudioManager)
+- ✅ Controller input and vibration feedback
 - ⬜ Parallax background (visual, hard to unit test)
-- ⬜ Audio system (if implemented)
 - ⬜ Save/load system (if implemented)
+- ⬜ Screen shake and visual effects
 
 ## CI Integration
 

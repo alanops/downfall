@@ -8,20 +8,36 @@ Sky Drop is a vertical scrolling arcade game built in Godot 4.4.1 where players 
 
 ### Core Gameplay
 - **Vertical Falling**: Player falls at realistic physics speeds
-- **Horizontal Movement**: Left/right control with arrow keys or WASD
-- **Parachute System**: Space bar toggles parachute for speed control
-- **Lives System**: 3 lives, lose one when hitting planes
-- **Power-ups**: Collectible items for score/life bonuses
+- **Horizontal Movement**: Left/right control with arrow keys, WASD, or controller
+- **Parachute System**: Space bar/button toggles parachute for speed control
+- **Lives System**: Difficulty-based lives (Easy: 12, Normal: 3, Hard: 1)
+- **Coin Collection**: Collect coins with combo multipliers (up to 5x)
+- **Power-up System**: 5 types - Shield, Magnet, Ghost Mode, Speed Boost, Parachute Refill
+- **Audio Experience**: Background music, ambient sounds, and context-aware SFX
 - **Realistic Physics**: 45-60 second freefall matching real skydiving
 
 ### Controls
+
+#### Keyboard Controls
 - **Arrow Keys / WASD**: Move left and right
 - **Space**: Deploy/retract parachute
 - **R**: Reset game at any time
 - **Down/S**: Fast dive mode (increased fall speed)
 - **Up/W**: Normal speed when diving
 - **`` ` `` (backtick) / F1**: Toggle developer console
-- **Touch Controls**: Tap, swipe, and drag gestures for mobile support
+
+#### Controller Support
+- **Left Stick**: Analog movement (horizontal and dive control)
+- **A Button (Xbox) / X Button (PlayStation)**: Deploy/retract parachute
+- **Start/Options**: Reset game
+- **Vibration Feedback**: Collision impacts and parachute deployment
+- **Auto-Detection**: Automatic controller recognition and setup
+
+#### Touch Controls
+- **Tap**: Deploy/retract parachute
+- **Swipe Left/Right**: Move horizontally
+- **Swipe Down**: Fast dive mode
+- **Long Press**: Reset game
 
 ## Technical Architecture
 
@@ -46,28 +62,34 @@ Main.tscn (Root Scene)
 - **Normal Fall Speed**: 600 px/s (~120 mph)
 - **Fast Dive Speed**: 1000 px/s (~200 mph)
 - **Parachute Fall Speed**: 150 px/s (~30 mph)
-- **Speed Boost Mode**: 1400 px/s (~280 mph, temporary)
+- **Speed Boost Mode**: 1400 px/s (~280 mph, temporary from power-up)
 - **Gravity Normal**: 400 px/s²
 - **Gravity Fast Dive**: 800 px/s²
 - **Gravity Parachute**: 100 px/s²
 - **Total Distance**: 27,000 pixels (45-second freefall)
-- **Wind Effects**: Simulated atmospheric conditions when parachute deployed
-- **Parachute Jerk**: 150 unit upward impulse on deployment
+- **Wind Effects**: Dynamic audio and visual feedback based on falling state
+- **Parachute Jerk**: 150 unit upward impulse with screen shake and audio
+- **Power-up Effects**: Temporary physics modifications for enhanced gameplay
+- **Collision System**: Precise detection with visual and haptic feedback
 
 ### File Organization
 
 #### Scripts (`/scripts/`)
-- `GameManager.gd` - Core game loop, score tracking, scene transitions
-- `Player.gd` - Player physics, input handling, camera control, touch controls
-- `HazardSpawner.gd` - Dynamic obstacle spawning system with multiple spawn types
-- `ParallaxBackground.gd` - Background scrolling management
-- `GameData.gd` - Singleton for persistent data between scenes
-- `HUD.gd` - UI updates and display management with null-safe references
+- `GameManager.gd` - Core game loop, difficulty modes, score tracking, scene transitions
+- `Player.gd` - Player physics, multi-input handling, camera control, power-up effects
+- `AudioManager.gd` - Comprehensive audio system with sound pooling and bus management
+- `ControllerManager.gd` - Full gamepad support with vibration and auto-detection
+- `HazardSpawner.gd` - Dynamic obstacle and coin spawning with risk/reward positioning
+- `ParallaxBackground.gd` - Multi-layer background scrolling management
+- `GameData.gd` - Singleton for persistent data and settings between scenes
+- `HUD.gd` - Dynamic UI with controller-aware prompts and combo tracking
 - `Ground.gd` - Landing detection and game completion
-- `MainMenu.gd` - Menu navigation and game start
-- `GameOver.gd` - End game display and restart options
-- `DevConsole.gd` - Developer console with commands and sound menu
-- `PowerUp.gd` - Power-up system with multiple types (parachute, speed boost)
+- `MainMenu.gd` - Menu navigation with controller and touch support
+- `GameOver.gd` - End game display with final score calculations
+- `DevConsole.gd` - Advanced developer console (42 commands) with audio controls
+- `PowerUp.gd` - Five power-up types with visual and audio feedback
+- `Coin.gd` - Collectible system with combo mechanics and sound effects
+- `Hazard.gd` - Base hazard class for planes and clouds
 
 #### Sprites (`/assets/sprites/`)
 - `background_sky_gradient.webp` - Base blue gradient layer
@@ -80,13 +102,16 @@ Main.tscn (Root Scene)
 - `menu_button.webp` - General menu button style
 
 #### Scenes (`/scenes/`)
-- `Main.tscn` - Primary gameplay scene with integrated dev console
-- `MainMenu.tscn` - Start screen with custom UI and sprite buttons
-- `GameOver.tscn` - End screen with score display
-- `DevConsole.tscn` - Developer console with sound menu interface
-- `Plane.tscn` - Hazard obstacle prefab
-- `Cloud.tscn` - Slow-down hazard prefab
-- `PowerUp.tscn` - Collectible item prefab with multiple types
+- `Main.tscn` - Primary gameplay scene with integrated systems
+- `MainMenu.tscn` - Start screen with controller and touch support
+- `GameOver.tscn` - End screen with comprehensive score breakdown
+- `DevConsole.tscn` - Advanced developer console with audio controls
+- `ControllerSettings.tscn` - Controller configuration and testing interface
+- `Player.tscn` - Player prefab with physics and visual effects
+- `Plane.tscn` - Hazard obstacle with collision detection
+- `Cloud.tscn` - Environmental hazard with particle effects
+- `PowerUp.tscn` - Five power-up types with unique behaviors
+- `Coin.tscn` - Collectible with animation and sound integration
 
 ## Visual Design
 
@@ -269,25 +294,51 @@ Steps:
 - **Physics Testing**: Use `speed` and `gravity` commands for parameter tuning
 - **Console Logging**: All debug output visible in dev console
 
+## Audio System Implementation
+
+### AudioManager Architecture
+- **Singleton Pattern**: Global access via autoload
+- **Sound Pooling**: 10 concurrent audio players for overlapping effects
+- **Bus System**: Master, Music, and SFX buses with independent volume
+- **Looping Support**: Seamless background music and ambient sounds
+- **Fade Effects**: Smooth transitions between audio states
+
+### Current Audio Assets
+- **Background Music**: 3 looping tracks for variety
+- **Ambient Sounds**: Wind effects that change with game state
+- **Player SFX**: Parachute deployment, movement, damage sounds
+- **UI Audio**: Menu clicks, game over, confirmation sounds
+- **Collectible SFX**: Coin collection with satisfying audio feedback
+
+## Testing Framework
+
+### GUT Integration
+- **25+ Test Functions**: Comprehensive coverage across core systems
+- **Test Categories**: Player physics, hazards, power-ups, scoring
+- **Automated Execution**: Command-line test running capability
+- **CI Ready**: Integration with GitHub Actions pipeline
+
+### Test Coverage
+- **Player Physics**: Movement, parachute, collision detection
+- **Game Mechanics**: Scoring, lives, difficulty modes
+- **Power-up System**: All five power-up types and effects
+- **Audio System**: Sound playback and volume management
+
 ## Future Enhancements
 
 ### Potential Features
-- **Audio System**: Background music and sound effects (framework ready)
+- **Enhanced Audio**: Additional music tracks and environmental sounds
 - **Multiple Characters**: Different skydiver types with unique abilities
-- **Weather Effects**: Dynamic wind and weather conditions
+- **Weather Effects**: Dynamic wind and weather conditions with audio
 - **Leaderboards**: Online score comparison system
-- **Enhanced Mobile**: Additional touch gesture support
-- **Power-up Expansion**: More collectible types and visual effects
-- **Visual Polish**: Particle systems and shader effects
-
-### Technical Improvements  
-- **Audio Implementation**: Use existing volume control framework
-- **Shader Effects**: Enhanced visual quality and atmospheric effects
-- **Particle Systems**: Cloud, wind, and collision effects
-- **Save System**: Progress and high score persistence
+- **Visual Polish**: Enhanced particle systems and shader effects
 - **Analytics**: Player behavior tracking and telemetry
+
+### Technical Improvements
 - **Performance Optimization**: Further mobile device optimization
-- **Testing Automation**: Expanded unit testing with GUT framework
+- **Save System**: Progress and high score persistence
+- **Shader Effects**: Enhanced visual quality and atmospheric effects
+- **Expanded Testing**: Additional unit tests and performance benchmarks
 
 ## Credits
 

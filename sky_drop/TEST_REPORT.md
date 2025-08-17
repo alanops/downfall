@@ -28,36 +28,45 @@ Successfully replaced Playwright browser tests with native Godot Unit Tests (GUT
 
 ### Player Testing (`test_player.gd`)
 - ✅ Initial state validation
-- ✅ Horizontal movement (left/right)
-- ✅ Parachute deployment physics
-- ✅ Boundary constraints
-- ✅ Gravity application
-- ✅ Reset functionality
+- ✅ Multi-input movement (keyboard, controller, touch)
+- ✅ Parachute deployment physics with screen shake
+- ✅ Boundary constraints and edge detection
+- ✅ Gravity application and physics states
+- ✅ Reset functionality and state cleanup
+- ✅ Power-up effects on player behavior
+- ✅ Audio feedback integration
+- ✅ Controller vibration responses
 
 ### Game Manager Testing (`test_game_manager.gd`)
-- ✅ Initial game state
-- ✅ Score increment system
+- ✅ Initial game state and difficulty modes
+- ✅ Coin collection and combo scoring system
 - ✅ Game state transitions (menu → playing → game_over)
 - ✅ Fall speed progression over time
-- ✅ Game duration (45-second limit)
-- ✅ Hazard spawn rate changes
-- ✅ Powerup spawn probability
+- ✅ Game duration (45-second freefall limit)
+- ✅ Hazard and coin spawn coordination
+- ✅ Power-up spawn probability and distribution
+- ✅ Audio system integration
+- ✅ Difficulty-based lives management
 
 ### Hazard Testing (`test_hazard.gd`)
 - ✅ Hazard movement physics
-- ✅ Multiple hazard types (airplane, bird, helicopter, missile, debris)
-- ✅ Offscreen detection
+- ✅ Two primary hazard types (Planes and Clouds)
+- ✅ Offscreen detection and cleanup
 - ✅ Collision area validation
 - ✅ Speed multiplier effects
-- ✅ Rotation behavior (for debris)
+- ✅ Hazard-specific behaviors
+- ✅ Player interaction testing
+- ✅ Lives reduction mechanics
 
 ### Powerup Testing (`test_powerup.gd`)
-- ✅ Powerup types (shield, slow_time, magnet, extra_life)
+- ✅ Five powerup types (Shield, Magnet, Ghost Mode, Speed Boost, Parachute Refill)
 - ✅ Movement and fall physics
 - ✅ Float animation effects
-- ✅ Duration mechanics
+- ✅ Duration mechanics and timing
 - ✅ Visual effects validation
 - ✅ Collection signal emission
+- ✅ Power-up activation and deactivation
+- ✅ Player state modifications
 
 ## Running Tests
 
@@ -101,18 +110,24 @@ godot --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_player.gd -g
 - **Meaningful**: Test game mechanics, not just visual elements
 
 ### 🎯 Test Coverage:
-- **Physics**: Gravity, movement, collision detection
-- **Game Logic**: State management, scoring, progression
-- **User Input**: Control handling and response
-- **Game Objects**: Hazards, powerups, player behavior
-- **Performance**: Spawn rates, timing, boundaries
+- **Physics**: Gravity, movement, collision detection, parachute physics
+- **Game Logic**: State management, scoring, progression, difficulty modes
+- **User Input**: Multi-input control handling (keyboard/controller/touch)
+- **Game Objects**: Hazards, powerups, coins, player behavior
+- **Audio System**: Sound playback, volume management, context-aware audio
+- **Performance**: Spawn rates, timing, boundaries, screen effects
+- **Power-up System**: All five power-up types and their effects
+- **Scoring System**: Coin collection, combo multipliers, bonus calculations
 
 ### 📋 Future Improvements:
 - Add integration tests for scene transitions
 - Performance benchmarking tests
-- Audio system tests (when implemented)
+- ✅ Audio system tests (AudioManager implemented)
+- Controller input testing across different gamepad types
 - Save/load system tests (when implemented)
 - Visual regression tests for sprites/animations
+- Coin collection and combo multiplier validation
+- Screen shake and visual effects testing
 
 ## Conclusion
 
