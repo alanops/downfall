@@ -3,15 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://baspitedaws4r"
-path="res://.godot/imported/clouds_dramatic_foreground.webp-69b9b74ca52768de0a1d2b5f7b134929.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://assets/sprites/clouds_dramatic_foreground.webp"
-dest_files=["res://.godot/imported/clouds_dramatic_foreground.webp-69b9b74ca52768de0a1d2b5f7b134929.ctex"]
 
 [params]
 
