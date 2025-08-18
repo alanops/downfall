@@ -55,11 +55,13 @@ func _process(delta):
 		if randf() < 0.6:  # 60% chance per spawn cycle (increased from 30%)
 			spawn_safe_coins()
 		
-		# Continue spawning coins even after hazards stop (until 1500ft)
+		# Continue spawning coins and powerups even after hazards stop (until 1500ft)
 		var player = get_node_or_null("../Player")
 		if player and player.global_position.y > (27200 * 0.70 - 200):  # After 4000ft altitude
 			if randf() < 0.8:  # Higher chance in the final stretch
 				spawn_final_coins()
+			if randf() < 0.3:  # 30% chance for powerups in final stretch
+				spawn_final_powerup()
 		
 		spawn_timer = 0.0
 		next_spawn_time = randf_range(spawn_interval_min, spawn_interval_max)
@@ -89,35 +91,31 @@ func spawn_hazard():
 	var max_distance_ahead = 1200  # Maximum distance below player
 	var spawn_y = randf_range(player_y + min_distance_ahead, player_y + max_distance_ahead)
 	
-	# Clamp to hazard zone bounds (hazards stop at 4000ft)
-	spawn_y = clamp(spawn_y, altitude_12000_y, altitude_4000_y)
-	
 	# Progressive difficulty - more power-ups in later sections
 	var current_powerup_chance = powerup_chance
 	if player_y > 2000:  # After halfway point
 		current_powerup_chance += 0.05  # 20% chance instead of 15%
 	
-	# Chance to spawn power-up instead
+	# Chance to spawn power-up instead (powerups can spawn beyond hazard zone)
 	if randf() < current_powerup_chance and powerup_scene:
+		# Powerups can spawn all the way to 1500ft, unlike hazards
+		var powerup_spawn_y = clamp(spawn_y, altitude_12000_y, altitude_1500_y)
 		var powerup = powerup_scene.instantiate()
 		add_child(powerup)
 		
-		# Randomly choose power-up type with varied distribution
+		# Randomly choose power-up type (only parachute and shield)
 		var powerup_roll = randf()
-		if powerup_roll < 0.3:
+		if powerup_roll < 0.5:
 			powerup.powerup_type = powerup.PowerUpType.PARACHUTE
-		elif powerup_roll < 0.5:
-			powerup.powerup_type = powerup.PowerUpType.SPEED_BOOST
-		elif powerup_roll < 0.7:
-			powerup.powerup_type = powerup.PowerUpType.SHIELD
-		elif powerup_roll < 0.85:
-			powerup.powerup_type = powerup.PowerUpType.MAGNET
 		else:
-			powerup.powerup_type = powerup.PowerUpType.GHOST
+			powerup.powerup_type = powerup.PowerUpType.SHIELD
 		
-		powerup.position = Vector2(randf_range(50, screen_width - 50), spawn_y)
-		print("Spawned power-up at Y: ", spawn_y, " Player at Y: ", player_y)
+		powerup.position = Vector2(randf_range(50, screen_width - 50), powerup_spawn_y)
+		print("Spawned power-up at Y: ", powerup_spawn_y, " Player at Y: ", player_y)
 		return
+	
+	# Clamp to hazard zone bounds (hazards stop at 4000ft, unlike powerups)
+	spawn_y = clamp(spawn_y, altitude_12000_y, altitude_4000_y)
 	
 	# Get difficulty settings for plane vs cloud ratio
 	var game_manager = get_node_or_null("../GameManager")
@@ -231,18 +229,12 @@ func spawn_powerup():
 	var powerup = powerup_scene.instantiate()
 	add_child(powerup)
 	
-	# Random power-up type
+	# Random power-up type (only parachute and shield)
 	var powerup_roll = randf()
-	if powerup_roll < 0.2:
+	if powerup_roll < 0.5:
 		powerup.powerup_type = powerup.PowerUpType.PARACHUTE
-	elif powerup_roll < 0.4:
-		powerup.powerup_type = powerup.PowerUpType.SPEED_BOOST
-	elif powerup_roll < 0.6:
-		powerup.powerup_type = powerup.PowerUpType.SHIELD
-	elif powerup_roll < 0.8:
-		powerup.powerup_type = powerup.PowerUpType.MAGNET
 	else:
-		powerup.powerup_type = powerup.PowerUpType.GHOST
+		powerup.powerup_type = powerup.PowerUpType.SHIELD
 	
 	var player = get_node_or_null("../Player")
 	if player:
@@ -277,3 +269,38 @@ func spawn_final_coins():
 		coin.global_position = Vector2(safe_x, safe_y)
 	
 	print("Spawned ", num_coins, " final coins in landing approach zone")
+
+func spawn_final_powerup():
+	# Spawn powerups in the final stretch from 4000ft down to 1500ft
+	var player = get_node_or_null("../Player")
+	if not player or not powerup_scene:
+		return
+	
+	# Calculate altitude boundaries
+	var altitude_4000_y = -200 + (27200 * 0.70)   # ~18,840
+	var altitude_1500_y = -200 + (27200 * 0.89)   # ~24,008
+	
+	# Don't spawn powerups if we're past 1500ft
+	if player.global_position.y > altitude_1500_y:
+		return
+		
+	var powerup = powerup_scene.instantiate()
+	add_child(powerup)
+	
+	# Randomly choose power-up type with emphasis on useful final stretch powerups
+	var powerup_roll = randf()
+	if powerup_roll < 0.7:
+		powerup.powerup_type = powerup.PowerUpType.PARACHUTE  # More parachutes for landing
+	else:
+		powerup.powerup_type = powerup.PowerUpType.SHIELD
+	
+	# Spawn powerup in the safe final zone
+	var safe_x = randf_range(60, screen_width - 60)
+	var safe_y = randf_range(player.global_position.y + 200, player.global_position.y + 1000)
+	
+	# Clamp to final zone bounds
+	safe_y = clamp(safe_y, altitude_4000_y, altitude_1500_y)
+	
+	powerup.global_position = Vector2(safe_x, safe_y)
+	
+	print("Spawned final powerup in landing approach zone")

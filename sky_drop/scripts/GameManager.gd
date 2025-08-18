@@ -127,8 +127,8 @@ func end_game(lives_remaining):
 	# Store results in global data
 	GameData.set_game_results(score, time_elapsed, lives_remaining)
 	
-	# Mark as successful landing
-	game_success = true
+	# Mark as successful landing only if lives remain (parachute was deployed)
+	game_success = (lives_remaining > 0)
 	
 	# Show success message
 	show_game_result()
@@ -176,7 +176,21 @@ func reset_game():
 func _on_ground_player_landed():
 	var player = get_node_or_null("../Player")
 	if player:
-		end_game(player.lives)
+		# Check if landing was successful (parachute deployed)
+		if player.parachute_deployed:
+			print("Successful landing with parachute!")
+			end_game(player.lives)
+		else:
+			print("Crash landing without parachute!")
+			# Crash landing - lose a life and restart if lives remain
+			player.lives -= 1
+			if player.lives <= 0:
+				game_success = false  # Mark as failure
+				end_game(0)  # Game over
+			else:
+				# Reset player position for another attempt
+				player.global_position = Vector2(180, -200)
+				player.velocity = Vector2.ZERO
 
 # Coin collection system
 func _on_coin_collected(coin, position):

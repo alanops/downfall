@@ -140,7 +140,7 @@ func update_difficulty_display():
 func show_tutorial_flash():
 	# Create a tutorial overlay label
 	var tutorial_label = Label.new()
-	tutorial_label.text = "*** MISSION ***\nREACH LANDING ZONE\nAS FAST AS POSSIBLE!\n\nDIVE FAST TO WIN!\nDEPLOY PARACHUTE LATE!\n\nSPACE = PARACHUTE\nARROW/WASD = MOVE\n\nAVOID PLANES!\nCOLLECT SPEED BOOSTS!"
+	tutorial_label.text = "*** MISSION ***\nREACH LANDING ZONE\nAS FAST AS POSSIBLE!\n\nDIVE FAST TO WIN!\nDEPLOY PARACHUTE LATE!\n\nSPACE = PARACHUTE\nARROW/WASD = MOVE\n\nAVOID PLANES!\nCOLLECT COINS & POWERUPS!"
 	tutorial_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	tutorial_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	tutorial_label.position = Vector2(0, 120)
