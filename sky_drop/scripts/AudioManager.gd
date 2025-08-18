@@ -19,6 +19,8 @@ var sounds = {
 	
 	# UI sounds
 	"game_over": preload("res://assets/sounds/game_over.ogg"),
+	"start": preload("res://assets/sounds/start.wav"),
+	"button": preload("res://assets/sounds/button.ogg"),
 	
 	# Music tracks
 	"music_1": preload("res://assets/sounds/music_1.ogg"),

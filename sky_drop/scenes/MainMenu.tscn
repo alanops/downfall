@@ -168,7 +168,7 @@ fit_content = true
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-text = "[center][url=https://promptcade.com/alanson]Alan Son[/url][/center]"
+text = "[center][url=https://www.linkedin.com/in/alanops/]Alan Son[/url][/center]"
 fit_content = true
 
 [node name="VersionLabel" type="Label" parent="."]

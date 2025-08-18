@@ -81,7 +81,7 @@ func start_game():
 	AudioManager.enable_audio()
 	
 	# Start background music
-	AudioManager.play_music("music_1", -15.0)  # Play quietly
+	AudioManager.play_music("music_1", -5.0)  # Play at audible volume
 	AudioManager.play_looping_sound("wind_rushing", "wind", -20.0)  # Wind ambience
 	
 	# Show tutorial controls after a brief delay
