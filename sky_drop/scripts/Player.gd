@@ -409,7 +409,7 @@ func take_damage():
 		ControllerManager.vibrate(0.3, 0.8, 0.8)  # Strong vibration for damage
 	
 	# Play damage sound
-	AudioManager.play_sound("player_hit", 0.0)  # Normal pitch for damage
+	AudioManager.play_sound("player_hit", -8.0)  # Normal pitch for damage
 	
 	if lives <= 0:
 		# Game over - restart immediately
